@@ -14,8 +14,7 @@
 <div id="content">
 <h2>XX答卷</h2>
 <div class="float">
-<p>剩余时间：00:20:30</p>
-<table border="1" cellspacing="0" cellpadding="10"  bordercolor="#ffffff" style="margin:auto">
+<table border="1" cellspacing="0" cellpadding="10"  bordercolor="#ffffff" style="margin:30px">
 <tr>
 <td >1</td>
 <td >2</td>

@@ -32,8 +32,14 @@ header{
 	float:left;
 	border-style:solid;
 	border-width:1px;
-	border-color:#004040;
-	
+	border-color:#004040;	
+}
+.limit{
+	border-style:solid;
+		
+	border-width:0 0 1px 0;
+	border-color:#cdcdd6;	
+	width:100%;
 }
 #content{
 	background-color:#ffffff;
@@ -91,9 +97,10 @@ h2{
 
 .tdcenter
 {
+	
     vertical-align:middle;
     text-align:center;
-    font-weight:bold;
+    
 }
 .xian{
 	border-bottom:1px solid #000;
@@ -101,6 +108,23 @@ h2{
 	border-left:0px;
 	border-right:0px;
 	outline:none
+}
+.bunone{
+	border: none;
+    outline: none;
+	background-color:#ffffff;
+	width:70px;
+	height:35px;
+	font-size:15px;
+}
+.bugreen{
+	border: none;
+    outline: none;
+	background-color:#ffffff;
+	color:#008080;
+	width:70px;
+	height:35px;
+	font-size:15px;
 }
 .float{
    text-align:center;
