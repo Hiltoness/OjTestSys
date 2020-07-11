@@ -30,7 +30,7 @@
 </form>
 </div>
 <div id="content">
-
+<form action="" method="post">
 <table border="0" cellspacing="0" cellpadding="10"  >
 <tr>
 <td >1、（单选题）2019-2020年可视化信息交互设计方法方法付斤斤计较军加加加加加加
@@ -58,7 +58,7 @@
 </tr>
 <tr>
 <td>
-<p class="pred">正确答案：（错误）</p>
+<p >你的答案：（正确）</p>
 </td>
 </tr>
 <tr>
@@ -87,7 +87,7 @@
 </tr>
 <tr>
 <td>
-<p class="pred">正确答案：（错误）</p>
+<p class="pred">你的答案：（错误）</p>
 </td>
 </tr>
 <tr>
@@ -106,7 +106,7 @@
 </tr>
 <tr>
 <td>
-<p class="pred">正确答案：（错误）</p>
+<p class="pred">你的答案：（错误）</p>
 </td>
 </tr>
 
@@ -117,18 +117,16 @@
 </tr>
 <tr>
 <td>
-<p class="pred">正确答案：（错误）</p>
+<p class="pred">你的答案：（错误）</p>
 </td>
 </tr>
 </table>
-<form action="" method="post">
 <table border="0" cellspacing="0" cellpadding="60" style="margin:auto" >
 <tr>
 <td ><input type="submit" value="下一页" class="submitlv"></td>
 <td ><input type="submit" value="提交" class="submitlv"></td>
 </tr>
 </table>
-
 
 </form>
 
