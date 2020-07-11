@@ -47,16 +47,26 @@ header{
 	float:left;
 }
 
-a:link,a:visited{
+.aleft:link,.aleft:visited{
 	color:#000000;
 	font-weight:bold;
-	text-decoration:none;	
+	
 }
-a。awhite:link,a.awhite:visited{
+。awhite:link,.awhite:visited{
 	color:#ffffff;
-	font-weight:normal;
-	text-decoration:none;
-	margin:30px ;	
+	font-weight:bold;
+	
+}
+。afing:link,.afing:visited{
+	color:#008080;
+	font-weight:bold;
+	
+}
+。afinw:link,.afinw:visited{
+	color:#000000;
+	font-weight:bold;
+	
+	
 }
 .exit{
 	color:#ffffff;
@@ -97,7 +107,8 @@ h2{
 
 .tdcenter
 {
-	
+	color:#008080;
+	font-weight:bold;
     vertical-align:middle;
     text-align:center;
     
@@ -158,6 +169,45 @@ h2{
 	color:#000000;
 	border-color:#008080;
 }
+.dropbtn {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 6px 10px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #f1f1f1;
+}
+a{ text-decoration:none} 
 
 
 

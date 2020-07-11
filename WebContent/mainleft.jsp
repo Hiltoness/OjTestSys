@@ -17,23 +17,20 @@
 <strong class="mystrong">我的</strong> 
 </li>
 <li class="part">
-<a  href="">选课信息</a>
+<a  href="" class="aleft">选课信息</a>
 </li>
 <li class="part">
-<a  href="">做题记录</a>
-</li>
-<li class="part">
-<a  href="">我的错题</a>
+<a  href="" class="aleft">我的错题</a>
 </li>
 
 <li class="total">
 <strong class="mystrong">考试</strong>
 </li>
 <li class="part">
-<a  href="">限时模式</a>
+<a  href="" class="aleft">限时模式</a>
 </li>
 <li class="part">
-<a  href="">无限模式</a>
+<a  href="" class="aleft">无限模式</a>
 </li>
 
 </ul>

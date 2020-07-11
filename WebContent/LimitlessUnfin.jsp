@@ -6,27 +6,33 @@
 <meta charset="UTF-8">
 <title>考试系统</title>
 <link rel="stylesheet" href="css/main.css">
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 </head>
 <body>
 <jsp:include page="maintop.jsp"></jsp:include>
 <div id="container">
 <jsp:include page="mainleft.jsp"></jsp:include>
 <div class="limit">
-<form action="" method="post">
+
 <table border="0" cellspacing="0" cellpadding="15"  >
 <tr>
-<td ><input type="button" value="未完成"   class="bugreen"/>
+<td ><a href="LimitlessFin" class="afing">未完成</a> 
 </td>
-<td ><input type="button" value="已完成"  class="bunone"/>
+<td ><a href="" class="afinw">已完成</a> 
 </td>
-<td ><select>
-<option value="2019-2020-1">2019-2020-1</option>
-<option value="2019-2020-2">2019-2020-2</option>
-</select>
+<td >
+<div class="dropdown">
+  <button class="dropbtn">全部学期</button>
+  <div class="dropdown-content">
+    <a href="#">2019-2020-1</a>
+    <a href="#">2019-2020-2</a>    
+  </div>
+</div>
+  
 </td>
 </tr>
 </table>
-</form>
 </div>
 <div id="content">
 
@@ -34,27 +40,28 @@
 <tr>
 <td class="tdcenter">考卷名称</td>
 <td class="tdcenter">老师</td>
-<td class="tdcenter">开始时间</td>
-<td class="tdcenter">结束时间</td>
-<td class="tdcenter">剩余次数</td>
+<td class="tdcenter">次数</td>
+<td class="tdcenter">分数</td>
+<td class="tdcenter">正确率</td>
 <td class="tdcenter">操作</td>
 </tr>
 
 <tr>
 <td>2019-2020年可视化信息交互设计</td>
 <td>刘老师</td>
-<td>2019-2-12</td>
-<td>2019-2-13</td>
-<td>3</td>
-<td><a  href="">开始答卷</a></td>
+<td>1</td>
+<td>97</td>
+<td>90%</td>
+
+<td><a  href="" class="aleft">我的答卷</a></td>
 </tr>
 <tr>
 <td>2019-2020年可视化信息交互设计哈哈哈</td>
 <td>哈哈哈</td>
-<td>2019-2-12</td>
-<td>20192-13</td>
-<td>2</td>
-<td><a  href="">开始答卷</a></td>
+<td>1</td>
+<td>97</td>
+<td>90%</td>
+<td><a  href="" class="aleft">我的答卷</a></td>
 </tr>
 </table>
 </div>
