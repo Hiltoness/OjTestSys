@@ -121,16 +121,8 @@
 </td>
 </tr>
 </table>
-<form action="" method="post">
-<table border="0" cellspacing="0" cellpadding="60" style="margin:auto" >
-<tr>
-<td ><input type="submit" value="下一页" class="submitlv"></td>
-<td ><input type="submit" value="提交" class="submitlv"></td>
-</tr>
-</table>
 
-
-</form>
+<jsp:include page="FenYe.jsp"></jsp:include>
 
 </div>
 </div>

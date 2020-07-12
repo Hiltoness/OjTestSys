@@ -25,6 +25,7 @@
 <div class="dropdown">
   <button class="dropbtn">全部学期</button>
   <div class="dropdown-content">
+    <a href="#">全部学期</a>
     <a href="#">2019-2020-1</a>
     <a href="#">2019-2020-2</a>    
   </div>

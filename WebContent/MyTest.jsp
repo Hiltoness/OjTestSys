@@ -11,26 +11,8 @@
 <jsp:include page="maintop.jsp"></jsp:include>
 <div id="container">
 <jsp:include page="mainleft.jsp"></jsp:include>
-<div class="limit">
-<form action="" method="post">
-<table border="0" cellspacing="0" cellpadding="15"  >
-<tr>
-<td >
-<div class="dropdown">
-  <button class="dropbtn">全部错题</button>
-  <div class="dropdown-content">
-    <a href="#">2019-2020</a>
-    <a href="#">2020-2021</a>    
-  </div>
-</div>
-</td>
 
-</tr>
-</table>
-</form>
-</div>
 <div id="content">
-<form action="" method="post">
 <table border="0" cellspacing="0" cellpadding="10"  >
 <tr>
 <td >1、（单选题）2019-2020年可视化信息交互设计方法方法付斤斤计较军加加加加加加
@@ -121,14 +103,7 @@
 </td>
 </tr>
 </table>
-<table border="0" cellspacing="0" cellpadding="60" style="margin:auto" >
-<tr>
-<td ><input type="submit" value="下一页" class="submitlv"></td>
-<td ><input type="submit" value="提交" class="submitlv"></td>
-</tr>
-</table>
 
-</form>
 
 </div>
 </div>
