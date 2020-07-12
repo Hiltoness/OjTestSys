@@ -17,7 +17,7 @@
 
 <table border="0" cellspacing="0" cellpadding="15"  >
 <tr>
-<td ><a href="LimitlessFin" class="afinw">未完成</a> 
+<td ><a href="LimitlessTest.jsp" class="afinw">未完成</a> 
 </td>
 <td ><a href="" class="afing">已完成</a> 
 </td>

@@ -8,6 +8,31 @@
 <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+<script type="text/javascript">
+function mathPages(index,totalpage){
+	var indexs [];
+	for(var i=1;i<=totalpage;i++){
+		indexs.push(i);
+	}
+	if(totalpage<=5){
+		return indexs;
+	}
+	if(index<=2){
+		indexs=indexs.slice(0,5);
+		return indexs;
+	}else{
+		var indexs2=indexs.slice(index-2,index+3);
+		if(indexs2.length>=5){
+			return indexs2;
+		}
+		else{
+			indexs2=indexs.slice(-5);
+			return indexs2
+		}
+	}
+}
+</script>
+
 <jsp:include page="maintop.jsp"></jsp:include>
 <div id="container">
 <jsp:include page="mainleft.jsp"></jsp:include>
@@ -19,6 +44,7 @@
 <div class="dropdown">
   <button class="dropbtn">全部错题</button>
   <div class="dropdown-content">
+  <a href="#">全部错题</a>
     <a href="#">2019-2020</a>
     <a href="#">2020-2021</a>    
   </div>
@@ -122,8 +148,28 @@
 </tr>
 </table>
 
-<jsp:include page="FenYe.jsp"></jsp:include>
-
+<div class="center">
+  <ul class="pagination">
+    <li><a href="#">«</a></li>
+    <li><a href="#">❮</a></li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a class="active"  href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li><a href="#">❯</a></li>
+    <li><a href="#">»</a></li>
+   
+  </ul>
+</div>
+<div class="center">
+<table border="0" cellspacing="0" cellpadding="15" style="margin:auto"  >
+<tr>
+<td >共3页</td>
+<td ><form action=""><label>第<input type="text" style="width:35px">页<input type="submit" value="跳转" ></label></form></td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <jsp:include page="mainfoot.jsp"></jsp:include>

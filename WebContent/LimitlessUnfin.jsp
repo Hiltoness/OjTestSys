@@ -17,7 +17,7 @@
 
 <table border="0" cellspacing="0" cellpadding="15"  >
 <tr>
-<td ><a href="LimitlessFin" class="afing">未完成</a> 
+<td ><a href="LimitlessTest.jsp" class="afing">未完成</a> 
 </td>
 <td ><a href="" class="afinw">已完成</a> 
 </td>
@@ -54,7 +54,7 @@
 <td>97</td>
 <td>90%</td>
 
-<td><a  href="" class="aleft">我的答卷</a></td>
+<td><a  href="" class="aleft">开始答卷</a></td>
 </tr>
 <tr>
 <td>2019-2020年可视化信息交互设计哈哈哈</td>
@@ -62,7 +62,7 @@
 <td>1</td>
 <td>97</td>
 <td>90%</td>
-<td><a  href="" class="aleft">我的答卷</a></td>
+<td><a  href="" class="aleft">开始答卷</a></td>
 </tr>
 </table>
 </div>
@@ -71,6 +71,7 @@
 </body>
 
 </html>
+
 
 
 
