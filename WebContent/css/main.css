@@ -190,8 +190,29 @@ h2{
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
+    width:140px;
+  height:150px;
     box-shadow: 0px 6px 10px 0px rgba(0,0,0,0.2);
+    overflow:scroll;
+    overflow-x: hidden ;
+    
+    /*三角箭头的颜色*/
+    scrollbar-arrow-color: #008080;
+    /*滚动条滑块按钮的颜色*/
+    scrollbar-face-color: #008080;
+    /*滚动条整体颜色*/
+    scrollbar-highlight-color: #ffffff;
+    /*滚动条阴影*/
+    scrollbar-shadow-color: #ffffff;
+    /*滚动条轨道颜色*/
+    scrollbar-track-color: #ffffff;
+    /*滚动条3d亮色阴影边框的外观颜色——左边和上边的阴影色*/
+    scrollbar-3dlight-color:#ffffff;
+    /*滚动条3d暗色阴影边框的外观颜色——右边和下边的阴影色*/
+    scrollbar-darkshadow-color: #ffffff;
+    /*滚动条基准颜色*/
+    scrollbar-base-color: #ffffff;
+
 }
 
 .dropdown-content a {
