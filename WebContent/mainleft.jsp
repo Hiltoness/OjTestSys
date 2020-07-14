@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page import="javabean.*" %>  
+    <%@ page import="myservlet.*" %>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +22,7 @@
 <a  href="" class="aleft">选课信息</a>
 </li>
 <li class="part">
-<a  href="" class="aleft">我的错题</a>
+<a href="Wrong.jsp?timeorall=<%="all"%>&pagestart=0" class="aleft">我的错题</a>
 </li>
 
 <li class="total">
