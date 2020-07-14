@@ -49,7 +49,7 @@ public class mysql_insert {
 				pstm=conn.prepareStatement("SELECT LAST_INSERT_ID()");
 				ResultSet rs=pstm.executeQuery();
 				while(rs.next()){
-					pid=rs.getInt(1);
+					no=rs.getInt(1);
 				}
 				db.close(conn);
 			}catch(SQLException ex){
@@ -58,21 +58,29 @@ public class mysql_insert {
 		return no;		
 	}
 	//答卷题目表
-	public void dajuantm_insert(int pid,String type,int tno,int atimes,int rtimes) {
-		 try {
+	public int dajuantm_insert(int pid,String type,int atimes,int rtimes) {
+		int tno=0; 
+		try {
 			 mysql_DB db=new mysql_DB();
 				conn=db.connectDB();
-				pstm=conn.prepareStatement("insert into TestSub values(?,?,?,?,?)");
+				pstm=conn.prepareStatement("insert into TestSub values(?,?,0,?,?)");
 				pstm.setInt(1, pid);		
 				pstm.setString(2,type);
-				pstm.setInt(3, tno);
-				pstm.setInt(4, atimes);
-				pstm.setInt(5, rtimes);
+				pstm.setInt(3, atimes);
+				pstm.setInt(4, rtimes);
+				
 				pstm.executeUpdate();
+				
+				pstm=conn.prepareStatement("SELECT LAST_INSERT_ID()");
+				ResultSet rs=pstm.executeQuery();
+				while(rs.next()){
+					tno=rs.getInt(1);
+				}
 				db.close(conn);
 			}catch(SQLException ex){
 			ex.printStackTrace();
 			}
+		return tno;
 	}
 	//所有错题表
 	public void cuoti_insert(String xuehao,String type,int tno) {
