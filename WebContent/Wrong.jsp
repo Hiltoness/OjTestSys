@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="javabean.*" %>   
+<%@ page import="java.util.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,30 +10,45 @@
 <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-<script type="text/javascript">
-function mathPages(index,totalpage){
-	var indexs [];
-	for(var i=1;i<=totalpage;i++){
-		indexs.push(i);
+
+<%
+String timeorall=request.getParameter("timeorall");
+String all="all";
+if(timeorall.compareTo("all")==0){
+	timeorall="全部错题";
+}
+int pagestart=Integer.parseInt(request.getParameter("pagestart"));
+int pagetotal=100;
+int pagecount=5;
+page1 p=new page1();
+int pagelast=p.getLast(pagetotal,pagecount);
+int pageye=p.getTotalPage(pagetotal,pagecount);
+ArrayList<Integer> indexs=new ArrayList<Integer>();
+if(pagetotal<=5){
+	for(int i=1;i<=pageye;i++){
+	     indexs.add(i);
 	}
-	if(totalpage<=5){
-		return indexs;
-	}
-	if(index<=2){
-		indexs=indexs.slice(0,5);
-		return indexs;
-	}else{
-		var indexs2=indexs.slice(index-2,index+3);
-		if(indexs2.length>=5){
-			return indexs2;
+}else{
+	if(pagestart<(2*pagecount)){
+		for(int i=1;i<=5;i++){
+		     indexs.add(i);
 		}
-		else{
-			indexs2=indexs.slice(-5);
-			return indexs2
+	}else{
+		if(pagestart>=(pagelast-2*pagecount)){
+			for(int i=0;i<5;i++){
+				int j=pageye-i;
+			     indexs.add(j);
+			}
+		}else{
+			int currentpage=(pagestart/pagecount)+1;
+			for(int i=-2;i<=2;i++){
+			     indexs.add(currentpage+i);
+			}
 		}
 	}
 }
-</script>
+
+%>
 
 <jsp:include page="maintop.jsp"></jsp:include>
 <div id="container">
@@ -42,11 +59,12 @@ function mathPages(index,totalpage){
 <tr>
 <td >
 <div class="dropdown">
-  <button class="dropbtn">全部错题</button>
+  <button class="dropbtn"><%=timeorall %></button>
   <div class="dropdown-content">
-  <a href="#">全部错题</a>
-    <a href="#">2019-2020</a>
-    <a href="#">2020-2021</a>    
+    <a href="Wrongservlet?timeorall=<%=all%>&pagestart=0">全部错题</a>
+    <a href="Wrong.jsp?timeorall=&pagestart=0">2019-2020</a>
+    <a href="Wrong.jsp?timeorall=“2020-2021”&pagestart=0">2020-2021</a>    
+     
   </div>
 </div>
 </td>
@@ -150,23 +168,24 @@ function mathPages(index,totalpage){
 
 <div class="center">
   <ul class="pagination">
-    <li><a href="#">«</a></li>
-    <li><a href="#">❮</a></li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a class="active"  href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">❯</a></li>
-    <li><a href="#">»</a></li>
+    <li><a href="wrongservlet?timeorall=<%=timeorall %>&pagestart=0">«</a></li>
+    <li<% if(pagestart==0){%>class="disabled"<%} %>>><a href="wrongservlet?timeorall=<%=timeorall %>&pagestart=<%=pagestart-pagecount %>">❮</a></li>
+    <%for(int i=1;i<=5;i++){ int ps=pagecount*(indexs.get(i)-1);if(i==3){%>
+    <li><a class="active"  href="wrongservlet?timeorall=<%=timeorall %>&pagestart=<%=ps%>"><%=indexs.get(i) %></a></li>
+    <%}else{ %>
+    <li><a href="wrongservlet?timeorall=<%=timeorall %>&pagestart=<%=ps%>"><%=indexs.get(i) %></a></li>
+    <%}} %>
+
+    <li <% if(pagestart==pagelast){%>class="disabled"<%} %>><a href="wrongservlet?timeorall=<%=timeorall %>&pagestart=<%=pagestart+pagecount %>">❯</a></li>
+    <li><a href="wrongservlet?timeorall=<%=timeorall %>&pagestart=<%=pagelast %>">»</a></li>
    
   </ul>
 </div>
 <div class="center">
 <table border="0" cellspacing="0" cellpadding="15" style="margin:auto"  >
 <tr>
-<td >共3页</td>
-<td ><form action=""><label>第<input type="text" style="width:35px">页<input type="submit" value="跳转" ></label></form></td>
+<td >共<%=pageye %>页</td>
+<td ><form action="wrongservlet?timeorall=<%=timeorall %>"><label>第<input type="text" style="width:35px">页<input type="submit" value="跳转" ></label></form></td>
 </tr>
 </table>
 </div>
