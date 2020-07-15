@@ -3,12 +3,12 @@ package javabean;
 import java.sql.Timestamp;
 //学生答卷表
 public class StuTest {
-	private int pid;
+	private int pid;//答卷id
 	private String xuehao;
-	private int tpid;
-	private int goal;
-	private Timestamp start;
-	private int times;
+	private int tpid;//试卷id
+	private int goal;//答卷分数
+	private Timestamp start;//作答开始时间
+	private int times;//作答完成时间
 	public int getPid() {
 		return pid;
 	}
