@@ -6,7 +6,7 @@ public class mysql_insert {
 	private PreparedStatement pstm;     
 	private Connection conn;
 	//学生答卷表
-	public int studajuan_insert(String xuehao,int tpid,int goal,String start,int times) {
+	public int studajuan_insert(String xuehao,int tpid,int goal,Timestamp start,int times) {
 		int pid=0;
 		try {
 			 mysql_DB db=new mysql_DB();
@@ -15,7 +15,7 @@ public class mysql_insert {
 				pstm.setString(1, xuehao);
 				pstm.setInt(2, tpid);
 				pstm.setInt(3,goal);
-				pstm.setString(4,start);
+				pstm.setTimestamp(4,start);
 				pstm.setInt(5,times);
 				
 				pstm.executeUpdate();
@@ -83,14 +83,15 @@ public class mysql_insert {
 		return tno;
 	}
 	//所有错题表
-	public void cuoti_insert(String xuehao,String type,int tno) {
+	public void cuoti_insert(String xuehao,String type,int tno,Timestamp start) {
 		 try {
 			 mysql_DB db=new mysql_DB();
 				conn=db.connectDB();
-				pstm=conn.prepareStatement("insert into AllSub values(?,?,?)");		
+				pstm=conn.prepareStatement("insert into AllSub values(?,?,?,?)");		
 				pstm.setString(1,xuehao);
 				pstm.setString(2,type);
 				pstm.setInt(3,tno);
+				pstm.setTimestamp(4, start);
 				pstm.executeUpdate();
 				db.close(conn);
 			}catch(SQLException ex){

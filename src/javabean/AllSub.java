@@ -1,9 +1,12 @@
 package javabean;
-//所有题目表
+
+import java.sql.Timestamp;
+//所有错题表
 public class AllSub {
 	private String xuehao;
 	private String type;
 	private int tno;
+	private Timestamp start;
 	public String getXuehao() {
 		return xuehao;
 	}
@@ -22,5 +25,10 @@ public class AllSub {
 	public void setTno(int tno) {
 		this.tno = tno;
 	}
-	
+	public Timestamp getStart() {
+		return start;
+	}
+	public void setStart(Timestamp start) {
+		this.start = start;
+	}
 }

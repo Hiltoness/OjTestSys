@@ -44,6 +44,7 @@ public class mysql_getall {
 						bean.setXuehao(rs.getString(1));
 						bean.setType(rs.getString(2));
 						bean.setTno(rs.getInt(3));
+						bean.setStart(rs.getTimestamp(4));
 						cuotilist.add(bean);
 					}
 					db.close(conn);
