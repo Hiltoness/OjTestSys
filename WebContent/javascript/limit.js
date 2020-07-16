@@ -5,7 +5,7 @@
     //计时器
     var time_begin=new Date();// 开始时间
     var lim=new Date();
-    lim.setMinutes(time_begin.getMinutes()+1);//限制结束时间
+    lim.setMinutes(time_begin.getMinutes()+30);//限制结束时间
     // console.log(lim.getMinutes()+":"+lim.getSeconds()+"now"+time_begin.getMinutes()+":"+time_begin.getSeconds());
     var mytime=setInterval(TimerSet,1000);//限时30分钟
     

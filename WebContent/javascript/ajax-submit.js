@@ -2,6 +2,7 @@
  * 提交/保存答卷
  */
 //提交
+console.log("111");
 function submit_veri(){
     var anslist_1=[];
     var tDiv=$(".topic");
@@ -51,7 +52,7 @@ function submit_veri(){
     //             alert(xhr.status);
     //     }
     // })
-
+    clearInterval(saveAjax);
 }   
 
 //定时保存
