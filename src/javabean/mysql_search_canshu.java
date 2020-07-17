@@ -24,12 +24,12 @@ public class mysql_search_canshu {
 					while(rs.next()) {
 						kaoshi_blank bean=new kaoshi_blank();
 						bean.setBlankid(rs.getInt(1));
-						bean.setBfronttitle(rs.getString(2));
-						bean.setBbacktitle(rs.getString(3));
-						bean.setBanswer(rs.getString(4));
-						bean.setBmark(rs.getInt(5));
-						bean.setKcbianhao(rs.getString(6));
-						bean.setGonghao(rs.getString(7));
+						bean.setBfronttitle(rs.getString(3));
+						bean.setBbacktitle(rs.getString(4));
+						bean.setBanswer(rs.getString(5));
+						bean.setBmark(rs.getInt(6));
+						bean.setKcbianhao(rs.getString(7));
+						bean.setGonghao(rs.getString(8));
 						blanklist.add(bean);
 					}
 					db.close(conn);
@@ -50,12 +50,12 @@ public class mysql_search_canshu {
 					while(rs.next()) {
 						kaoshi_blank bean=new kaoshi_blank();
 						bean.setBlankid(rs.getInt(1));
-						bean.setBfronttitle(rs.getString(2));
-						bean.setBbacktitle(rs.getString(3));
-						bean.setBanswer(rs.getString(4));
-						bean.setBmark(rs.getInt(5));
-						bean.setKcbianhao(rs.getString(6));
-						bean.setGonghao(rs.getString(7));
+						bean.setBfronttitle(rs.getString(3));
+						bean.setBbacktitle(rs.getString(4));
+						bean.setBanswer(rs.getString(5));
+						bean.setBmark(rs.getInt(6));
+						bean.setKcbianhao(rs.getString(7));
+						bean.setGonghao(rs.getString(8));
 						blanklist.add(bean);
 					}
 					db.close(conn);
@@ -77,11 +77,11 @@ public class mysql_search_canshu {
 					while(rs.next()) {
 						kaoshi_judgement bean=new kaoshi_judgement();
 						bean.setJudgementid(rs.getInt(1));
-						bean.setJtitle(rs.getString(2));
-						bean.setJanswer(rs.getString(3));
-						bean.setJmark(rs.getInt(4));
-						bean.setKcbianhao(rs.getString(5));
-						bean.setGonghao(rs.getString(6));
+						bean.setJtitle(rs.getString(3));
+						bean.setJanswer(rs.getString(4));
+						bean.setJmark(rs.getInt(5));
+						bean.setKcbianhao(rs.getString(6));
+						bean.setGonghao(rs.getString(7));
 						judgementlist.add(bean);
 					}
 					db.close(conn);
@@ -101,11 +101,11 @@ public class mysql_search_canshu {
 					while(rs.next()) {
 						kaoshi_judgement bean=new kaoshi_judgement();
 						bean.setJudgementid(rs.getInt(1));
-						bean.setJtitle(rs.getString(2));
-						bean.setJanswer(rs.getString(3));
-						bean.setJmark(rs.getInt(4));
-						bean.setKcbianhao(rs.getString(5));
-						bean.setGonghao(rs.getString(6));
+						bean.setJtitle(rs.getString(3));
+						bean.setJanswer(rs.getString(4));
+						bean.setJmark(rs.getInt(5));
+						bean.setKcbianhao(rs.getString(6));
+						bean.setGonghao(rs.getString(7));
 						judgementlist.add(bean);
 					}
 					db.close(conn);
@@ -127,15 +127,15 @@ public class mysql_search_canshu {
 					while(rs.next()) {
 						kaoshi_multi bean=new kaoshi_multi();
 						bean.setMultiid(rs.getInt(1));
-						bean.setMsubject(rs.getString(2));
-						bean.setMoptionA(rs.getString(3));
-						bean.setMoptionB(rs.getString(4));
-						bean.setMoptionC(rs.getString(5));
-						bean.setMoptionD(rs.getString(6));
-						bean.setManswer(rs.getString(7));
-						bean.setMmark(rs.getInt(4));
-						bean.setKcbianhao(rs.getString(5));
-						bean.setGonghao(rs.getString(6));
+						bean.setMsubject(rs.getString(3));
+						bean.setMoptionA(rs.getString(4));
+						bean.setMoptionB(rs.getString(5));
+						bean.setMoptionC(rs.getString(6));
+						bean.setMoptionD(rs.getString(7));
+						bean.setManswer(rs.getString(8));
+						bean.setMmark(rs.getInt(9));
+						bean.setKcbianhao(rs.getString(10));
+						bean.setGonghao(rs.getString(11));
 						multilist.add(bean);
 					}
 					db.close(conn);
@@ -155,15 +155,15 @@ public class mysql_search_canshu {
 					while(rs.next()) {
 						kaoshi_multi bean=new kaoshi_multi();
 						bean.setMultiid(rs.getInt(1));
-						bean.setMsubject(rs.getString(2));
-						bean.setMoptionA(rs.getString(3));
-						bean.setMoptionB(rs.getString(4));
-						bean.setMoptionC(rs.getString(5));
-						bean.setMoptionD(rs.getString(6));
-						bean.setManswer(rs.getString(7));
-						bean.setMmark(rs.getInt(4));
-						bean.setKcbianhao(rs.getString(5));
-						bean.setGonghao(rs.getString(6));
+						bean.setMsubject(rs.getString(3));
+						bean.setMoptionA(rs.getString(4));
+						bean.setMoptionB(rs.getString(5));
+						bean.setMoptionC(rs.getString(6));
+						bean.setMoptionD(rs.getString(7));
+						bean.setManswer(rs.getString(8));
+						bean.setMmark(rs.getInt(9));
+						bean.setKcbianhao(rs.getString(10));
+						bean.setGonghao(rs.getString(11));
 						multilist.add(bean);
 					}
 					db.close(conn);
@@ -185,15 +185,15 @@ public class mysql_search_canshu {
 					while(rs.next()) {
 						kaoshi_single bean=new kaoshi_single();
 						bean.setSingleid(rs.getInt(1));
-						bean.setSsubject(rs.getString(2));
-						bean.setSoptionA(rs.getString(3));
-						bean.setSoptionB(rs.getString(4));
-						bean.setSoptionC(rs.getString(5));
-						bean.setSoptionD(rs.getString(6));
-						bean.setSanswer(rs.getString(7));
-						bean.setSmark(rs.getInt(4));
-						bean.setKcbianhao(rs.getString(5));
-						bean.setGonghao(rs.getString(6));
+						bean.setSsubject(rs.getString(3));
+						bean.setSoptionA(rs.getString(4));
+						bean.setSoptionB(rs.getString(5));
+						bean.setSoptionC(rs.getString(6));
+						bean.setSoptionD(rs.getString(7));
+						bean.setSanswer(rs.getString(8));
+						bean.setSmark(rs.getInt(9));
+						bean.setKcbianhao(rs.getString(10));
+						bean.setGonghao(rs.getString(11));
 						singlelist.add(bean);
 					}
 					db.close(conn);
@@ -213,15 +213,15 @@ public class mysql_search_canshu {
 					while(rs.next()) {
 						kaoshi_single bean=new kaoshi_single();
 						bean.setSingleid(rs.getInt(1));
-						bean.setSsubject(rs.getString(2));
-						bean.setSoptionA(rs.getString(3));
-						bean.setSoptionB(rs.getString(4));
-						bean.setSoptionC(rs.getString(5));
-						bean.setSoptionD(rs.getString(6));
-						bean.setSanswer(rs.getString(7));
-						bean.setSmark(rs.getInt(4));
-						bean.setKcbianhao(rs.getString(5));
-						bean.setGonghao(rs.getString(6));
+						bean.setSsubject(rs.getString(3));
+						bean.setSoptionA(rs.getString(4));
+						bean.setSoptionB(rs.getString(5));
+						bean.setSoptionC(rs.getString(6));
+						bean.setSoptionD(rs.getString(7));
+						bean.setSanswer(rs.getString(8));
+						bean.setSmark(rs.getInt(9));
+						bean.setKcbianhao(rs.getString(10));
+						bean.setGonghao(rs.getString(11));
 						singlelist.add(bean);
 					}
 					db.close(conn);
@@ -356,7 +356,7 @@ public class mysql_search_canshu {
 						select bean=new select();
 						bean.setXuehao(rs.getString(1));
 						bean.setKcbianhao(rs.getString(2));
-						bean.setGonghao(rs.getString(2));
+						bean.setGonghao(rs.getString(3));
 						selectlist.add(bean);
 					}
 					db.close(conn);
