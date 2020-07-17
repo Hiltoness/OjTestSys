@@ -64,7 +64,7 @@
 						}
 						%>
 					<form id="test" action="" method="">
-				        <button type="submit" onclick="submit_veri()" id="submit_button"></button>
+				        <button type="submit" onclick="submit_self()" id="submit_button"></button>
 				    </form>
 					
 
@@ -128,6 +128,8 @@ window.onload=function(){
                 $(current).find("input[type=radio]").attr("name",input_name);
                 $(current).find(".option1").text("对");
                 $(current).find(".option2").text("错");
+                $(current).find(".option1").val("true");
+                $(current).find(".option2").val("false");
                 $(current).find("label").append("<br/>");
                 current.style.display="block";
                 $(current).find("input[type=radio]").on("input",function(){

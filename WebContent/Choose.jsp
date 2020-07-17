@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page import="javabean.*" %> 
+    <%@ page import="java.util.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +10,11 @@
 <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+<%String xuehao=session.getAttribute("xuehao").toString(); 
+mysql_search_canshu s=new mysql_search_canshu();
+ArrayList<select> select=new ArrayList<select>();
+select=s.select_getData("xuehao",xuehao);
+%>
 <jsp:include page="maintop.jsp"></jsp:include>
 <div id="container">
 <jsp:include page="mainleft.jsp"></jsp:include>
@@ -16,19 +23,25 @@
 <tr>
 <td class="tdcenter">课程名称</td>
 <td class="tdcenter">老师</td>
-
 </tr>
-
+<%for(int i=0;i<select.size();i++){ 
+select beans=new select();
+beans=select.get(i);
+kc beank=new kc();
+teacher beant=new teacher();
+ArrayList<kc> kc=new ArrayList<kc>();
+ArrayList<teacher> teacher=new ArrayList<teacher>();
+kc=s.kc_getData("kcbianhao",beans.getKcbianhao());
+teacher=s.teacher_getData("gonghao",beans.getGonghao());
+beank=kc.get(1);
+beant=teacher.get(1);
+%>
 <tr>
-<td>可视化信息交互设计</td>
-<td>刘老师</td>
-
+<td><%=beank.getKcname() %></td>
+<td><%=beant.getGname() %></td>
 </tr>
-<tr>
-<td>可视化信息交互设计哈哈哈</td>
-<td>哈哈哈</td>
+<%} %>
 
-</tr>
 </table>
 
 </div>
