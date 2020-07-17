@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="javabean.*" %>   
 <%@ page import="java.util.*" %>
+<%@ page import="java.sql.Timestamp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,46 +11,82 @@
 <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-
 <%
-String timeorall=request.getParameter("timeorall");
-String all="all";
-if(timeorall.compareTo("all")==0){
-	timeorall="全部错题";
+String timeorall=session.getAttribute("timeorall").toString();
+String xuehao=session.getAttribute("xuehao").toString();
+String all;
+if(timeorall.equals("all")){
+	all="全部错题";
+}else{
+   all=timeorall;
 }
-int pagestart=Integer.parseInt(request.getParameter("pagestart"));
-int pagetotal=100;
+
+mysql_search_canshu s=new mysql_search_canshu();
+ArrayList<AllSub> allsub=new ArrayList<AllSub>();
+ArrayList<AllSub> allsubshow=new ArrayList<AllSub>();
+ArrayList<Integer> year=new ArrayList<Integer>();
+allsub=s.cuoti_getData("xuehao",xuehao);
+for(int i=0;i<allsub.size();i++){
+	AllSub beana=new AllSub();
+	beana=allsub.get(i);
+	Timestamp tmp=beana.getStart();
+	int year0=tmp.getYear()+1990;
+	int flag=0;
+	for(int j=0;j<year.size();j++){
+	if(year0==year.get(j)){
+		flag=1;
+	}	
+	}
+	if(flag==0){year.add(year0);}
+}
+int timeorallyear=-1;
+if(timeorall.equals("all")){
+	allsubshow=allsub;
+}else{
+	for(int i=0;i<year.size();i++){
+		 String year11=Integer.toString(year.get(i));  
+		 String year22=Integer.toString(year.get(i)+1);  
+		 String year33=year11+"-"+year22; 
+		 if(year33.equals(timeorall)){
+			 timeorallyear=year.get(i);
+		 }
+	}
+	for(int j=0;j<allsub.size();j++){
+		AllSub beana=new AllSub();
+		beana=allsub.get(j);
+		Timestamp tmp=beana.getStart();
+		int year0=tmp.getYear()+1990;
+		if(year0==timeorallyear){
+			allsubshow.add(beana);
+		}
+	}
+	
+}
+
+
+int pagetotal=allsubshow.size();
+int pagestart=Integer.parseInt(session.getAttribute("pagestart").toString());
 int pagecount=5;
 page1 p=new page1();
 int pagelast=p.getLast(pagetotal,pagecount);
 int pageye=p.getTotalPage(pagetotal,pagecount);
 ArrayList<Integer> indexs=new ArrayList<Integer>();
-if(pagetotal<=5){
-	for(int i=1;i<=pageye;i++){
-	     indexs.add(i);
-	}
-}else{
-	if(pagestart<(2*pagecount)){
-		for(int i=1;i<=5;i++){
-		     indexs.add(i);
-		}
-	}else{
-		if(pagestart>=(pagelast-2*pagecount)){
-			for(int i=0;i<5;i++){
-				int j=pageye-i;
-			     indexs.add(j);
-			}
-		}else{
-			int currentpage=(pagestart/pagecount)+1;
-			for(int i=-2;i<=2;i++){
-			     indexs.add(currentpage+i);
-			}
-		}
-	}
-}
-
+indexs=p.getindexs(pagestart,pagetotal);
 %>
-
+<script>
+function testgoto(){
+	var pageyego=document.getElementById("pageye").value;
+	var pageyelast=<%=pageye%>;
+		if(pageyego<1){
+			alert("当前输入页码不存在");
+			 return false;
+		}else if(pageyego>pageyelast){
+			alert("当前输入页码不存在");
+			return false;
+		}
+		else{return true;}
+}
+</script>
 <jsp:include page="maintop.jsp"></jsp:include>
 <div id="container">
 <jsp:include page="mainleft.jsp"></jsp:include>
@@ -59,11 +96,16 @@ if(pagetotal<=5){
 <tr>
 <td >
 <div class="dropdown">
-  <button class="dropbtn"><%=timeorall %></button>
+  <button class="dropbtn"><%=all %></button>
   <div class="dropdown-content">
-    <a href="Wrongservlet?timeorall=<%=all%>&pagestart=0">全部错题</a>
-    <a href="Wrong.jsp?timeorall=&pagestart=0">2019-2020</a>
-    <a href="Wrong.jsp?timeorall=“2020-2021”&pagestart=0">2020-2021</a>    
+    <a href="WrongServlet?xuehao=<%=xuehao%>&timeorall=<%="all"%>&pagestart=0">全部错题</a>
+    <%    for(int i=0;i<year.size();i++){ 
+    String year1=Integer.toString(year.get(i));  
+    String year2=Integer.toString(year.get(i)+1);  
+    String year3=year1+"-"+year2; 
+    %>
+    <a href="WrongServlet?xuehao=<%=xuehao%>&timeorall=<%=year3 %>&pagestart=0"><%=year3%></a>
+    <%} %> 
      
   </div>
 </div>
@@ -76,71 +118,94 @@ if(pagetotal<=5){
 <div id="content">
 
 <table border="0" cellspacing="0" cellpadding="10"  >
+<%for(int i=pagestart;i<pagecount&&i<pagetotal;i++){
+	AllSub beana=new AllSub();
+	beana=allsubshow.get(i);
+	if(beana.getType().equals("single")){
+		s.single_getData("singleid",beana.getTno());
+		kaoshi_single subject=new kaoshi_single();
+%>				
 <tr>
-<td >1、（单选题）2019-2020年可视化信息交互设计方法方法付斤斤计较军加加加加加加
-2019-2020年可视化信息交互设计方法方法付斤斤计较军加加加加加加</td>
+<td ><%=i+1 %>、（单选题）<%=subject.getSsubject() %></td>
 </tr>
 <tr>
 <td>
-<input type="radio" name="danxuan" value="a" disabled checked>A.90%大多所发生的规范化和健康还健康还健康还根据根据数
+<input type="radio" name="danxuan" value="a" disabled >A.<%=subject.getSoptionA() %>
 </td>
 </tr>
 <tr>
 <td>
-<input type="radio" name="danxuan" value="b" disabled>B.90%大多所发生的规范化和健康还健康还健康还根据根据数
+<input type="radio" name="danxuan" value="b" disabled>B.<%=subject.getSoptionB() %>
 </td>
 </tr>
 <tr>
 <td>
-<input type="radio" name="danxuan" value="c" disabled>C.90%大多所发生的规范化和健康还健康还健康还根据根据数
+<input type="radio" name="danxuan" value="c" disabled>C.<%=subject.getSoptionC() %>
 </td>
 </tr>
 <tr>
 <td>
-<input type="radio" name="danxuan" value="d" disabled>D.90%大多所发生的规范化和健康还健康还健康还根据根据数
+<input type="radio" name="danxuan" value="d" disabled>D.<%=subject.getSoptionD() %>
 </td>
 </tr>
 <tr>
 <td>
-<p class="pred">正确答案：（错误）</p>
+<p class="pred">正确答案：<%=subject.getSanswer() %></p>
 </td>
-</tr>
+</tr>	
+		
+		
+<%}
+    if(beana.getType().equals("multi")){
+    	s.single_getData("multiid",beana.getTno());
+    	kaoshi_multi subject=new kaoshi_multi();   	
+%>
 <tr>
-<td >2、（多选题）2019-2020年可视化信息交互设计方法方法付斤斤计较军加加加加加加
-2019-2020年可视化信息交互设计方法方法付斤斤计较军加加加加加加</td>
-</tr>
-<tr>
-<td>
-<input type="checkbox" name="duoxuan" value="a" disabled checked>A.90%大多所发生的规范化和健康还健康还健康还根据根据数
-</td>
-</tr>
-<tr>
-<td>
-<input type="checkbox" name="duoxuan" value="b" disabled checked>B.90%大多所发生的规范化和健康还健康还健康还根据根据数
-</td>
-</tr>
-<tr>
-<td>
-<input type="checkbox" name="duoxuan" value="c" disabled>C.90%大多所发生的规范化和健康还健康还健康还根据根据数
+<td ><%=i+1 %>、（多选题）<%=subject.getMsubject() %>
 </td>
 </tr>
 <tr>
 <td>
-<input type="checkbox" name="duoxuan" value="d" disabled>D.90%大多所发生的规范化和健康还健康还健康还根据根据数
+<input type="checkbox" name="duoxuan" value="a" disabled>A.<%=subject.getMoptionA() %>
 </td>
 </tr>
 <tr>
 <td>
-<p class="pred">正确答案：（错误）</p>
+<input type="checkbox" name="duoxuan" value="b" disabled >B.<%=subject.getMoptionB() %>
 </td>
 </tr>
 <tr>
-<td >3、（判断题）2019-2020年可视化信息交互设计方法方法付斤斤计较军加加加加加加
-2019-2020年可视化信息交互设计方法方法付斤斤计较军加加加加加加</td>
+<td>
+<input type="checkbox" name="duoxuan" value="c" disabled>C.<%=subject.getMoptionC() %>
+</td>
 </tr>
 <tr>
 <td>
-<input type="radio" name="panduan" value="a" disabled checked>对
+<input type="checkbox" name="duoxuan" value="d" disabled>D.<%=subject.getMoptionD() %>
+</td>
+</tr>
+<tr>
+<td>
+<p class="pred">正确答案：<%=subject.getManswer() %></p>
+</td>
+</tr>
+
+
+
+
+<% 
+	}
+    if(beana.getType().equals("judgement")){
+    	s.single_getData("judgementid",beana.getTno());
+    	kaoshi_judgement subject=new kaoshi_judgement();
+%>
+<tr>
+<td ><%=i+1 %>、（判断题）<%=subject.getJtitle() %>
+</td>
+</tr>
+<tr>
+<td>
+<input type="radio" name="panduan" value="a" disabled >对
 </td>
 </tr>
 <tr>
@@ -150,34 +215,62 @@ if(pagetotal<=5){
 </tr>
 <tr>
 <td>
-<p class="pred">正确答案：（错误）</p>
+<%
+String janswer=subject.getJanswer();
+if(janswer.equals("true")){ janswer="对";}else{janswer="错";} %>
+<p class="pred">正确答案：<%=janswer %></p>
 </td>
 </tr>
 
+
+
+<%
+	}
+    if(beana.getType().equals("blank")){
+    	s.single_getData("blankid",beana.getTno());
+    	kaoshi_blank subject=new kaoshi_blank();
+%>
 <tr>
-<td >4、（填空题）2019-2020年可视化信息交互设计方法是：
-<input  type="text" name="" value="哈哈哈" class="xian" disabled>
+<td ><%=i+1 %>、（填空题）<%=subject.getBfronttitle() %>：
+<input  type="text" name="blankanswer" value="" class="xian" disabled>
+<%=subject.getBfronttitle() %>
 </td>
 </tr>
 <tr>
 <td>
-<p class="pred">正确答案：（错误）</p>
+<p class="pred">正确答案：<%=subject.getBanswer() %></p>
 </td>
 </tr>
+
+
+<%
+	}
+}
+%>
+
+
+
+
+
 </table>
 
 <div class="center">
   <ul class="pagination">
-    <li><a href="wrongservlet?timeorall=<%=timeorall %>&pagestart=0">«</a></li>
-    <li<% if(pagestart==0){%>class="disabled"<%} %>>><a href="wrongservlet?timeorall=<%=timeorall %>&pagestart=<%=pagestart-pagecount %>">❮</a></li>
-    <%for(int i=1;i<=5;i++){ int ps=pagecount*(indexs.get(i)-1);if(i==3){%>
-    <li><a class="active"  href="wrongservlet?timeorall=<%=timeorall %>&pagestart=<%=ps%>"><%=indexs.get(i) %></a></li>
-    <%}else{ %>
-    <li><a href="wrongservlet?timeorall=<%=timeorall %>&pagestart=<%=ps%>"><%=indexs.get(i) %></a></li>
-    <%}} %>
+    <li><a href="WrongServlet?xuehao=<%=xuehao%>&timeorall=<%=timeorall %>&pagestart=0" <%if(pagestart==0){ %> style="pointer-events: none;"<%} %>>«</a></li>
+    <li>
+    
+    <a href="WrongServlet?xuehao=<%=xuehao%>&timeorall=<%=timeorall %>&pagestart=<%=pagestart-pagecount %>" <%if(pagestart==0){ %> style="pointer-events: none;"<%} %>>❮</a></li>
 
-    <li <% if(pagestart==pagelast){%>class="disabled"<%} %>><a href="wrongservlet?timeorall=<%=timeorall %>&pagestart=<%=pagestart+pagecount %>">❯</a></li>
-    <li><a href="wrongservlet?timeorall=<%=timeorall %>&pagestart=<%=pagelast %>">»</a></li>
+    <%for(int i=0;i<indexs.size();i++){ %>
+    <%if(indexs.get(i)!=((pagestart/pagecount)+1)){ %>
+    <li><a href="WrongServlet?xuehao=<%=xuehao%>&timeorall=<%=timeorall %>&pagestart=<%=pagecount*(indexs.get(i)-1)%>">   <%=indexs.get(i)%>   </a></li>
+    <%}else{ %>
+     <li><a class="active"  href="WrongServlet?xuehao=<%=xuehao%>&timeorall=<%=timeorall %>&pagestart=<%=pagecount*(indexs.get(i)-1)%>">  <%=indexs.get(i) %>  </a></li>
+    <%} %>
+    <%} %>
+    <li>
+    <a href="WrongServlet?xuehao=<%=xuehao%>&timeorall=<%=timeorall %>&pagestart=<%=pagestart+pagecount %>" <%if(pagestart==pagelast){ %> style="pointer-events: none;"<%} %>>❯</a></li>
+    <li><a href="WrongServlet?xuehao=<%=xuehao%>&timeorall=<%=timeorall %>&pagestart=<%=pagelast %>" <%if(pagestart==pagelast){ %> style="pointer-events: none;"<%} %>>»</a></li>
    
   </ul>
 </div>
@@ -185,7 +278,10 @@ if(pagetotal<=5){
 <table border="0" cellspacing="0" cellpadding="15" style="margin:auto"  >
 <tr>
 <td >共<%=pageye %>页</td>
-<td ><form action="wrongservlet?timeorall=<%=timeorall %>"><label>第<input type="text" style="width:35px">页<input type="submit" value="跳转" ></label></form></td>
+<td ><form action="WrongGoto?" onsubmit="return testgoto()"><label>第<input type="text" style="width:35px" name="pageye" id="pageye">页
+<input  type="text" name="timeorall" value=<%=timeorall %>  style="display:none">
+<input  type="text" name="xuehao" value=<%=xuehao %>  style="display:none">
+<input type="submit" value="跳转" ></label></form></td>
 </tr>
 </table>
 </div>

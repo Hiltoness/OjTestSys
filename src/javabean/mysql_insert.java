@@ -6,7 +6,7 @@ public class mysql_insert {
 	private PreparedStatement pstm;     
 	private Connection conn;
 	//学生答卷表
-	public int studajuan_insert(String xuehao,int tpid,int goal,Timestamp start,int times) {
+	public int studajuan_insert(String xuehao,int tpid,int goal,Timestamp start,Timestamp end,int times) {
 		int pid=0;
 		try {
 			 mysql_DB db=new mysql_DB();
@@ -16,7 +16,8 @@ public class mysql_insert {
 				pstm.setInt(2, tpid);
 				pstm.setInt(3,goal);
 				pstm.setTimestamp(4,start);
-				pstm.setInt(5,times);
+				pstm.setTimestamp(5,end);
+				pstm.setInt(6,times);
 				
 				pstm.executeUpdate();
 				

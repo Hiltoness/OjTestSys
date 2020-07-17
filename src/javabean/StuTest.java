@@ -3,12 +3,13 @@ package javabean;
 import java.sql.Timestamp;
 //学生答卷表
 public class StuTest {
-	private int pid;//答卷id
+	private int pid;
 	private String xuehao;
-	private int tpid;//试卷id
-	private int goal;//答卷分数
-	private Timestamp start;//作答开始时间
-	private int times;//作答完成时间
+	private int tpid;
+	private int goal;
+	private Timestamp start;
+	private Timestamp end;
+	private int times;
 	public int getPid() {
 		return pid;
 	}
@@ -39,11 +40,18 @@ public class StuTest {
 	public void setStart(Timestamp start) {
 		this.start = start;
 	}
+	public Timestamp getEnd() {
+		return end;
+	}
+	public void setEnd(Timestamp end) {
+		this.end = end;
+	}
 	public int getTimes() {
 		return times;
 	}
 	public void setTimes(int times) {
 		this.times = times;
 	}
+	
 	
 }

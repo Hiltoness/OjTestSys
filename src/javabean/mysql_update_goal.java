@@ -15,7 +15,8 @@ public class mysql_update_goal {
 		try {
 			 mysql_DB db=new mysql_DB();
 				conn=db.connectDB();
-				pstm=conn.prepareStatement("select sum(goal) from TestInf");
+				pstm=conn.prepareStatement("select sum(goal) from TestInf where pid=?");
+				pstm.setInt(1, pid);
 				rs=pstm.executeQuery();
 				while(rs.next()) {
 					sum=rs.getInt(1);

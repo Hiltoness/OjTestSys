@@ -162,7 +162,8 @@ public class mysql_search {
 					bean.setTpid(rs.getInt(3));
 					bean.setGoal(rs.getInt(4));
 					bean.setStart(rs.getTimestamp(5));
-					bean.setTimes(rs.getInt(6));
+					bean.setEnd(rs.getTimestamp(6));
+					bean.setTimes(rs.getInt(7));
 				
 					stutestlist.add(bean);
 				}

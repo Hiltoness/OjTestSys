@@ -4,7 +4,7 @@ import java.sql.*;
 public class mysql_DB {
 	  static String diverclass="com.mysql.jdbc.Driver";
 	  static String username="root";
-	  static String password="";
+	  static String password="root";
 	  static String url="jdbc:mysql://localhost/visual?serverTimezone=UTC&characterEncoding=utf8";
 	  static Connection aConnection;
 	  public Connection connectDB() {
