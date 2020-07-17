@@ -22,7 +22,7 @@
         $("#timer").text(timerDisplay);
         if(minutesLeft==0 && secondsLeft==0){
             clearInterval(mytime);
-            submit_veri();
+            submit_auto();
             $("#submit_button").attr("disabled",true);
         }
     }
