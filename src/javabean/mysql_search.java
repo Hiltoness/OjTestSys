@@ -137,6 +137,7 @@ public class mysql_search {
 					bean.setEnd(rs.getTimestamp(5));
 					bean.setName(rs.getString(6));
 					bean.setTimes(rs.getInt(6));
+					bean.setTtype(rs.getString(7));
 					teatestlist.add(bean);
 				}
 				db.close(conn);

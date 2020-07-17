@@ -1,14 +1,15 @@
 package javabean;
-//试卷属性表
+//老师答卷表
 import java.sql.Timestamp;
 public class TeaTest {
 	private int tpid;
-	private String kcbianhao;//试卷所属课程
-	private String gonghao;//负责老师
-	private Timestamp start;//试卷开放时间-开始时间
-	private Timestamp end;//
-	private String name;//试卷名
-	private int times;//可刷次数
+	private String kcbianhao;
+	private String gonghao;
+	private Timestamp start;
+	private Timestamp end;
+	private String name;
+	private int times;
+	private String ttype;
 	public int getTpid() {
 		return tpid;
 	}
@@ -51,5 +52,12 @@ public class TeaTest {
 	public void setTimes(int times) {
 		this.times = times;
 	}
+	public String getTtype() {
+		return ttype;
+	}
+	public void setTtype(String ttype) {
+		this.ttype = ttype;
+	}
+	
 	
 }
