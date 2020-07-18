@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class mysql_operate_ht {
+public class mysql_operate {
 	private PreparedStatement pstm;     	
 	private Connection conn;
 	private ResultSet rs;
