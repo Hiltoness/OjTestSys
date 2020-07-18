@@ -2,7 +2,6 @@
  * 提交/保存答卷
  */
 //提交
-console.log("111");
 function submit_veri(){
     var anslist_1=[];
     var tDiv=$(".topic");
@@ -10,6 +9,7 @@ function submit_veri(){
         var name="i"+i;
         var anslist={};
         (function(current){
+        	var tno_1=$(current).find(".idset").attr("data-tno");
             var id_1=$(current).find(".idset").attr("data-tid");
             var type_1=$(current).find(".idset").attr("data-type");
             var type=$("input[name="+name+"]").attr("type");
@@ -30,9 +30,11 @@ function submit_veri(){
                     console.log("1")    
             }
             if(values==null){
+            	values="";
                 flag=true
             }
             //list.append(id,type,values)
+            anslist.tno=tno_1;
             anslist.id=id_1;
             anslist.type=type_1;
             anslist.value=values;
@@ -41,25 +43,29 @@ function submit_veri(){
         
     }
     return anslist_1
-    console.log(JSON.stringify(anslist_1));
 
 }   
 
 //点击提交
 function submit_self(){
-    let list1=submit_veri()
+	let s_flag=arguments[0];//1-提交；0-下一页
+	let nums=arguments[1];//学号
+	let pid=arguments[2];//答卷号
+	let pa=arguments[3];//第几页
+    let list1=submit_veri();//作答结果
     console.log(JSON.stringify(list1))
     if(flag==true){
-        let a=confirm_veri()
+    	let a=(s_flag==1?confirm_veri():confirm_next())
         console.log(a)
         if(a==true){
              $.ajax({
              url:"PageSubmit",
              type:"post",
              data:{"anslist":JSON.stringify(list1),
-            	 "xuehao":"123",//学号
-            	 "page":"4",//页数
-            	 "tpid":"23"},//试卷号
+            	 "s_flag":s_flag,//提交or下一页标记
+            	 "xuehao":nums,//学号
+            	 "page":pa,//页数
+            	 "tpid":pid},//答卷号
              success:function(msg){
                      alert(msg);
                      alert("提交成功")
@@ -80,13 +86,19 @@ function submit_self(){
 
 //自动提交
 function submit_auto(){
+	let nums=arguments[0];//学号
+	let pid=arguments[1];//答卷号
+	let pa=arguments[2];//第几页
     let list2=submit_veri()
     console.log(JSON.stringify(list2));
 
      $.ajax({
          url:"PageSubmit",
          type:"post",
-         data:JSON.stringify(list2),
+         data:{"anslist":JSON.stringify(list2),
+        	 "xuehao":nums,//学号
+        	 "pages":pa,//页数
+        	 "tpid":pid},//答卷号,
          success:function(msg){
                  alert(msg);
          },
@@ -103,15 +115,19 @@ function submit_auto(){
 
 //定时保存
 function save_veri(){
+	let nums=arguments[0];//学号
+	let pid=arguments[1];//答卷号
+	let pa=arguments[2];//第几页
     var anslist_1=[];
     var tDiv=$(".topic");
     for(var i=0;i<tDiv.length;i++){
         var name="i"+i;
         var anslist={};
         (function(current){
-            var id_1=$(current).find(".idset").attr("data-tid");
-            var type_1=$(current).find(".idset").attr("data-type");
-            var type=$("input[name="+name+"]").attr("type");
+        	let tno_1=$(current).find(".idset").attr("data-tno");
+            let id_1=$(current).find(".idset").attr("data-tid");
+            let type_1=$(current).find(".idset").attr("data-type");
+            let type=$("input[name="+name+"]").attr("type");
             switch(type){
                 case "radio":
                     var values=$("input[name="+name+"]:checked").val()
@@ -128,6 +144,7 @@ function save_veri(){
                 default:
                     console.log("1")    
             }
+            anslist.tno=tno_1;
             anslist.id=id_1;
             anslist.type=type_1;
             anslist.value=values;
@@ -141,7 +158,10 @@ function save_veri(){
      $.ajax({
          url:"PageSave",//PageSave
          type:"post",
-         data:JSON.stringify(anslist_1),
+         data:{"anslist":JSON.stringify(anslist_1),
+        	 "xuehao":nums,//学号
+        	 "pages":pa,//页数
+        	 "tpid":pid},//答卷号
          success:function(msg){
                  alert(msg);
                  alert("作答结果保存成功")
@@ -156,6 +176,14 @@ function save_veri(){
 
 function confirm_veri(){
     if(window.confirm("未完成，是否提交")){
+        return true
+    }else{
+        event.returnValue=false
+    }
+   
+}
+function confirm_next(){
+    if(window.confirm("未完成，是否进入下一页")){
         return true
     }else{
         event.returnValue=false
