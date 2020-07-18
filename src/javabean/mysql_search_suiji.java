@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class mysql_search_suiji {
 	private PreparedStatement pstm;     	 
@@ -18,19 +19,28 @@ public class mysql_search_suiji {
 				conn=db.connectDB();
 				
 				for(int i=1;i<=10;i++){
-				int random=(int)(Math.random()*4+1);
+					int random=(int)(Math.random()*4+1);
+					id_type a=new id_type();
 				switch (random) {
 				  case 1:
 					  pstm=conn.prepareStatement("select blankid from kaoshi_blank where kcbianhao =? and gonghao =? order by rand() limit 1");			
 					  pstm.setString(1, kcbianhao);
 					  pstm.setString(2, gonghao);
 					  rs=pstm.executeQuery();
-						if(rs.next()) {	
-							id_type a=new id_type(rs.getInt(1),"blank");
+						while(rs.next()) {	
+							int tid=rs.getInt(1);
+							String front=rs.getString(2);
+							String back=rs.getString(3);
+							a.setId(tid);
+							a.setType("blank");
+							a.setTitle("");
+							a.setSelect_A(front);
+							a.setSelect_B(back);
+							a.setSelect_C("");
+							a.setSelect_D("");
 							boolean boo=sublist.contains(a);
 							if(!boo) {
-								id_type bean=new id_type(rs.getInt(1), "blank");
-								sublist.add(bean);
+								sublist.add(a);
 							}else break;
 					  }
 					  break;
@@ -40,11 +50,18 @@ public class mysql_search_suiji {
 					  pstm.setString(2, gonghao);
 					  rs=pstm.executeQuery();
 					  if(rs.next()) {	
-							id_type a=new id_type(rs.getInt(1),"judgement");
+							int tid=rs.getInt(1);
+							String title=rs.getString(2);
+							a.setId(tid);
+							a.setTitle(title);
+							a.setType("judgement");
+							a.setSelect_A("对");
+							a.setSelect_B("错");
+							a.setSelect_C("");
+							a.setSelect_D("");
 							boolean boo=sublist.contains(a);
 							if(!boo) {
-								id_type bean=new id_type(rs.getInt(1), "judgement");
-								sublist.add(bean);
+								sublist.add(a);
 							}else break;
 					  }
 					  break;
@@ -54,11 +71,19 @@ public class mysql_search_suiji {
 					  pstm.setString(2, gonghao);
 					  rs=pstm.executeQuery();
 					  if(rs.next()) {	
-							id_type a=new id_type(rs.getInt(1),"multi");
+							int tid=rs.getInt(1);
+							String title=rs.getString(2);
+							String mA=rs.getString(3);
+							String mB=rs.getString(4);
+							String mC=rs.getString(5);
+							String mD=rs.getString(6);
+							a.setId(tid);a.setTitle(title);
+							a.setType("multi");
+							a.setSelect_A(mA);
+							a.setSelect_B(mB);a.setSelect_C(mC);a.setSelect_D(mD);
 							boolean boo=sublist.contains(a);
 							if(!boo) {
-								id_type bean=new id_type(rs.getInt(1), "multi");
-								sublist.add(bean);
+								sublist.add(a);
 							}else break;
 					  }
 				      break;
@@ -68,11 +93,19 @@ public class mysql_search_suiji {
 					  pstm.setString(2, gonghao);
 					  rs=pstm.executeQuery();
 					  if(rs.next()) {	
-							id_type a=new id_type(rs.getInt(1),"single");
+						  int tid=rs.getInt(1);
+							String title=rs.getString(2);
+							String mA=rs.getString(3);
+							String mB=rs.getString(4);
+							String mC=rs.getString(5);
+							String mD=rs.getString(6);
+							a.setId(tid);a.setTitle(title);
+							a.setType("single");
+							a.setSelect_A(mA);
+							a.setSelect_B(mB);a.setSelect_C(mC);a.setSelect_D(mD);
 							boolean boo=sublist.contains(a);
 							if(!boo) {
-								id_type bean=new id_type(rs.getInt(1), "single");
-								sublist.add(bean);
+								sublist.add(a);
 							}else break;
 					  }
 			          break;
