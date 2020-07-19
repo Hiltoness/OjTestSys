@@ -58,6 +58,26 @@ public class mysql_insert {
 			}
 		return no;		
 	}
+	
+	//答卷详情表
+		public void dajuanxq_insert1(int pid,String type,int tno,String answer) {
+			try {
+				 mysql_DB db=new mysql_DB();
+					conn=db.connectDB();
+					pstm=conn.prepareStatement("insert into TestInf values(?,0,?,?,?)");
+					pstm.setInt(1, pid);
+					pstm.setString(2, type);
+					pstm.setInt(3,tno);
+					pstm.setString(4,answer);
+					
+					pstm.executeUpdate();
+					
+					db.close(conn);
+				}catch(SQLException ex){
+				ex.printStackTrace();
+				}
+		}
+	
 	//答卷题目表
 	public int dajuantm_insert(int pid,String type,int atimes,int rtimes) {
 		int tno=0; 

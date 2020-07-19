@@ -277,6 +277,31 @@ public class mysql_search_canshu {
 			 return cuotilist;
 		 }
 	    
+	    //按pid搜索答卷详情表
+	    public ArrayList<TestInf> test_getData(int pid) {
+			ArrayList<TestInf> testlist=new ArrayList<TestInf> ();
+			 try {
+				 	mysql_DB db=new mysql_DB();
+					conn=db.connectDB();
+					pstm=conn.prepareStatement("select * from TestInf where pid=?");	
+					pstm.setInt(1, pid);
+					rs=pstm.executeQuery();
+					while(rs.next()) {
+						TestInf bean=new TestInf();
+						bean.setNo(rs.getInt(2));
+						bean.setType(rs.getString(3));
+						bean.setTno(rs.getInt(4));
+						bean.setAnswer(rs.getString(5));
+						testlist.add(bean);
+					}
+					db.close(conn);
+				}catch(SQLException ex){
+				ex.printStackTrace();
+				}
+			 return testlist;
+		 }
+	    
+	    
 	    //搜索用户表
 	    public ArrayList<student> student_getData(String whereat,String wherevalue) {
 			ArrayList<student> studentlist=new ArrayList<student> ();
@@ -349,7 +374,7 @@ public class mysql_search_canshu {
 			 try {
 				 mysql_DB db=new mysql_DB();
 					conn=db.connectDB();
-					pstm=conn.prepareStatement("select * from selectkc where "+whereat+" =?");	
+					pstm=conn.prepareStatement("select * from select where "+whereat+" =?");	
 					pstm.setString(1, wherevalue);
 					rs=pstm.executeQuery();
 					while(rs.next()) {
@@ -365,4 +390,68 @@ public class mysql_search_canshu {
 				}
 			 return selectlist;
 		 }
+	    //次数
+	    public int getTimes(String tar,int pid,int tid,String type){
+	    	int times=0;
+	    	try {
+				 mysql_DB db=new mysql_DB();
+					conn=db.connectDB();
+					pstm=conn.prepareStatement("select ? from TestSub where pid="+" =? and type="+" ? and tno="+" ?");	
+					pstm.setString(1, tar);
+					pstm.setInt(2, pid);
+					pstm.setString(3, type);
+					pstm.setInt(4, tid);
+					rs=pstm.executeQuery();
+					while(rs.next()) {
+						times=rs.getInt(1);
+					}
+					db.close(conn);
+				}catch(SQLException ex){
+				ex.printStackTrace();
+				}
+	    	return times;
+	    }
+	    //题目答案
+	    public String getAnswer(String dbName,String idname,String ansName,int tid){
+	    	String ans="";
+	    	try {
+				 mysql_DB db=new mysql_DB();
+					conn=db.connectDB();
+					pstm=conn.prepareStatement("select ? from ? where ? = ?");	
+					pstm.setString(1, ansName);
+					pstm.setString(2, dbName);
+					pstm.setString(3, idname);
+					pstm.setInt(4, tid);
+					rs=pstm.executeQuery();
+					while(rs.next()) {
+						ans=rs.getString(1);
+					}
+					db.close(conn);
+				}catch(SQLException ex){
+				ex.printStackTrace();
+				}
+	    	return ans;
+	    }
+	    
+	    //题目分值
+	    public int getMark(String dbName,String idname,String marName,int tid){
+	    	int ans=0;
+	    	try {
+				 mysql_DB db=new mysql_DB();
+					conn=db.connectDB();
+					pstm=conn.prepareStatement("select ? from ? where ? = ?");	
+					pstm.setString(1, marName);
+					pstm.setString(2, dbName);
+					pstm.setString(3, idname);
+					pstm.setInt(4, tid);
+					rs=pstm.executeQuery();
+					while(rs.next()) {
+						ans=rs.getInt(1);
+					}
+					db.close(conn);
+				}catch(SQLException ex){
+				ex.printStackTrace();
+				}
+	    	return ans;
+	    }
 }
