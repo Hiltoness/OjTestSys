@@ -55,13 +55,6 @@
 			<div class="left">
 			<% 
 				for(int i=0;i<1000;i++){
-						String title;
-						String one;
-						String two;
-						String three;
-						String four;
-						String type;
-						int tno;
 					%>
 					<div class="topic" style="display: none;">
 						<label class="title"></label> 
@@ -75,8 +68,6 @@
 					<%
 						}
 						%>
-
-					
 
 			</div>
 
