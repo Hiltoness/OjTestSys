@@ -16,7 +16,7 @@ public class mysql_getall {
 			 try {
 				 mysql_DB db=new mysql_DB();
 					conn=db.connectDB();
-					pstm=conn.prepareStatement("select * from select ");			
+					pstm=conn.prepareStatement("select * from selectkc ");			
 					rs=pstm.executeQuery();
 					while(rs.next()) {
 						select bean=new select();

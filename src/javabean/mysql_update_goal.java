@@ -26,7 +26,7 @@ public class mysql_update_goal {
 				Calendar calendar2=Calendar.getInstance();
 				Timestamp end=new Timestamp(calendar2.getTimeInMillis());
 				//更新结束时间和得分
-				pstm=conn.prepareStatement("update StuTest set goal =? and end=? where pid =?");
+				pstm=conn.prepareStatement("update StuTest set goal=?,end=? where pid =?");
 				pstm.setInt(1, sum);
 				pstm.setTimestamp(2, end);
 				pstm.setInt(3, pid);

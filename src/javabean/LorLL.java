@@ -248,6 +248,8 @@ public void checkl(ArrayList<TeaTest> teatestlist,String xuehao) {
 				Timestamp time1=new Timestamp(calendar1.getTimeInMillis());
 				if(time1.after(bean.getStart())) {
 					//计算总分
+					mysql_update_goal up=new mysql_update_goal();
+					up.goal_update(bean.getPid());
 				}else {
 					Calendar calendar2=Calendar.getInstance();
 					Timestamp time2=new Timestamp(calendar2.getTimeInMillis());
@@ -412,6 +414,7 @@ public ArrayList<twoint> gettimeandpid(ArrayList<TeaTest> teatestlist,String xue
 					if(tit.getTimes()<get) {
 						tit.setTimes(get);
 						tit.setPid(rs.getInt(1));
+						tit.setStart(rs.getTimestamp(5));
 					}
 				}			        			
 				twointlist.add(tit);

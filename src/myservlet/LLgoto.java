@@ -9,15 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import javabean.LorLL;
-import javabean.StuTest;
-import javabean.TeaTest;
-import javabean.twoint;
-
+import javabean.*;
 @WebServlet("/LLgoto")
 public class LLgoto extends HttpServlet {
-	private static final long serialVersionUID = 1L; 
+	private static final long serialVersionUID = 1L;
+
     public LLgoto() {
         super();
     }
@@ -46,8 +42,8 @@ public class LLgoto extends HttpServlet {
 		ArrayList<String> teachernamenew=new ArrayList<String>();
 		ArrayList<String> correctlist=new ArrayList<String>();
 		teatestlist=l.getteatest(xuehao,ttype);
-		l.checkl(teatestlist,xuehao);
-		if(pattern.equals("finsh")) {
+		l.checkll(teatestlist,xuehao);
+		if(pattern.equals("finish")) {
 			stutestlist=l.getstutest2(teatestlist, xuehao);			
 			teatestlist2=l.getteatest2(stutestlist);
 			teachername=l.getteachername(teatestlist2);
@@ -71,7 +67,7 @@ public class LLgoto extends HttpServlet {
 			session.setAttribute("teachernamecon", teachernamecon);
 			session.setAttribute("teachernamenew", teachernamenew);
 		}		
-		request.getRequestDispatcher("LookLimit.jsp").forward(request, response);
+		request.getRequestDispatcher("LookLimitless.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

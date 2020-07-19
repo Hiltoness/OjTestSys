@@ -43,7 +43,7 @@ public class Lgoto extends HttpServlet {
 		ArrayList<String> correctlist=new ArrayList<String>();
 		teatestlist=l.getteatest(xuehao,ttype);
 		l.checkl(teatestlist,xuehao);
-		if(pattern.equals("finsh")) {
+		if(pattern.equals("finish")) {
 			stutestlist=l.getstutest2(teatestlist, xuehao);			
 			teatestlist2=l.getteatest2(stutestlist);
 			teachername=l.getteachername(teatestlist2);

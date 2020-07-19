@@ -33,11 +33,12 @@ ArrayList<Integer> remaintimesnew=new ArrayList<Integer>();
 ArrayList<String> teachernamecon=new ArrayList<String>();
 ArrayList<String> teachernamenew=new ArrayList<String>();
 LorLL l=new LorLL();
-if(pattern.equals("finsh")){ 	
-	teatestlist=(ArrayList)session.getAttribute("teatestlist");
+if(pattern.equals("finish")){ 	
+	teatestlist=(ArrayList)session.getAttribute("teatestlist2");
 	stutestlist=(ArrayList)session.getAttribute("stutestlist");
 	teachername=(ArrayList)session.getAttribute("teachername");
 	correctlist	=(ArrayList)session.getAttribute("correctlist");
+	
 	year=l.getyear1(teatestlist);	
 	}else{ 		
 		teatestlistcon=(ArrayList)session.getAttribute("teatestlistcon");
@@ -47,6 +48,7 @@ if(pattern.equals("finsh")){
 		teachernamecon=(ArrayList)session.getAttribute("teachernamecon");
 		teachernamenew=(ArrayList)session.getAttribute("teachernamenew");
 		year=l.getyear2(teatestlistcon,teatestlistnew);	
+		
 	
 	}
 int timeorallyear=-1;
@@ -76,13 +78,13 @@ for(int i=0;i<year.size();i++){
 <div class="dropdown">
   <button class="dropbtn"><%=all %></button>
   <div class="dropdown-content">
-    <a href="#">全部学年</a>
+    <a href="Lgoto?xuehao=<%=xuehao%>&timeorall=<%="all"%>&pattern=<%=pattern %>">全部学年</a>
     <%    for(int i=0;i<year.size();i++){ 
     String year1=Integer.toString(year.get(i));  
     String year2=Integer.toString(year.get(i)+1);  
     String year3=year1+"-"+year2; 
     %>
-    <a href="Lgoto?xuehao=<%=xuehao%>&timeorall=<%="all"%>&pattern=<%=pattern %>"><%=year3 %></a>
+    <a href="Lgoto?xuehao=<%=xuehao%>&timeorall=<%=year3%>&pattern=<%=pattern %>"><%=year3 %></a>
  <%} %>
   </div>
 </div>
@@ -91,11 +93,15 @@ for(int i=0;i<year.size();i++){
 </tr>
 </table>
 </div>
+
+
+
+
 <div id="content">
 
 <table border="0" cellspacing="0" cellpadding="20"  >
 
-<%if(pattern.equals("finsh")){ 
+<%if(pattern.equals("finish")){ 
 	
 %>
 <tr>
@@ -108,7 +114,7 @@ for(int i=0;i<year.size();i++){
 <td class="tdcenter">操作</td>
 </tr>
 <% 
-	for(int i=teatestlist.size();i>0;i--){
+	for(int i=0;i<teatestlist.size();i++){
 		TeaTest beant=new TeaTest();
 		StuTest beans=new StuTest();
 		beant=teatestlist.get(i);
@@ -127,9 +133,9 @@ for(int i=0;i<year.size();i++){
 <td><%=beans.getEnd() %></td>
 <td><%=beans.getGoal() %></td>
 <td><%=beanc %></td>
-<td><a  href="" class="aleft">查看答卷</a></td>
+<td><a  href="MytestServlet?xuehao=<%=xuehao %>&pid=<%=beans.getPid() %>" class="aleft">查看答卷</a></td>
 </tr>
-<%}}}else{ 
+<%}}}if(pattern.equals("unfinish")){ 
 	
 %>
 <tr>
@@ -142,7 +148,7 @@ for(int i=0;i<year.size();i++){
 <td class="tdcenter">操作</td>
 </tr>
 <%
-for(int i=teatestlistcon.size();i>0;i--){
+for(int i=0;i<teatestlistcon.size();i++){
 	TeaTest beant1=new TeaTest();
 	beant1=teatestlistcon.get(i);
 	twoint beanr1=remaintimescon.get(i);
@@ -159,11 +165,11 @@ for(int i=teatestlistcon.size();i>0;i--){
 <td><%=beant1.getTimes()-beanr1.getTimes() %></td>
 <td><%=beant1.getTimes() %></td>
 <td><a  href="LookServlet?xuehao=<%=xuehao %>&pid<%=beanr1.getPid() %>&times=<%=beanr1.getTimes() %>&LLLpattern=<%="limit" %>
-&conornew=<%="con"%>&kcbianhao=<%=beant1.getKcbianhao() %>&gonghao=<%=beant1.getGonghao() %>&tpid=<%=beant1.getTpid() %>" class="aleftred">继续答卷</a></td>
+&conornew=<%="con"%>&kcbianhao=<%=beant1.getKcbianhao() %>&gonghao=<%=beant1.getGonghao() %>&tpid=<%=beant1.getTpid() %>&start=<%=beanr1.getStart() %>" class="aleftred">继续答卷</a></td>
 </tr>
 <%}} %>
 <%
-for(int i=teatestlistcon.size();i>0;i--){
+for(int i=0;i<teatestlistnew.size();i++){
 	TeaTest beant2=new TeaTest();
 	beant2=teatestlistnew.get(i);
 	int beanr2=remaintimesnew.get(i);

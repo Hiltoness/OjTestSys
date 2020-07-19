@@ -28,7 +28,7 @@
 <strong class="mystrong">考试</strong>
 </li>
 <li class="part">
-<a  href="Lgoto?xuehao=<%="001"%>&timeorall=<%="all"%>&pattern=<%="unfinsh" %>" class="aleft">未完成</a>
+<a  href="Lgoto?xuehao=<%="001"%>&timeorall=<%="all"%>&pattern=<%="unfinish" %>" class="aleft">未完成</a>
 </li>
 <li class="part">
 <a  href="Lgoto?xuehao=<%="001"%>&timeorall=<%="all"%>&pattern=<%="finish" %>" class="aleft">已完成</a>

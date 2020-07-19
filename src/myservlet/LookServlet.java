@@ -31,7 +31,8 @@ public class LookServlet extends HttpServlet {
 		String gonghao=request.getParameter("gonghao");
 		String kcbianhao=request.getParameter("kcbianhao");
 		String LLLpattern=request.getParameter("LLLpattern");	//限制或不限制	
-		int times=Integer.parseInt(request.getParameter("times"));   //第几次
+		String flag;      //暂存标记
+		int times=Integer.parseInt(request.getParameter("times"));   //第几次()?????????
 		session.setAttribute("xuehao", xuehao);	
 		session.setAttribute("gonghao", gonghao);	
 		session.setAttribute("kcbianhao", kcbianhao);	
@@ -41,19 +42,30 @@ public class LookServlet extends HttpServlet {
 				int tpid=Integer.parseInt(request.getParameter("tpid"));
 				int pages=1;                                               //继续答卷传pages为1
 				LorLL l=new LorLL();
-				int tno=l.getsearchtno(pid);	                            			
+				int tno=l.getsearchtno(pid);
+				flag="true";
+				String start=request.getParameter("start");              //开始时间
 				session.setAttribute("tpid", tpid);
 				session.setAttribute("pid",pid);
 				session.setAttribute("pages",pages);
 				session.setAttribute("tno",tno);
-				request.getRequestDispatcher("").forward(request, response);
+				session.setAttribute("flag",flag);
+				session.setAttribute("start", start);
+				if(LLLpattern.equals("limit")) {                                        //限时模式
+					request.getRequestDispatcher("").forward(request, response);
+			}else {
+				request.getRequestDispatcher("").forward(request, response);               //不限时模式
+			}	
 			}else {                                                                       //开始新的答卷
 				int pages=0;
 				int tno=0;
 				int tpid=Integer.parseInt(request.getParameter("tpid"));
+				flag="false";
+				session.setAttribute("times", times);	
 				session.setAttribute("tpid", tpid);	
 				session.setAttribute("pages", pages);
 				session.setAttribute("tno", tno);
+				session.setAttribute("flag",flag);
 				if(LLLpattern.equals("limit")) {                                        //限时模式
 					request.getRequestDispatcher("").forward(request, response);
 			}else {
