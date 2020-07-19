@@ -30,7 +30,7 @@ for(int i=0;i<allsub.size();i++){
 	AllSub beana=new AllSub();
 	beana=allsub.get(i);
 	Timestamp tmp=beana.getStart();
-	int year0=tmp.getYear()+1990;
+	int year0=tmp.getYear()+1900;
 	int flag=0;
 	for(int j=0;j<year.size();j++){
 	if(year0==year.get(j)){
@@ -55,7 +55,7 @@ if(timeorall.equals("all")){
 		AllSub beana=new AllSub();
 		beana=allsub.get(j);
 		Timestamp tmp=beana.getStart();
-		int year0=tmp.getYear()+1990;
+		int year0=tmp.getYear()+1900;
 		if(year0==timeorallyear){
 			allsubshow.add(beana);
 		}
@@ -118,12 +118,14 @@ function testgoto(){
 <div id="content">
 
 <table border="0" cellspacing="0" cellpadding="10"  >
-<%for(int i=pagestart;i<pagecount&&i<pagetotal;i++){
+<%for(int i=pagestart;i<(pagecount+pagestart)&&i<pagetotal;i++){
 	AllSub beana=new AllSub();
 	beana=allsubshow.get(i);
 	if(beana.getType().equals("single")){
-		s.single_getData("singleid",beana.getTno());
+		ArrayList<kaoshi_single> subjectlist=new ArrayList<kaoshi_single>();
+		subjectlist=s.single_getData("singleid",beana.getTno());
 		kaoshi_single subject=new kaoshi_single();
+		subject=subjectlist.get(0);
 %>				
 <tr>
 <td ><%=i+1 %>、（单选题）<%=subject.getSsubject() %></td>
@@ -157,8 +159,10 @@ function testgoto(){
 		
 <%}
     if(beana.getType().equals("multi")){
-    	s.single_getData("multiid",beana.getTno());
-    	kaoshi_multi subject=new kaoshi_multi();   	
+    	ArrayList<kaoshi_multi> subjectlist=new ArrayList<kaoshi_multi>();
+    	subjectlist=s.multi_getData("multiid",beana.getTno());
+    	kaoshi_multi subject=new kaoshi_multi();  
+    	subject=subjectlist.get(0);
 %>
 <tr>
 <td ><%=i+1 %>、（多选题）<%=subject.getMsubject() %>
@@ -196,8 +200,10 @@ function testgoto(){
 <% 
 	}
     if(beana.getType().equals("judgement")){
-    	s.single_getData("judgementid",beana.getTno());
+    	ArrayList<kaoshi_judgement> subjectlist=new ArrayList<kaoshi_judgement>();
+    	subjectlist=s.judgement_getData("judgementid",beana.getTno());
     	kaoshi_judgement subject=new kaoshi_judgement();
+    	subject=subjectlist.get(0);
 %>
 <tr>
 <td ><%=i+1 %>、（判断题）<%=subject.getJtitle() %>
@@ -217,7 +223,9 @@ function testgoto(){
 <td>
 <%
 String janswer=subject.getJanswer();
-if(janswer.equals("true")){ janswer="对";}else{janswer="错";} %>
+if(janswer.equals("true")){ 
+	janswer="对";
+	}else{janswer="错";} %>
 <p class="pred">正确答案：<%=janswer %></p>
 </td>
 </tr>
@@ -227,8 +235,10 @@ if(janswer.equals("true")){ janswer="对";}else{janswer="错";} %>
 <%
 	}
     if(beana.getType().equals("blank")){
-    	s.single_getData("blankid",beana.getTno());
+    	ArrayList<kaoshi_blank> subjectlist=new ArrayList<kaoshi_blank>();
+    	subjectlist=s.blank_getData("blankid",beana.getTno());
     	kaoshi_blank subject=new kaoshi_blank();
+    	subject=subjectlist.get(0);
 %>
 <tr>
 <td ><%=i+1 %>、（填空题）<%=subject.getBfronttitle() %>：
@@ -264,12 +274,12 @@ if(janswer.equals("true")){ janswer="对";}else{janswer="错";} %>
     <%for(int i=0;i<indexs.size();i++){ %>
     <%if(indexs.get(i)!=((pagestart/pagecount)+1)){ %>
     <li><a href="WrongServlet?xuehao=<%=xuehao%>&timeorall=<%=timeorall %>&pagestart=<%=pagecount*(indexs.get(i)-1)%>">   <%=indexs.get(i)%>   </a></li>
-    <%}else{ %>
+<% }else{ %>
      <li><a class="active"  href="WrongServlet?xuehao=<%=xuehao%>&timeorall=<%=timeorall %>&pagestart=<%=pagecount*(indexs.get(i)-1)%>">  <%=indexs.get(i) %>  </a></li>
-    <%} %>
-    <%} %>
+<%}} %>
+
     <li>
-    <a href="WrongServlet?xuehao=<%=xuehao%>&timeorall=<%=timeorall %>&pagestart=<%=pagestart+pagecount %>" <%if(pagestart==pagelast){ %> style="pointer-events: none;"<%} %>>❯</a></li>
+    <a href="WrongServlet?xuehao=<%= xuehao%>&timeorall=<%=timeorall %>&pagestart=<%=pagestart+pagecount %>" <% if(pagestart==pagelast){ %> style="pointer-events: none;"<% }%> >❯</a></li>
     <li><a href="WrongServlet?xuehao=<%=xuehao%>&timeorall=<%=timeorall %>&pagestart=<%=pagelast %>" <%if(pagestart==pagelast){ %> style="pointer-events: none;"<%} %>>»</a></li>
    
   </ul>

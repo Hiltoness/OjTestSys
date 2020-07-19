@@ -12,6 +12,7 @@ public class LorLL {
 	  private PreparedStatement pstm;     	
 	  private Connection conn;
 	  private ResultSet rs;
+	  
 public ArrayList<TeaTest> getteatest(String xuehao,String ttype){
 	mysql_search_canshu s=new mysql_search_canshu();
 	ArrayList<select> selectlist=new ArrayList<select>();
@@ -252,6 +253,8 @@ public void checkl(ArrayList<TeaTest> teatestlist,String xuehao) {
 					Timestamp time2=new Timestamp(calendar2.getTimeInMillis());
 					if(time2.after(beans.getEnd())) {
 						//计算总分
+						mysql_update_goal up=new mysql_update_goal();
+						up.goal_update(bean.getPid());
 					}
 				}
 				
@@ -292,6 +295,8 @@ public void checkll(ArrayList<TeaTest> teatestlist,String xuehao) {
 					Timestamp time2=new Timestamp(calendar2.getTimeInMillis());
 					if(time2.after(beans.getEnd())) {
 						//计算总分
+						mysql_update_goal up=new mysql_update_goal();
+						up.goal_update(bean.getPid());
 					}				
 			}				
 			db.close(conn);
@@ -327,7 +332,118 @@ public ArrayList<Integer> getremaintime(ArrayList<TeaTest> teatestlist,String xu
 	return remaintimeslist;
 }
 
+public ArrayList<String> getcorrect(ArrayList<StuTest> stutestlist){
+	ArrayList<String> correctlist=new ArrayList<String>();
+	for(int i=0;i<stutestlist.size();i++){ 
+		StuTest beans=new StuTest();
+		beans=stutestlist.get(i);
+		int pid=beans.getPid();
+		mysql_testCorrect c=new mysql_testCorrect();
+		correctlist.add(c.testCorrect(pid));
+	}
+	return correctlist;
+}
+public ArrayList<Integer> getyear1(ArrayList<TeaTest> teatestlist){
+	ArrayList<Integer> year=new ArrayList<Integer>();
+	for(int i=0;i<teatestlist.size();i++){
+		TeaTest beana=new TeaTest();
+		beana=teatestlist.get(i);
+		Timestamp tmp=beana.getStart();
+		int year0=tmp.getYear()+1900;
+		int flag=0;
+		for(int j=0;j<year.size();j++){
+		if(year0==year.get(j)){
+			flag=1;
+		}	
+		}
+		if(flag==0){year.add(year0);}
+	}
+	return year;
+}
 
+public ArrayList<Integer> getyear2(ArrayList<TeaTest> teatestlistcon,ArrayList<TeaTest> teatestlistnew){
+	ArrayList<Integer> year=new ArrayList<Integer>();
+	for(int i=0;i<teatestlistcon.size();i++){
+		TeaTest beana=new TeaTest();
+		beana=teatestlistcon.get(i);
+		Timestamp tmp=beana.getStart();
+		int year0=tmp.getYear()+1900;
+		int flag=0;
+		for(int j=0;j<year.size();j++){
+		if(year0==year.get(j)){
+			flag=1;
+		}	
+		}
+		if(flag==0){year.add(year0);}
+	}
+	for(int i=0;i<teatestlistnew.size();i++){
+		TeaTest beana=new TeaTest();
+		beana=teatestlistnew.get(i);
+		Timestamp tmp=beana.getStart();
+		int year0=tmp.getYear()+1900;
+		int flag=0;
+		for(int j=0;j<year.size();j++){
+		if(year0==year.get(j)){
+			flag=1;
+		}	
+		}
+		if(flag==0){year.add(year0);}
+	}
+	return year;
+}
 
+public ArrayList<twoint> gettimeandpid(ArrayList<TeaTest> teatestlist,String xuehao){
+	ArrayList<twoint> twointlist=new ArrayList<twoint>();
+	for(int i=0;i<teatestlist.size();i++){ 
+		TeaTest beans=new TeaTest();
+		beans=teatestlist.get(i);
+		int tpid=beans.getTpid();
+		 try {
+			    mysql_DB db=new mysql_DB();
+				conn=db.connectDB();
+				pstm=conn.prepareStatement("select * from stutest where tpid=? and xuehao=? ");			
+				pstm.setInt(1,tpid);
+				pstm.setString(2,xuehao);
+				rs=pstm.executeQuery();
+				twoint tit=new twoint();
+				tit.setTimes(1);
+				while(rs.next()) {
+					int get=rs.getInt(7);
+					if(tit.getTimes()<get) {
+						tit.setTimes(get);
+						tit.setPid(rs.getInt(1));
+					}
+				}			        			
+				twointlist.add(tit);
+				db.close(conn);
+			}catch(SQLException ex){
+			ex.printStackTrace();
+			}
+	}	
+	return twointlist;
+}
+public int getsearchtno(int pid) {
+	int tno=0;
+	try {
+		 mysql_DB db=new mysql_DB();
+			conn=db.connectDB();
+			pstm=conn.prepareStatement("select * from TestInf where pid =?");	
+			pstm.setInt(1, pid);
+			rs=pstm.executeQuery();
+			while(rs.next()) {
+				int tno1=rs.getInt(2);
+				String goal=rs.getInt(6)+"";
+				if(tno<tno1) {
+					if(!"".equals(goal)) {
+						tno=tno1;
+					}
+				}
+			}
+			db.close(conn);
+		}catch(SQLException ex){
+		ex.printStackTrace();
+		}
+	return tno;
+}
 
 }

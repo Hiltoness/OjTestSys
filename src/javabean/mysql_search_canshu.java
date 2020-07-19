@@ -349,7 +349,7 @@ public class mysql_search_canshu {
 			 try {
 				 mysql_DB db=new mysql_DB();
 					conn=db.connectDB();
-					pstm=conn.prepareStatement("select * from select where "+whereat+" =?");	
+					pstm=conn.prepareStatement("select * from selectkc where "+whereat+" =?");	
 					pstm.setString(1, wherevalue);
 					rs=pstm.executeQuery();
 					while(rs.next()) {
@@ -365,64 +365,4 @@ public class mysql_search_canshu {
 				}
 			 return selectlist;
 		 }
-	    public int getTimes(String tar,int pid,int tid,String type){
-	    	int times=0;
-	    	try {
-				 mysql_DB db=new mysql_DB();
-					conn=db.connectDB();
-					pstm=conn.prepareStatement("select ? from TestSub where pid="+" =? and type="+" ? and tno="+" ?");	
-					pstm.setString(1, tar);
-					pstm.setInt(2, pid);
-					pstm.setString(3, type);
-					pstm.setInt(4, tid);
-					rs=pstm.executeQuery();
-					while(rs.next()) {
-						times=rs.getInt(1);
-					}
-					db.close(conn);
-				}catch(SQLException ex){
-				ex.printStackTrace();
-				}
-	    	return times;
-	    }
-	    public String getAnswer(String dbName,String idname,String ansName,int tid){
-	    	String ans="";
-	    	try {
-				 mysql_DB db=new mysql_DB();
-					conn=db.connectDB();
-					pstm=conn.prepareStatement("select ? from ? where ? = ?");	
-					pstm.setString(1, ansName);
-					pstm.setString(2, dbName);
-					pstm.setString(3, idname);
-					pstm.setInt(4, tid);
-					rs=pstm.executeQuery();
-					while(rs.next()) {
-						ans=rs.getString(1);
-					}
-					db.close(conn);
-				}catch(SQLException ex){
-				ex.printStackTrace();
-				}
-	    	return ans;
-	    }
-	    public int getMark(String dbName,String idname,String marName,int tid){
-	    	int ans=0;
-	    	try {
-				 mysql_DB db=new mysql_DB();
-					conn=db.connectDB();
-					pstm=conn.prepareStatement("select ? from ? where ? = ?");	
-					pstm.setString(1, marName);
-					pstm.setString(2, dbName);
-					pstm.setString(3, idname);
-					pstm.setInt(4, tid);
-					rs=pstm.executeQuery();
-					while(rs.next()) {
-						ans=rs.getInt(1);
-					}
-					db.close(conn);
-				}catch(SQLException ex){
-				ex.printStackTrace();
-				}
-	    	return ans;
-	    }
 }

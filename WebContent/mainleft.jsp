@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="javabean.*" %>  
-    <%@ page import="myservlet.*" %>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,20 +18,20 @@
 <strong class="mystrong">我的</strong> 
 </li>
 <li class="part">
-<a  href="" class="aleft">选课信息</a>
+<a  href="ChooseServlet?xuehao=<%="001"%>" class="aleft">选课信息</a>
 </li>
 <li class="part">
-<a href="Wrong.jsp?timeorall=<%="all"%>&pagestart=0" class="aleft">我的错题</a>
+<a href="WrongServlet?xuehao=<%="001"%>&timeorall=<%="all"%>&pagestart=0" class="aleft">我的错题</a>
 </li>
 
 <li class="total">
 <strong class="mystrong">考试</strong>
 </li>
 <li class="part">
-<a  href="" class="aleft">限时模式</a>
+<a  href="Lgoto?xuehao=<%="001"%>&timeorall=<%="all"%>&pattern=<%="unfinsh" %>" class="aleft">未完成</a>
 </li>
 <li class="part">
-<a  href="" class="aleft">无限模式</a>
+<a  href="Lgoto?xuehao=<%="001"%>&timeorall=<%="all"%>&pattern=<%="finish" %>" class="aleft">已完成</a>
 </li>
 
 </ul>

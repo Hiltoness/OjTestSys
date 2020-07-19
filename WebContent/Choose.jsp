@@ -33,8 +33,8 @@ ArrayList<kc> kc=new ArrayList<kc>();
 ArrayList<teacher> teacher=new ArrayList<teacher>();
 kc=s.kc_getData("kcbianhao",beans.getKcbianhao());
 teacher=s.teacher_getData("gonghao",beans.getGonghao());
-beank=kc.get(1);
-beant=teacher.get(1);
+beank=kc.get(0);
+beant=teacher.get(0);
 %>
 <tr>
 <td><%=beank.getKcname() %></td>
