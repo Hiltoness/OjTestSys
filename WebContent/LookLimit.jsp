@@ -37,9 +37,8 @@ if(pattern.equals("finish")){
 	teatestlist=(ArrayList)session.getAttribute("teatestlist2");
 	stutestlist=(ArrayList)session.getAttribute("stutestlist");
 	teachername=(ArrayList)session.getAttribute("teachername");
-	correctlist	=(ArrayList)session.getAttribute("correctlist");
-	
-	year=l.getyear1(teatestlist);	
+	correctlist	=(ArrayList)session.getAttribute("correctlist");	
+	year=l.getyear1(stutestlist);	
 	}else{ 		
 		teatestlistcon=(ArrayList)session.getAttribute("teatestlistcon");
 		teatestlistnew=(ArrayList)session.getAttribute("teatestlistnew");
@@ -121,7 +120,7 @@ for(int i=0;i<year.size();i++){
 		beans=stutestlist.get(i);
 		String beantn=teachername.get(i);
 		String beanc=correctlist.get(i);
-		Timestamp tmp=beant.getStart();
+		Timestamp tmp=beans.getStart();
 		int year0=tmp.getYear()+1900;
 		if(timeorallyear==-1||year0==timeorallyear){
 %>

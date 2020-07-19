@@ -363,11 +363,11 @@ public ArrayList<String> getcorrect(ArrayList<StuTest> stutestlist){
 	}
 	return correctlist;
 }
-public ArrayList<Integer> getyear1(ArrayList<TeaTest> teatestlist){
+public ArrayList<Integer> getyear1(ArrayList<StuTest> stutestlist){
 	ArrayList<Integer> year=new ArrayList<Integer>();
-	for(int i=0;i<teatestlist.size();i++){
-		TeaTest beana=new TeaTest();
-		beana=teatestlist.get(i);
+	for(int i=0;i<stutestlist.size();i++){
+		StuTest beana=new StuTest();
+		beana=stutestlist.get(i);
 		Timestamp tmp=beana.getStart();
 		int year0=tmp.getYear()+1900;
 		int flag=0;
