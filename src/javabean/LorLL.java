@@ -113,29 +113,44 @@ public ArrayList<TeaTest> getteatestcon(ArrayList<TeaTest> teatestlist,String xu
 public ArrayList<TeaTest> getteatestnew(ArrayList<TeaTest> teatestlist,ArrayList<TeaTest> teatestlistcon,String xuehao){		
 	//删掉可继续上次答卷的
 	//删掉过期的	
-	for(int i=0;i<teatestlistcon.size();i++) {
+	ArrayList<TeaTest> teatestlist0=new ArrayList<TeaTest>();
+	for(int i=0;i<teatestlist.size();i++) {
+		int flag=0;
 		TeaTest bean1=new TeaTest();
-		bean1=teatestlistcon.get(i);
-		for(int j=0;j<teatestlist.size();j++) {
+		bean1=teatestlist.get(i);
+		for(int j=0;j<teatestlistcon.size();j++) {
 			TeaTest bean2=new TeaTest();
-			bean2=teatestlist.get(j);
+			bean2=teatestlistcon.get(j);
 			if(bean1.getTpid()==bean2.getTpid()) {
-				teatestlist.remove(bean2);
-			}else {				
-				Calendar calendar2=Calendar.getInstance();
-				Timestamp time2=new Timestamp(calendar2.getTimeInMillis());
-				if(time2.after(bean2.getEnd())) {
-					teatestlist.remove(bean2);
-				}
-				
+				flag=1;			
 			}
+		}
+		if(flag==0) {
+		teatestlist0.add(bean1);
+		}
+	}
+	ArrayList<TeaTest> teatestlist1=new ArrayList<TeaTest>();
+	for(int i=0;i<teatestlist0.size();i++) {
+		int flag=0;
+		TeaTest bean3=new TeaTest();
+		bean3=teatestlist0.get(i);
+		Calendar calendar2=Calendar.getInstance();
+		Timestamp time2=new Timestamp(calendar2.getTimeInMillis());
+		Timestamp end=bean3.getEnd();
+		if(time2.after(bean3.getEnd())) {
+			flag=1;
+		}
+		if(flag==0) {
+			teatestlist1.add(bean3);
 		}
 	}
 	//删掉次数已用完的
-	for(int i=0;i<teatestlist.size();i++){ 
+	ArrayList<TeaTest> teatestlist2=new ArrayList<TeaTest>();
+	for(int i=0;i<teatestlist1.size();i++){ 
 	TeaTest beans=new TeaTest();
-	beans=teatestlist.get(i);
+	beans=teatestlist1.get(i);
 	int tpid=beans.getTpid();
+	int flag=0;
 	 try {
 		    mysql_DB db=new mysql_DB();
 			conn=db.connectDB();
@@ -148,14 +163,17 @@ public ArrayList<TeaTest> getteatestnew(ArrayList<TeaTest> teatestlist,ArrayList
 				num=num+1;
 			}			        			
 			if(num==beans.getTimes()) {
-				teatestlist.remove(beans);
+				flag=1;
+			}
+			if(flag==0) {
+				teatestlist2.add(beans);
 			}
 			db.close(conn);
 		}catch(SQLException ex){
 		ex.printStackTrace();
 		}
 }	
-	return teatestlist;
+	return teatestlist2;
 }
 
 
