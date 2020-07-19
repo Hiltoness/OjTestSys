@@ -3,7 +3,6 @@
  */
 
 //计时器
-var time_begin=new Date();// 开始时间
 setInterval(TimerUse, 1000);//无限模式
 
 function TimerUse(){//计算已用时间-无限模式

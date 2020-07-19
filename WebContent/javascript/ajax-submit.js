@@ -51,7 +51,8 @@ function submit_self(){
 	let s_flag=arguments[0];//1-提交；0-下一页
 	let nums=arguments[1];//学号
 	let pid=arguments[2];//答卷号
-	let pa=arguments[3];//第几页
+	let kc=arguments[3];
+	let gh=arguments[4];
     let list1=submit_veri();//作答结果
     console.log(JSON.stringify(list1))
     if(flag==true){
@@ -64,11 +65,11 @@ function submit_self(){
              data:{"anslist":JSON.stringify(list1),
             	 "s_flag":s_flag,//提交or下一页标记
             	 "xuehao":nums,//学号
-            	 "page":pa,//页数
-            	 "tpid":pid},//答卷号
-             success:function(msg){
-                     alert(msg);
-                     alert("提交成功")
+            	 "pid":pid},//答卷号
+             success:function(adata){
+            	 if(s_flag==1)
+                     get_topic(adata,nums,kc,gh);
+                 alert("提交成功")
              },
              error:function(xhr){
                      alert(xhr.status);
@@ -77,11 +78,10 @@ function submit_self(){
          })
 //        clearInterval(saveAjax)
         
-        //location.href="Finish.jsp" //答卷页面
+        location.href="LookLimit.jsp?xuehao="+nums //答卷页面
         }
-        
     }
-    
+
 }
 
 //自动提交
@@ -110,7 +110,7 @@ function submit_auto(){
     
     //clearInterval(saveAjax)
     alert("已为你自动提交")
-    //location.href="Finish.jsp" //答卷页面
+    location.href="LookLimit.jsp?xuehao="+nums //答卷页面
 }
 
 //定时保存
@@ -172,6 +172,31 @@ function save_veri(){
          traditional: true
      })
 
+}
+
+//获取题目
+function get_topic(){
+	let alist=arguments[0];
+	let nums=arguments[1];//学号
+	let pid=arguments[2];//答卷号
+	let kc=arguments[3];
+	let gh=arguments[4];
+	$.ajax({
+		url:"GetTopic",
+		type:"post",
+		data:{"xuehao":nums,
+			"pid":pid,
+			"kcbianhao":kc,
+			"gonghao":gh,
+			"tlist":alist},
+			  
+		success:function(data){
+			showT(data)
+		},
+		error:function(){
+			
+		}
+	})
 }
 
 function confirm_veri(){

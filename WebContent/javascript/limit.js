@@ -3,7 +3,6 @@
  */
 
     //计时器
-    var time_begin=new Date();// 开始时间
     var lim=new Date();
     lim.setMinutes(time_begin.getMinutes()+30);//限制结束时间
     // console.log(lim.getMinutes()+":"+lim.getSeconds()+"now"+time_begin.getMinutes()+":"+time_begin.getSeconds());
