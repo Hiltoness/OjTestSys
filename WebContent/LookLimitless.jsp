@@ -133,7 +133,8 @@ for(int i=0;i<year.size();i++){
 <td><%=beans.getEnd() %></td>
 <td><%=beans.getGoal() %></td>
 <td><%=beanc %></td>
-<td><a  href="MytestServlet?xuehao=<%=xuehao %>&pid=<%=beans.getPid() %>" class="aleft">查看答卷</a></td>
+<td><a  href="MytestServlet?xuehao=<%=xuehao %>&pid=<%=beans.getPid() %>
+&kcbianhao=<%=beant.getKcbianhao() %>&gonghao=<%=beant.getGonghao() %>" class="aleft">查看答卷</a></td>
 </tr>
 <%}}}if(pattern.equals("unfinish")){ 
 	
