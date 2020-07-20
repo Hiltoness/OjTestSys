@@ -55,8 +55,9 @@ function submit_self(){
 	let gh=arguments[4];
     let list1=submit_veri();//作答结果
     console.log(JSON.stringify(list1))
+    console.log(time_begin);
     if(flag==true){
-    	let a=(s_flag==1?confirm_veri():confirm_next())
+    	let a=(s_flag=='1'?confirm_veri():confirm_next())
         console.log(a)
         if(a==true){
              $.ajax({
@@ -67,20 +68,52 @@ function submit_self(){
             	 "xuehao":nums,//学号
             	 "pid":pid},//答卷号
              success:function(adata){
-            	 if(s_flag==1)
-                     get_topic(adata,nums,kc,gh);
-                 alert("提交成功")
+            	 if(s_flag==0){
+            		 console.log("下一页")
+            		 get_topic(adata,nums,kc,gh);
+                     //alert("提交成功")
+            	 }else{
+            		 location.href="LookLimit.jsp?xuehao="+nums //答卷页面
+            	 }
+                     
              },
              error:function(xhr){
+            	 	 console.log("提交失败")
                      alert(xhr.status);
              },
              traditional: true
          })
 //        clearInterval(saveAjax)
         
-        location.href="LookLimit.jsp?xuehao="+nums //答卷页面
+        
         }
-    }
+    }else{
+    	$.ajax({
+            url:"PageSubmit",
+            type:"post",
+            data:{"anslist":JSON.stringify(list1),
+           	 "s_flag":s_flag,//提交or下一页标记
+           	 "xuehao":nums,//学号
+           	 "pid":pid},//答卷号
+            success:function(adata){
+           	 if(s_flag==0){
+           		 console.log("下一页");
+           		 get_topic(adata,nums,kc,gh);
+                    //alert("提交成功")
+           	 }
+                    
+            },
+            error:function(xhr){
+           	 	 console.log("提交失败")
+                    alert(xhr.status);
+            },
+            traditional: true
+        })
+//       clearInterval(saveAjax)
+       
+       location.href="LookLimit.jsp?xuehao="+nums //答卷页面
+       }
+    
 
 }
 
@@ -98,7 +131,7 @@ function submit_auto(){
          data:{"anslist":JSON.stringify(list2),
         	 "xuehao":nums,//学号
         	 "pages":pa,//页数
-        	 "tpid":pid},//答卷号,
+        	 "pid":pid},//答卷号,
          success:function(msg){
                  alert(msg);
          },
@@ -161,7 +194,7 @@ function save_veri(){
          data:{"anslist":JSON.stringify(anslist_1),
         	 "xuehao":nums,//学号
         	 "pages":pa,//页数
-        	 "tpid":pid},//答卷号
+        	 "pid":pid,},//答卷号
          success:function(msg){
                  alert(msg);
                  alert("作答结果保存成功")
