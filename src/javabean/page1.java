@@ -33,6 +33,9 @@ public class page1 {
 			else {
 				last = total - total % count;
 			}
+			if(total==0) {
+				last=0;
+			}
 			return last;
 		}
 		public ArrayList<Integer> getindexs(int pagestart,int pagetotal){
