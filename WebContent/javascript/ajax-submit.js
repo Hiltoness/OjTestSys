@@ -73,6 +73,7 @@ function submit_self(){
             		 get_topic(adata,nums,kc,gh);
                      //alert("提交成功")
             	 }else{
+            		 console.log("succcccc");
             		 location.href="LookLimit.jsp?xuehao="+nums //答卷页面
             	 }
                      
@@ -100,7 +101,11 @@ function submit_self(){
            		 console.log("下一页");
            		 get_topic(adata,nums,kc,gh);
                     //alert("提交成功")
-           	 }
+           	 }else{
+        		 console.log("succcccc");
+        		 location.href="LookLimit.jsp?xuehao="+nums //答卷页面
+        	 }
+                 
                     
             },
             error:function(xhr){

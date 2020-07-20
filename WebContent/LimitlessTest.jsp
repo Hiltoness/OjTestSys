@@ -122,7 +122,6 @@
 	</div>
 	<jsp:include page="mainfoot.jsp"></jsp:include>
 <script>
-window.onload=function(){
 	var start2="<%=start2%>"//开始时间
 		var date1=start2.replace(/-/g,'/');
 		var time_str=new Date(date1);
@@ -338,6 +337,7 @@ window.onload=function(){
 		    var saveAjax=setInterval(save_veri,60000);
 		    
 		}
+
 </script>
 
 </body>

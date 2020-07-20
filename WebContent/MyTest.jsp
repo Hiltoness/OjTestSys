@@ -8,8 +8,15 @@
 <meta charset="UTF-8">
 <title>考试系统</title>
 <link rel="stylesheet" href="css/main.css">
+<script type="text/javascript" src="http://localhost:8080/OjTestSys/jquery-3.5.1.js"></script>
 </head>
 <body>
+<style>
+.title{
+            display: inline;
+        }
+</style>
+
 <%
 	//获取参数
 	String xuehao=session.getAttribute("xuehao").toString();//学号
@@ -26,48 +33,23 @@
 
 <div id="content">
 	<h2><%=testname %></h2>
-			<div class="float">
-			<div style="display:flex">
-				<table border="1" cellspacing="0" cellpadding="10"
-					bordercolor="#ffffff" style="margin: 30px;position:absolute;left:0%">
-					<tr>
-						<td id="r1" class="tdunused"><a href="#t0">1</a></td>
-						<td id="r2" class="tdunused"><a href="#t1">2</a></td>
-						<td id="r3" class="tdunused"><a href="#t2">3</a></td>
-						<td id="r4" class="tdunused"><a href="#t3">4</a></td>
-						<td id="r5" class="tdunused"><a href="#t4">5</a></td>
-					</tr>
-					<tr>
-						<td id="r6" class="tdunused"><a href="#t5">6</a></td>
-						<td id="r7" class="tdunused"><a href="#t6">7</a></td>
-						<td id="r8" class="tdunused"><a href="#t7">8</a></td>
-						<td id="r9" class="tdunused"><a href="#t8">9</a></td>
-						<td id="r10" class="tdunused"><a href="#t9">10</a></td>
-					</tr>
-					
-				</table>
-				<div class="floatBottom">
-					<span>剩余时间：</span><div style="display:contents;height: 30px;width:30px;"><span style="width:50px" id="timer"></span></div>
-				</div>
-				</div>
-				
-			</div>
+			
 			<div class="left">
 			<% 
 				for(int i=0;i<1000;i++){
 					%>
 					<div class="topic" style="display: none;">
-						<label class="title"></label> 
+						<span class="tnum"></span>&nbsp;&nbsp;<label class="title"></label> 
 						<input style="display: none;" class="idset" name="" data-tid="" data-type="" data-tno=""/> 
 						<input class="input1" type="" value="a" name="" /><label class="option1"></label> 
 						<input class="input2" type="" value="b" name="" /><label class="option2"></label> 
 						<input class="input3" type="" value="c" name="" /><label class="option3"></label> 
 						<input class="input4" type="" value="d" name="" /><label class="option4"></label>
-						<label>正确答案：</label><label class="answer"></label>
+						<span style="display:inline-flex">正确答案：</span><span class="answer"></span>
 					</div>
 					<%
 						}
-						%>
+					%>
 
 			</div>
 
@@ -77,9 +59,9 @@
 <jsp:include page="mainfoot.jsp"></jsp:include>
 </body>
 <script>
-var xuehao=<%=xuehao%>;//全局-学号
-var kcbianhao=<%=kcbianhao%>;//课程编号
-var gonghao=<%=gonghao%>;//教师工号
+var xuehao="<%=xuehao%>";//全局-学号
+var kcbianhao="<%=kcbianhao%>";//课程编号
+var gonghao="<%=gonghao%>";//教师工号
 var tpid=<%=pid%>;//试卷号
 //获取题目数据
 function c(){
@@ -102,7 +84,7 @@ $.ajax({
 var tDiv=$(".topic");
 function showT(){
 	var ttlist=arguments[0]
-	t1list=(JSON.parse(ttlist))
+	console.log(ttlist)
 	for(var i=0;i<tDiv.length;i++){
 		(function(current){
             var type=ttlist[i].type;
@@ -112,18 +94,19 @@ function showT(){
             var b=ttlist[i].b;
             var c=ttlist[i].c;
             var d=ttlist[i].d;
-            var v=list[i].value;
-            var ans=list[i].answer;
+            var v=ttlist[i].value;
+            var ans=ttlist[i].answer;
             var name="t"+i;
             var input_name="i"+i;
             var record="r"+(i+1);
-            var tno_t=tno_l+1;
+            var tno_l=i+1;
 
             $(current).find(".idset").attr("data-tid",id);
             $(current).find(".idset").attr("data-type",type);
-            $(current).find(".idset").attr("data-tno",tno_t);
+            $(current).find(".idset").attr("data-tno",tno_l);
             $(current).find(".idset").attr("name",name);
-            $(current).find(".idset").attr("answer",ans);
+            $(current).find(".answer").text(ans);
+            $(current).find(".tnum").text(tno_l);
             switch(type) {
             case "single"://单选
                 $(current).find(".title").text(title);
@@ -134,7 +117,9 @@ function showT(){
                 $(current).find(".option3").text(c);
                 $(current).find(".option4").text(d);
                 $(current).find("label").append("<br/>");
-                $(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
+                if(v!=""){
+                	$(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
+                }
                 current.style.display="block";
                 $(current).find("input[type=radio]").on("input",function(){
                     $("#"+record).removeClass("tdunused");
@@ -154,7 +139,9 @@ function showT(){
                 $(current).find(".option2").text("错");
                 $(current).find(".input1").val("true");
                 $(current).find(".input2").val("false");
+                if(v!=""){
                 $(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
+                }
                 $(current).find("label").append("<br/>");
                 current.style.display="block";
                 $(current).find("input[type=radio]").on("input",function(){
@@ -169,10 +156,12 @@ function showT(){
                 $(current).find(".option2").text(b);
                 $(current).find(".option3").text(c);
                 $(current).find(".option4").text(d);
+                if(v!=""){
                 let v2=v.split('')
                 console.log(v2)
                 for(var j in v2){
                     $(current).find("input[type=checkbox][value="+v2[j]+"]").attr("checked","checked")
+                }
                 }
                 $(current).find("label").append("<br/>");
                 current.style.display="block";
@@ -200,7 +189,8 @@ function showT(){
                 $(current).find(".input2").attr("type","text");
                 $(current).find(".input2").attr("value","");
                 $(current).find("input[type=text]").attr("name",input_name);
-                $(current).find("input[type=text]").val(v)
+                if(v!=""){
+                $(current).find("input[type=text]").val(v)}
                 current.style.display="flex";
                 $(current).find("input[type=text]").on("input",function(){
                     $("#"+record).toggleClass("tdunused");
