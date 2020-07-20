@@ -418,7 +418,8 @@ public ArrayList<twoint> gettimeandpid(ArrayList<TeaTest> teatestlist,String xue
 		TeaTest beans=new TeaTest();
 		beans=teatestlist.get(i);
 		int tpid=beans.getTpid();
-		 try {
+		 try {			 
+			 Timestamp timesp;
 			    mysql_DB db=new mysql_DB();
 				conn=db.connectDB();
 				pstm=conn.prepareStatement("select * from stutest where tpid=? and xuehao=? ");			
@@ -426,15 +427,20 @@ public ArrayList<twoint> gettimeandpid(ArrayList<TeaTest> teatestlist,String xue
 				pstm.setString(2,xuehao);
 				rs=pstm.executeQuery();
 				twoint tit=new twoint();
-				tit.setTimes(1);
+				int get0=0;
 				while(rs.next()) {
 					int get=rs.getInt(7);
-					if(tit.getTimes()<get) {
+					timesp=rs.getTimestamp(5);
+					int pid=rs.getInt(1);
+					if(get0<get) {
 						tit.setTimes(get);
-						tit.setPid(rs.getInt(1));
-						tit.setStart(rs.getTimestamp(5));
+						tit.setPid(pid);
+						tit.setStart(timesp);
+						get0=get;
 					}
-				}			        			
+					
+				}	
+		
 				twointlist.add(tit);
 				db.close(conn);
 			}catch(SQLException ex){
