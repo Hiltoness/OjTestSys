@@ -78,7 +78,7 @@ for(int i=0;i<year.size();i++){
 <div class="dropdown">
   <button class="dropbtn"><%=all %></button>
   <div class="dropdown-content">
-    <a href="Lgoto?xuehao=<%=xuehao%>&timeorall=<%="all"%>&pattern=<%=pattern %>">全部学年</a>
+    <a href="LLgoto?xuehao=<%=xuehao%>&timeorall=<%="all"%>&pattern=<%=pattern %>">全部学年</a>
     <%    for(int i=0;i<year.size();i++){ 
     String year1=Integer.toString(year.get(i));  
     String year2=Integer.toString(year.get(i)+1);  
