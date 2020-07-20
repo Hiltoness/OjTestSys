@@ -84,13 +84,17 @@ public class PageSubmit extends HttpServlet {
 		response.setContentType("application/json; charset=utf-8");
 		String xuehao=request.getParameter("xuehao");//学号
 		String s_flag=request.getParameter("s_flag");//提交标记
+		System.out.print("提交标记"+s_flag);
 		int pid=Integer.parseInt(request.getParameter("pid"));//试卷id
 		
 		session.setAttribute("xuehao", xuehao);
 		
-		Timestamp start=Timestamp.valueOf(request.getParameter("start"));//当前时间
+		long start1=System.currentTimeMillis();
+//		System.out.print("时间1"+start1);
+//		System.out.print("时间" +Timestamp.valueOf(start1));
+		Timestamp start=new Timestamp(start1);//当前时间
 		//用map来接收request发送过来的多维数组
-        String list=request.getParameter("list");
+        String list=request.getParameter("anslist");
         //System.out.print(list);
         ArrayList<Tlist> tlist=new ArrayList<Tlist> ();
         JSONArray jsonA;
@@ -99,13 +103,13 @@ public class PageSubmit extends HttpServlet {
 			for(int i=0;i<jsonA.length();i++){
 				Tlist eachT=new Tlist();
 				JSONObject jsonO=jsonA.getJSONObject(i);
-				int tno=(int) jsonO.get("tno");//题号
-				int tid=(int)jsonO.get("id");//题目id
-				String type=(String) jsonO.get("type");//题目类型
+				int tno=Integer.parseInt(jsonO.get("tno").toString());//题号
+				int tid=Integer.parseInt(jsonO.get("id").toString());//题目id
+				String type=jsonO.get("type").toString();//题目类型
 			    String typeDB=typeS.get(type);//对应表名
 			    String ansDB=ansS.get(type);
 			    String marDB=marS.get(type);
-				String value=(String) jsonO.get("value");//题目作答结果
+				String value=jsonO.get("value").toString();//题目作答结果
 				List<TestInf> s=update.verify_get(pid, tid);//验证该题是否有暂存testInf
 				int a=appear.checksave(pid, tid, tno);//验证该题是否为之前出现过
 				if(a>0){//之前出现过
@@ -128,7 +132,7 @@ public class PageSubmit extends HttpServlet {
 					if(righttime>0)
 						righttime--;
 					float wr=(apptime-righttime)/apptime;
-					if(wr>0.5){//错误率>50%，不再出现
+					if(wr>0.5 && apptime>3){//错误率>50%，不再出现
 						disappear=true;
 						//插入所有错题表
 						if(!checkW.check(tid, type))
@@ -155,17 +159,21 @@ public class PageSubmit extends HttpServlet {
 			e1.printStackTrace();
 		}
 		session.setAttribute("tlist", tlist);
-		if(s_flag.equals("1")){//提交
+		System.out.print(s_flag.equals("1"));
+		if(s_flag==("1")){//提交
+			System.out.print(" 开始提交");
 			//计算总分
 			sum.goal_update(pid);
 			//获取完成时间
-			String end=Long.toString(new Date().getTime());//开始时间
-			Timestamp end1=Timestamp.valueOf(end);
+			long end=System.currentTimeMillis();//结束时间
+			Timestamp end1=new Timestamp(end);
 			update.endtime_update(end1, pid);//更新结束时间
+			System.out.print("提交成，返回");
 			response.sendRedirect("LookLimit.jsp");//返回完成页面
 		}else{
 			//跳转出题servlet
 			//返回数据到ajax中
+			 
 			PrintWriter out=response.getWriter();
 			out.println(tlist);  
 		}

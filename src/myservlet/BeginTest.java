@@ -41,10 +41,10 @@ public class BeginTest extends HttpServlet {
 		String kcbianhao=session.getAttribute("kcbianhao").toString();
 		String gonghao=session.getAttribute("gonghao").toString();
 		String flag=session.getAttribute("flag").toString();//暂存标记 true-暂存，false-新卷
-		String model=session.getAttribute("LLLpatern").toString();//模式标记-limit-限时
-		int pages=Integer.parseInt(session.getAttribute("pages").toString());//页数
+		String model=session.getAttribute("LLLpattern").toString();//模式标记-limit-限时
+		System.out.print("model:"+model);
 		int tno=Integer.parseInt(session.getAttribute("tno").toString());//题号
-		int times=Integer.parseInt(session.getAttribute("times").toString());//现在的次数,要+1
+		
 		int tpid=Integer.parseInt(session.getAttribute("tpid").toString());//试卷号
 		String tp=Integer.toString(tpid);
 		String tarUrl = null;//目标链接
@@ -56,28 +56,35 @@ public class BeginTest extends HttpServlet {
 		if(flag.equals("true")){//暂存
 			int pid=Integer.parseInt(session.getAttribute("pid").toString());//学生答卷号
 			start=session.getAttribute("start").toString();//开始时间
+			System.out.print(start);
 			session.setAttribute("start", start);
 			String p=Integer.toString(pid);
 			session.setAttribute("pid", p);
 			session.setAttribute("tno", tno);
 			if(model.equals("limit")){//限时
+				System.out.print("有限");
 				tarUrl="LimitTest.jsp";
 			}else{//无限
+				System.out.print("无限");
 				tarUrl="LimitlessTest.jsp";
 			}
 			
 		}else{//新卷
+			int times=Integer.parseInt(session.getAttribute("times").toString());//现在的次数,要+1
+			
 			tno=0;
-			start=Long.toString(new Date().getTime());//开始时间
-			Timestamp start1=Timestamp.valueOf(start);
+			long start2 = System.currentTimeMillis();//开始时间
+			Timestamp start1=new Timestamp(start2);
 			int pid=insert.studajuan_insert(xuehao, tpid, -1, start1, null, times+1);//返回答卷id
 			
-			session.setAttribute("start", start);
+			session.setAttribute("start", start2);
 			session.setAttribute("pid", pid);//答卷号
 			session.setAttribute("tno", tno);
 			if(model.equals("limit")){//限时
+				System.out.print("有限");
 				tarUrl="LimitTest.jsp";
 			}else{//无限
+				System.out.print("无限");
 				tarUrl="LimitlessTest.jsp";
 			}
 		}

@@ -55,26 +55,31 @@ public class GetTopic extends HttpServlet {
 		String gonghao=request.getParameter("gonghao");
 		String alist=request.getParameter("tlist");//已出题目列表
 		ArrayList<Tlist> tlist=new ArrayList<Tlist> ();
-		JSONArray jsonA=new JSONArray();
-		try{
-			jsonA = new JSONArray(alist);
-			for(int j=0;j<jsonA.length();j++){
-				Tlist eachT=new Tlist();
-				JSONObject jsonO=jsonA.getJSONObject(j);
-				int tid=(int)jsonO.get("id");//题目id
-				String type=(String)jsonO.get("type");
-				eachT.setId(tid);
-				eachT.setType(type);
-				tlist.add(eachT);
+		if(alist !=""){
+			
+			JSONArray jsonA=new JSONArray();
+			try{
+				jsonA = new JSONArray(alist);
+				for(int j=0;j<jsonA.length();j++){
+					Tlist eachT=new Tlist();
+					JSONObject jsonO=jsonA.getJSONObject(j);
+					int tid=(int)jsonO.get("id");//题目id
+					String type=(String)jsonO.get("type");
+					eachT.setId(tid);
+					eachT.setType(type);
+					tlist.add(eachT);
+			}
+				}catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
-			}catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
 
 		String tplist;
 		List<id_type> topiclist=topic.sub_getData(kcbianhao, gonghao, tlist);
 		JSONArray js=new JSONArray();
+		System.out.print(topiclist.size());
 		for(final id_type i:topiclist){
 			Map<String,String> tpl=new HashMap<String,String>(){
 				{put("id",Integer.toString(i.getId()));
@@ -86,7 +91,9 @@ public class GetTopic extends HttpServlet {
 				put("d",i.getSelect_D());
 				put("value","");
 				}
+				
 			};
+			System.out.println("获取新题目"+i.getType());
 			js.put(tpl);
 		}
 		session.setAttribute("tlist", js);

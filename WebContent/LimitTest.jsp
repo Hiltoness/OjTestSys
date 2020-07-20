@@ -2,18 +2,19 @@
     pageEncoding="UTF-8"%>
 <%@ page import="javabean.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.sql.Timestamp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>考试系统</title>
 <link rel="stylesheet" href="css/main.css">
-<script src="jquery-3.5.1.js"></script>
+<script type="text/javascript" src="http://localhost:8080/OjTestSys/jquery-3.5.1.js"></script>
 <script src="javascript/ajax-submit.js"></script>
-<script src="javascript/limit.js"></script>
+
 <style>
         .title{
-            display: block;
+            display: inline;
         }
         .submitStyle{
         	background-color:#008080;
@@ -47,8 +48,9 @@
 	
 	int pid=Integer.parseInt(session.getAttribute("pid").toString());//答卷号
 	String pp=Integer.toString(pid);
-	String time=session.getAttribute("start").toString();// 开始时间
-																					 
+	long start1=Long.parseLong(session.getAttribute("start").toString());// 开始时间
+	Timestamp start2=new Timestamp(start1);
+	System.out.println(start1);																				 
 	//获取试卷的已出题号列表list
 	//设置参数
 	session.setAttribute("xuehao", xuehao);
@@ -60,7 +62,7 @@
 	
 	//获取试卷名
 	mysql_operate op=new mysql_operate();
-	String testname=op.selectName(pid);
+	String testname=op.selectName(tpid);
 %>
 	<jsp:include page="maintop.jsp"></jsp:include>
 	<div id="container">
@@ -87,7 +89,7 @@
 					</tr>
 					
 				</table>
-				<button type="submit" form="test" class="submitStyle" onclick="submit_self(1,<%=xuehao %>,pid)" id="submit_button">提交</button>
+				<button type="submit" form="test" class="submitStyle" onclick="submit_self('1','<%=xuehao %>',<%=pid%>,'<%=kcbianhao %>','<%=gonghao %>');" id="submit_button">提交</button>
 				<div class="floatBottom">
 					<span>剩余时间：</span><div style="display:contents;height: 30px;width:30px;"><span style="width:50px" id="timer"></span></div>
 				</div>
@@ -95,22 +97,27 @@
 				
 			</div>
 			<div class="left">
+			<%
+				for(int i=0;i<10;i++){
+			%>
 					<div class="topic" style="display: none;">
-						<label class="title"></label> 
+						<span class="tnum"></span>&nbsp;&nbsp;<label class="title"></label> 
 						<input style="display: none;" class="idset" name="" data-tid="" data-type="" data-tno=""/> 
 						<input class="input1" type="" value="a" form="test" name="" /><label class="option1"></label> 
 						<input class="input2" type="" value="b" form="test" name="" /><label class="option2"></label> 
 						<input class="input3" type="" value="c" form="test" name="" /><label class="option3"></label> 
 						<input class="input4" type="" value="d" form="test" name="" /><label class="option4"></label>
 					</div>
-
+		<%
+				}
+		%>
 					<form id="test" action="" method="">
-						<button type="submit" class="submitlv" onclick="submit_self(0)" id="next_button">下一页</button>
+						<button type="submit" class="submitlv" onclick="submit_self('0','<%=xuehao %>',<%=pid%>,'<%=kcbianhao %>','<%=gonghao %>');" id="next_button">下一页</button>
 				        
 				    </form>
-					<form  method="post" action="LimitlessTest.jsp" id ="tnoForm"> 
+					<%-- <form  method="post" action="LimitTest.jsp" id ="tnoForm"> 
 				     	<input id ="tno" type ="hidden" name="tno"> 
-				     </form>  
+				     </form>  --%>
 
 			</div>
 
@@ -118,29 +125,34 @@
 	</div>
 	<jsp:include page="mainfoot.jsp"></jsp:include>
 <script>
+var start2="<%=start2%>"//开始时间
+var date1=start2.replace(/-/g,'/');
+var time_str=new Date(date1);
+var start1=time_str.getTime().toString().substring(0, 10);
+console.log(start1)
+var time_begin=new Date(start1*1000)
+console.log(time_begin)
+var status="origin"
+var tno_l="<%=tno%>";//上一题号
 window.onload=function(){
 	//测试数据
-    var list=[{"type":"single","id":"10","title":"第一题","a":"答案A","b":"答案B","c":"答案C","d":"答案D"},
-    {"type":"single","id":"11","title":"第二题","a":"答案aA二","b":"答案B","c":"答案C","d":"答案D"},
-    {"type":"judgement","id":"10","title":"第三题","a":"错","b":"对"},
-    {"type":"multi","id":"10","title":"第四题","a":"答案A四","b":"答案B","c":"答案C","d":"答案D"},
-    {"type":"blank","id":"10","title":"第5题","a":"前面的内容","b":"后面的内容"}]
 	
-	var xuehao=<%=xuehao%>;//全局-学号
-	var kcbianhao=<%=kcbianhao%>;//课程编号
-	var gonghao=<%=gonghao%>;//教师工号
+	var xuehao= "<%=xuehao%>";//全局-学号
+	var kcbianhao="<%=kcbianhao%>";//课程编号
+	var gonghao="<%=gonghao%>";//教师工号
 	var tpid=<%=tpid%>;//试卷号
-	var tno_l=<%=tno%>;//上一题号
-	var c_flag=<%=c_flag%>;//暂存标记
-	var time=<%=time%>//开始时间
-	var time_begin=new Date(time*1000)
+	
+	var c_flag="<%=c_flag%>";//暂存标记
+	
+	console.log(tpid)
+	console.log(tno_l)
+	
 	//获取题目数据
 	function c(){
 		var tlist=arguments[0]
 		showT(tlist)
 	}
-	
-	if(c_flag=="true"){//暂存
+	function getLast(){
 		var pid=<%=pid%>
 		$.ajax({
 			url:"ContinueTopic",
@@ -148,37 +160,61 @@ window.onload=function(){
 			data:{"xuehao":xuehao,
 				"pid":pid},
 			success:function(data){
-				c(data)
+				if(data.length==0){
+					getNew()
+				}else{
+					c(data)
+				}
+				
 			},
 			error:function(){
 				
 			}
 		})
+	}
+	function getNew(){
+		alist=""
+		console.log("ajax获取")
+			$.ajax({
+				url:"GetTopic",
+				type:"post",
+				data:{"xuehao":xuehao,
+					"tpid":tpid,
+					"kcbianhao":kcbianhao,
+					"gonghao":gonghao,
+					"tlist":alist},
+					  
+				success:function(data){
+					console.log("获取");
+					c(data);
+				},
+				error:function(){
+					
+				}
+			})
+	}
+	if(c_flag==="true"){//暂存
+		console.log("暂存")
+		getLast()
 
 		c_flag="false"
-	}else{//新建
-		$.ajax({
-			url:"GetTopic",
-			type:"post",
-			data:{"xuehao":xuehao,
-				"tpid":tpid,
-				"kcbianhao":kcbianhao,
-				"gonghao":gonghao,
-				"tlist":alist},
-				  
-			success:function(data){
-				c(data)
-			},
-			error:function(){
-				
-			}
-		})
+	}else if(status==="origin"){//新建
+		console.log(status)
+		getNew()
+		status="next"
 		}
 	//显示题目
     var tDiv=$(".topic");
 	function showT(){
 		var ttlist=arguments[0]
-		t1list=(JSON.parse(ttlist))
+		if(ttlist.length==0){
+			alert("你已抽空题库")
+		}else{
+		console.log(ttlist)
+		//t1list=(JSON.parse(ttlist))
+		
+			
+		
 		for(var i=0;i<tDiv.length;i++){
 			(function(current){
 	            var type=ttlist[i].type;
@@ -188,16 +224,18 @@ window.onload=function(){
 	            var b=ttlist[i].b;
 	            var c=ttlist[i].c;
 	            var d=ttlist[i].d;
-	            var v=list[i].value;
+	            var v=ttlist[i].value;
 	            var name="t"+i;
 	            var input_name="i"+i;
 	            var record="r"+(i+1);
-	            var tno_l=tno_l+1;
-
+	            tno_l=Number(tno_l)+1;
+				
+	            console.log(tno_l)
 	            $(current).find(".idset").attr("data-tid",id);
 	            $(current).find(".idset").attr("data-type",type);
-	            $(current).find(".idset").attr("data-tno",tno_t);
+	            $(current).find(".idset").attr("data-tno",tno_l);
 	            $(current).find(".idset").attr("name",name);
+	            $(current).find(".tnum").text(tno_l);
 	            switch(type) {
 	            case "single"://单选
 	                $(current).find(".title").text(title);
@@ -208,7 +246,9 @@ window.onload=function(){
 	                $(current).find(".option3").text(c);
 	                $(current).find(".option4").text(d);
 	                $(current).find("label").append("<br/>");
-	                $(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
+	                if(v!=""){
+	                	$(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
+	                }
 	                current.style.display="block";
 	                $(current).find("input[type=radio]").on("input",function(){
 	                    $("#"+record).removeClass("tdunused");
@@ -228,7 +268,9 @@ window.onload=function(){
 	                $(current).find(".option2").text("错");
 	                $(current).find(".input1").val("true");
 	                $(current).find(".input2").val("false");
+	                if(v!=""){
 	                $(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
+	                }
 	                $(current).find("label").append("<br/>");
 	                current.style.display="block";
 	                $(current).find("input[type=radio]").on("input",function(){
@@ -243,11 +285,13 @@ window.onload=function(){
 	                $(current).find(".option2").text(b);
 	                $(current).find(".option3").text(c);
 	                $(current).find(".option4").text(d);
+	                if(v!=""){
 	                let v2=v.split('')
                     console.log(v2)
                     for(var j in v2){
                         $(current).find("input[type=checkbox][value="+v2[j]+"]").attr("checked","checked")
                     }
+	                }
 	                $(current).find("label").append("<br/>");
 	                current.style.display="block";
 	                $(current).find("input[type=checkbox]").click(function(){
@@ -274,7 +318,9 @@ window.onload=function(){
 	                $(current).find(".input2").attr("type","text");
 	                $(current).find(".input2").attr("value","");
 	                $(current).find("input[type=text]").attr("name",input_name);
+	                if(v!=""){
 	                $(current).find("input[type=text]").val(v)
+	                }
 	                current.style.display="flex";
 	                $(current).find("input[type=text]").on("input",function(){
 	                    $("#"+record).toggleClass("tdunused");
@@ -285,15 +331,17 @@ window.onload=function(){
 	    }; 
 	        })(tDiv[i])
 		};
+		}
 			$("#tno").val(tno_l);
 			$("#tnoForm").submit();
 	}
 	
 
-    var saveAjax=setInterval(save_veri,30000);
+    var saveAjax=setInterval(save_veri,60000);
     
 }
 </script>
+<script src="javascript/limit.js"></script>
 </body>
 
 </html>

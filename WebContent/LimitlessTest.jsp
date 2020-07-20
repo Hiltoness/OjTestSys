@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="javabean.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.sql.Timestamp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,8 +49,9 @@
 								   
 	int pid=Integer.parseInt(session.getAttribute("pid").toString());//答卷号
 	String pp=Integer.toString(pid);
-	String time=session.getAttribute("start").toString();// 开始时间
-																					 
+	long start1=Long.parseLong(session.getAttribute("start").toString());// 开始时间
+	Timestamp start2=new Timestamp(start1);
+	System.out.println(start1);																							 
 
 	//获取试卷的已出题号列表list
 	//设置参数
@@ -91,7 +93,7 @@
 					</tr>
 					
 				</table>
-				<button type="submit" form="test" class="submitStyle" onclick="submit_self(1,<%=xuehao %>,pid,<%=kcbianhao %>,<%=gonghao %>)" id="submit_button">提交</button>
+				<button type="submit" form="test" class="submitStyle" onclick="submit_self('1','<%=xuehao %>',<%=pid%>,'<%=kcbianhao %>','<%=gonghao %>');" id="submit_button">提交</button>
 				<div class="floatBottom">
 					<span>已用时间：</span><div style="display:contents;height: 30px;width:30px;"><span style="width:50px" id="timer"></span></div>
 				</div>
@@ -110,9 +112,9 @@
 					<form id="test" action="" method="">
 				        <button type="submit" class="submitlv" onclick="submit_self(0)" id="next_button">下一页</button>
 				    </form>
-					 <form  method="post" action="LimitlessTest.jsp" id ="tnoForm"> 
+					 <%--<form  method="post" action="LimitlessTest.jsp" id ="tnoForm"> 
 				     	<input id ="tno" type ="hidden" name="tno"> 
-				     </form>  
+				     </form>   --%>
 
 			</div>
 
@@ -121,180 +123,221 @@
 	<jsp:include page="mainfoot.jsp"></jsp:include>
 <script>
 window.onload=function(){
-	//测试数据
-    var list=[{"type":"single","id":"10","title":"第一题","a":"答案A","b":"答案B","c":"答案C","d":"答案D"},
-    {"type":"single","id":"11","title":"第二题","a":"答案aA二","b":"答案B","c":"答案C","d":"答案D"},
-    {"type":"judgement","id":"10","title":"第三题","a":"错","b":"对"},
-    {"type":"multi","id":"10","title":"第四题","a":"答案A四","b":"答案B","c":"答案C","d":"答案D"},
-    {"type":"blank","id":"10","title":"第5题","a":"前面的内容","b":"后面的内容"}]
-	
-
-	var xuehao=<%=xuehao%>;//全局-学号
-	var kcbianhao=<%=kcbianhao%>;//课程编号
-	var gonghao=<%=gonghao%>;//教师工号
-	var tpid=<%=tpid%>;//试卷号
-	var tno_l=<%=tno%>;//上一题号
-	var c_flag=<%=c_flag%>;//暂存标记
-	var time=<%=time%>//开始时间
-	var time_begin=new Date(time*1000)
-	//获取题目数据
-	function c(){
-		var tlist=arguments[0]
-		showT(tlist)
-	}
-	
-	if(c_flag=="true"){//暂存
-		var pid=<%=pid%>
-		$.ajax({
-			url:"ContinueTopic",
-			type:"post",
-			data:{"xuehao":xuehao,
-				"pid":pid},
-			success:function(data){
-				c(data)
-			},
-			error:function(){
-				
+	var start2="<%=start2%>"//开始时间
+		var date1=start2.replace(/-/g,'/');
+		var time_str=new Date(date1);
+		var start1=time_str.getTime().toString().substring(0, 10);
+		console.log(start1)
+		var time_begin=new Date(start1*1000)
+		console.log(time_begin)
+		var status="origin"
+		var tno_l="<%=tno%>";//上一题号
+		window.onload=function(){
+			//测试数据
+			
+			var xuehao= "<%=xuehao%>";//全局-学号
+			var kcbianhao="<%=kcbianhao%>";//课程编号
+			var gonghao="<%=gonghao%>";//教师工号
+			var tpid=<%=tpid%>;//试卷号
+			
+			var c_flag="<%=c_flag%>";//暂存标记
+			
+			console.log(tpid)
+			console.log(tno_l)
+			
+			//获取题目数据
+			function c(){
+				var tlist=arguments[0]
+				showT(tlist)
 			}
-		})
-		c_flag="false"
-	}else{//新建
-		$.ajax({
-			url:"GetTopic",
-			type:"post",
-			data:{"xuehao":xuehao,
-				"tpid":tpid,
-				"kcbianhao":kcbianhao,
-				"gonghao":gonghao,
-				"tlist":alist},
-			success:function(data){
-				c(data)
-			},
-			error:function(){
-				
+			function getLast(){
+				var pid=<%=pid%>
+				$.ajax({
+					url:"ContinueTopic",
+					type:"post",
+					data:{"xuehao":xuehao,
+						"pid":pid},
+					success:function(data){
+						if(data.length==0){
+							getNew()
+						}else{
+							c(data)
+						}
+						
+					},
+					error:function(){
+						
+					}
+				})
 			}
-		})
-	}
-	
-	//显示题目
-    var tDiv=$(".topic");
-	function showT(){
-		var ttlist=arguments[0]
-		t1list=(JSON.parse(ttlist))
-		for(var i=0;i<tDiv.length;i++){
-			(function(current){
-	            var type=ttlist[i].type;
-	            var id=ttlist[i].id;
-	            var title=ttlist[i].title;
-	            var a=ttlist[i].a;
-	            var b=ttlist[i].b;
-	            var c=ttlist[i].c;
-	            var d=ttlist[i].d;
-				var v=list[i].value;				 
-	            var name="t"+i;
-	            var input_name="i"+i;
-	            var record="r"+(i+1);
-	            var tno_l=tno_l+1;
+			function getNew(){
+				alist=""
+				console.log("ajax获取")
+					$.ajax({
+						url:"GetTopic",
+						type:"post",
+						data:{"xuehao":xuehao,
+							"tpid":tpid,
+							"kcbianhao":kcbianhao,
+							"gonghao":gonghao,
+							"tlist":alist},
+							  
+						success:function(data){
+							console.log("获取");
+							c(data);
+						},
+						error:function(){
+							
+						}
+					})
+			}
+			if(c_flag==="true"){//暂存
+				console.log("暂存")
+				getLast()
 
-	            $(current).find(".idset").attr("data-tid",id);
-	            $(current).find(".idset").attr("data-type",type);
-	            $(current).find(".idset").attr("data-tno",tno_t);
-	            $(current).find(".idset").attr("name",name);
-	            switch(type) {
-	            case "single"://单选
-	                $(current).find(".title").text(title);
-	                $(current).find("input").attr("type","radio");
-	                $(current).find("input[type=radio]").attr("name",input_name);
-	                $(current).find(".option1").text(a);
-	                $(current).find(".option2").text(b);
-	                $(current).find(".option3").text(c);
-	                $(current).find(".option4").text(d);
-	                $(current).find("label").append("<br/>");
-					$(current).find("input[type=radio][value="+v+"]").attr("checked","checked");																		 
-	                current.style.display="block";
-	                $(current).find("input[type=radio]").on("input",function(){
-	                    $("#"+record).removeClass("tdunused");
-	                })
-	                
-	                break;
-	            
-	            case "judgement"://判断
-	                $(current).find(".option3").css("display","none");
-	                $(current).find(".option4").css("display","none");
-	                $(current).find(".input3").css("display","none");
-	                $(current).find(".input4").css("display","none");
-	                $(current).find(".title").text(title);
-	                $(current).find("input").attr("type","radio");
-	                $(current).find("input[type=radio]").attr("name",input_name);
-	                $(current).find(".option1").text("对");
-	                $(current).find(".option2").text("错");
-	                $(current).find(".input1").val("true");
-	                $(current).find(".input2").val("false");
-	                $(current).find("input[type=radio][value="+v+"]").attr("che								 
-	                $(current).find("label").append("<br/>");
-	                current.style.display="block";
-	                $(current).find("input[type=radio]").on("input",function(){
-	                    $("#"+record).removeClass("tdunused");
-	                })
-	                break;
-	            case "multi"://多选
-	                $(current).find(".title").text(title);
-	                $(current).find("input").attr("type","checkbox");
-	                $(current).find("input[type=checkbox]").attr("name",input_name);
-	                $(current).find(".option1").text(a);
-	                $(current).find(".option2").text(b);
-	                $(current).find(".option3").text(c);
-	                $(current).find(".option4").text(d);
-					let v2=v.split('')
-                    console.log(v2)
-                    for(var j in v2){
-                        $(current).find("input[type=checkbox][value="+v2[j]+"]").attr("checked","checked")
-                    }	
-	                $(current).find("label").append("<br/>");
-	                current.style.display="block";
-	                $(current).find("input[type=checkbox]").click(function(){
-	                    $("#"+record).toggleClass("tdunused");
-	                })
-	                break;
-	            case "blank":
-	                $(current).find(".option3").css("display","none");
-	                $(current).find(".option4").css("display","none");
-	                $(current).find(".input1").css("display","none");
-	                $(current).find(".input3").css("display","none");
-	                $(current).find(".input4").css("display","none");
-	                $(current).find(".title").css("display","none");
-	                if(a !=null){
-	                    $(current).find(".option1").text(a);
-	                }else if(a==null){
-	                    $(current).find(".option1").css("display","none");
-	                }
-	                if(b!=null){
-	                    $(current).find(".option2").text(b);
-	                }else if(b==null){
-	                    $(current).find(".option2").css("display","none");
-	                }
-	                $(current).find(".input2").attr("type","text");
-	                $(current).find(".input2").attr("value","");
-	                $(current).find("input[type=text]").attr("name",input_name);
-					$(current).find("input[type=text]").val(v)									   
-	                current.style.display="flex";
-	                $(current).find("input[type=text]").on("input",function(){
-	                    $("#"+record).toggleClass("tdunused");
-	                })
-	                break;
-	            default:
-	                console.log("")
-	    }; 
-	        })(tDiv[i])
-		};
-		$("#tno").val(tno_l);
-		$("#tnoForm").submit();
-	}
+				c_flag="false"
+			}else if(status==="origin"){//新建
+				console.log(status)
+				getNew()
+				status="next"
+				}
+			//显示题目
+		    var tDiv=$(".topic");
+			function showT(){
+				var ttlist=arguments[0]
+				if(ttlist.length==0){
+					alert("你已抽空题库")
+				}else{
+				console.log(ttlist)
+				//t1list=(JSON.parse(ttlist))
+				
+					
+				
+				for(var i=0;i<tDiv.length;i++){
+					(function(current){
+			            var type=ttlist[i].type;
+			            var id=ttlist[i].id;
+			            var title=ttlist[i].title;
+			            var a=ttlist[i].a;
+			            var b=ttlist[i].b;
+			            var c=ttlist[i].c;
+			            var d=ttlist[i].d;
+			            var v=ttlist[i].value;
+			            var name="t"+i;
+			            var input_name="i"+i;
+			            var record="r"+(i+1);
+			            tno_l=Number(tno_l)+1;
+						
+			            console.log(tno_l)
+			            $(current).find(".idset").attr("data-tid",id);
+			            $(current).find(".idset").attr("data-type",type);
+			            $(current).find(".idset").attr("data-tno",tno_l);
+			            $(current).find(".idset").attr("name",name);
+			            $(current).find(".tnum").text(tno_l);
+			            switch(type) {
+			            case "single"://单选
+			                $(current).find(".title").text(title);
+			                $(current).find("input").attr("type","radio");
+			                $(current).find("input[type=radio]").attr("name",input_name);
+			                $(current).find(".option1").text(a);
+			                $(current).find(".option2").text(b);
+			                $(current).find(".option3").text(c);
+			                $(current).find(".option4").text(d);
+			                $(current).find("label").append("<br/>");
+			                if(v!=""){
+			                	$(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
+			                }
+			                current.style.display="block";
+			                $(current).find("input[type=radio]").on("input",function(){
+			                    $("#"+record).removeClass("tdunused");
+			                })
+			                
+			                break;
+			            
+			            case "judgement"://判断
+			                $(current).find(".option3").css("display","none");
+			                $(current).find(".option4").css("display","none");
+			                $(current).find(".input3").css("display","none");
+			                $(current).find(".input4").css("display","none");
+			                $(current).find(".title").text(title);
+			                $(current).find("input").attr("type","radio");
+			                $(current).find("input[type=radio]").attr("name",input_name);
+			                $(current).find(".option1").text("对");
+			                $(current).find(".option2").text("错");
+			                $(current).find(".input1").val("true");
+			                $(current).find(".input2").val("false");
+			                if(v!=""){
+			                $(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
+			                }
+			                $(current).find("label").append("<br/>");
+			                current.style.display="block";
+			                $(current).find("input[type=radio]").on("input",function(){
+			                    $("#"+record).removeClass("tdunused");
+			                })
+			                break;
+			            case "multi"://多选
+			                $(current).find(".title").text(title);
+			                $(current).find("input").attr("type","checkbox");
+			                $(current).find("input[type=checkbox]").attr("name",input_name);
+			                $(current).find(".option1").text(a);
+			                $(current).find(".option2").text(b);
+			                $(current).find(".option3").text(c);
+			                $(current).find(".option4").text(d);
+			                if(v!=""){
+			                let v2=v.split('')
+		                    console.log(v2)
+		                    for(var j in v2){
+		                        $(current).find("input[type=checkbox][value="+v2[j]+"]").attr("checked","checked")
+		                    }
+			                }
+			                $(current).find("label").append("<br/>");
+			                current.style.display="block";
+			                $(current).find("input[type=checkbox]").click(function(){
+			                    $("#"+record).toggleClass("tdunused");
+			                })
+			                break;
+			            case "blank":
+			                $(current).find(".option3").css("display","none");
+			                $(current).find(".option4").css("display","none");
+			                $(current).find(".input1").css("display","none");
+			                $(current).find(".input3").css("display","none");
+			                $(current).find(".input4").css("display","none");
+			                $(current).find(".title").css("display","none");
+			                if(a !=null){
+			                    $(current).find(".option1").text(a);
+			                }else if(a==null){
+			                    $(current).find(".option1").css("display","none");
+			                }
+			                if(b!=null){
+			                    $(current).find(".option2").text(b);
+			                }else if(b==null){
+			                    $(current).find(".option2").css("display","none");
+			                }
+			                $(current).find(".input2").attr("type","text");
+			                $(current).find(".input2").attr("value","");
+			                $(current).find("input[type=text]").attr("name",input_name);
+			                if(v!=""){
+			                $(current).find("input[type=text]").val(v)
+			                }
+			                current.style.display="flex";
+			                $(current).find("input[type=text]").on("input",function(){
+			                    $("#"+record).toggleClass("tdunused");
+			                })
+			                break;
+			            default:
+			                console.log("")
+			    }; 
+			        })(tDiv[i])
+				};
+				}
+					$("#tno").val(tno_l);
+					$("#tnoForm").submit();
+			}
+			
 
-
-    var saveAjax=setInterval(save_veri,30000);
-    
-}
+		    var saveAjax=setInterval(save_veri,60000);
+		    
+		}
 </script>
 
 </body>

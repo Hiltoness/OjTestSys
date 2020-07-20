@@ -374,7 +374,7 @@ public class mysql_search_canshu {
 			 try {
 				 mysql_DB db=new mysql_DB();
 					conn=db.connectDB();
-					pstm=conn.prepareStatement("select * from select where "+whereat+" =?");	
+					pstm=conn.prepareStatement("select * from selectkc where "+whereat+" =?");	
 					pstm.setString(1, wherevalue);
 					rs=pstm.executeQuery();
 					while(rs.next()) {
@@ -396,11 +396,10 @@ public class mysql_search_canshu {
 	    	try {
 				 mysql_DB db=new mysql_DB();
 					conn=db.connectDB();
-					pstm=conn.prepareStatement("select ? from TestSub where pid="+" =? and type="+" ? and tno="+" ?");	
-					pstm.setString(1, tar);
-					pstm.setInt(2, pid);
-					pstm.setString(3, type);
-					pstm.setInt(4, tid);
+					pstm=conn.prepareStatement("select "+tar+" from TestSub where pid=? and type=? and tno= ?");	
+					pstm.setInt(1, pid);
+					pstm.setString(2, type);
+					pstm.setInt(3, tid);
 					rs=pstm.executeQuery();
 					while(rs.next()) {
 						times=rs.getInt(1);
@@ -417,11 +416,8 @@ public class mysql_search_canshu {
 	    	try {
 				 mysql_DB db=new mysql_DB();
 					conn=db.connectDB();
-					pstm=conn.prepareStatement("select ? from ? where ? = ?");	
-					pstm.setString(1, ansName);
-					pstm.setString(2, dbName);
-					pstm.setString(3, idname);
-					pstm.setInt(4, tid);
+					pstm=conn.prepareStatement("select "+ansName+" from "+dbName+" where "+idname+"= ?");	
+					pstm.setInt(1, tid);
 					rs=pstm.executeQuery();
 					while(rs.next()) {
 						ans=rs.getString(1);
@@ -439,11 +435,8 @@ public class mysql_search_canshu {
 	    	try {
 				 mysql_DB db=new mysql_DB();
 					conn=db.connectDB();
-					pstm=conn.prepareStatement("select ? from ? where ? = ?");	
-					pstm.setString(1, marName);
-					pstm.setString(2, dbName);
-					pstm.setString(3, idname);
-					pstm.setInt(4, tid);
+					pstm=conn.prepareStatement("select "+marName+" from "+dbName+" where "+idname+" = ?");	
+					pstm.setInt(1, tid);
 					rs=pstm.executeQuery();
 					while(rs.next()) {
 						ans=rs.getInt(1);

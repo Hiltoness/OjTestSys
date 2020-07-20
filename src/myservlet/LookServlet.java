@@ -46,6 +46,7 @@ public class LookServlet extends HttpServlet {
 				int tno=l.getsearchtno(pid);
 				flag="true";
 				String start=request.getParameter("start");              //开始时间
+				System.out.println("look"+start);
 				session.setAttribute("tpid", tpid);
 				session.setAttribute("pid",pid);
 				session.setAttribute("pages",pages);
@@ -63,7 +64,7 @@ public class LookServlet extends HttpServlet {
 				session.setAttribute("tno", tno);
 				session.setAttribute("flag",flag);							
 		}
-			response.sendRedirect("BeginTest.jsp");
+			response.sendRedirect("BeginTest");
 		
 		
 	}

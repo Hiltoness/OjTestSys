@@ -56,6 +56,14 @@ public class ContinueTopic extends HttpServlet {
 		//获取题目list
 		int pid=Integer.parseInt(request.getParameter("pid"));//试卷号
 		String xuehao=request.getParameter("xuehao");//学号
+		
+		Map<String,Integer> typeS=new HashMap<String,Integer>(){
+			{put("single",4);
+			put("multi",2);
+			put("judgement",3);
+			put("blank",1);}
+		};
+		
 		List<TestInf> telist=getT.continue_get(pid);//暂存的题目
 		ArrayList<id_type> topiclist=new ArrayList<id_type> ();
 		for(TestInf j:telist){//获取暂存题目的题目选项内容
@@ -65,8 +73,8 @@ public class ContinueTopic extends HttpServlet {
 			tid=j.getTno();
 			c_type=j.getType();
 			each.setValue(j.getAnswer());
-			switch (c_type){
-		 	  case "blank":
+			switch (typeS.get(c_type)){
+		 	  case 1:
 		 		  List<kaoshi_blank> blank=getCon.blank_getData("blankid", tid);
 		 		  each.setId(tid);
 		 		  each.setType("blank");
@@ -76,7 +84,7 @@ public class ContinueTopic extends HttpServlet {
 				  each.setSelect_C("");
 				  each.setSelect_D("");
 		 		  break;
-		 	  case "single":
+		 	  case 4:
 		 		 List<kaoshi_single> sin=getCon.single_getData("singleid", tid);
 			 		each.setId(tid);
 					each.setTitle(sin.get(0).getSsubject());
@@ -86,7 +94,7 @@ public class ContinueTopic extends HttpServlet {
 					each.setSelect_C(sin.get(0).getSoptionC());
 					each.setSelect_D(sin.get(0).getSoptionD());
 		 		  break;
-		 	  case "multi":
+		 	  case 2:
 		 		 List<kaoshi_multi> mul=getCon.multi_getData("multiid", tid);
 			 		each.setId(tid);
 			 		each.setTitle(mul.get(0).getMsubject());
@@ -96,7 +104,7 @@ public class ContinueTopic extends HttpServlet {
 					each.setSelect_C(mul.get(0).getMoptionC());
 					each.setSelect_D(mul.get(0).getMoptionD());
 		 		  break;
-		 	  case "judgement":
+		 	  case 3:
 		 		 List<kaoshi_judgement> jud=getCon.judgement_getData("judgementid", tid);
 			 		each.setId(tid);
 					each.setTitle(jud.get(0).getJtitle());
@@ -123,6 +131,7 @@ public class ContinueTopic extends HttpServlet {
 				put("value",i.getValue());
 				}
 			};
+			System.out.println("获取上次题目"+i.getType());
 			js.put(tpl);
 		}
 		session.setAttribute("tlist", js);

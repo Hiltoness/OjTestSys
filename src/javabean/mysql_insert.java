@@ -11,7 +11,7 @@ public class mysql_insert {
 		try {
 			 mysql_DB db=new mysql_DB();
 				conn=db.connectDB();
-				pstm=conn.prepareStatement("insert into StuTest values(0,?,?,?,?,?)");
+				pstm=conn.prepareStatement("insert into StuTest values(0,?,?,?,?,?,?)");
 				pstm.setString(1, xuehao);
 				pstm.setInt(2, tpid);
 				pstm.setInt(3,goal);
@@ -33,30 +33,23 @@ public class mysql_insert {
 		return pid;
 	}
 	//答卷详情表
-	public int dajuanxq_insert(int pid,String type,int tno,String answer,int goal) {
-		int no=0;
+	public void dajuanxq_insert(int pid,String type,int tno,String answer,int goal) {
+		
 		try {
 			 mysql_DB db=new mysql_DB();
 				conn=db.connectDB();
-				pstm=conn.prepareStatement("insert into TestInf values(?,0,?,?,?,?)");
+				pstm=conn.prepareStatement("insert into TestInf values(?,0,?,?,?)");
 				pstm.setInt(1, pid);
 				pstm.setString(2, type);
-				pstm.setInt(3,tno);
-				pstm.setString(4,answer);
-				pstm.setInt(5,goal);
+				pstm.setString(3,answer);
+				pstm.setInt(4,goal);
 				
 				pstm.executeUpdate();
 				
-				pstm=conn.prepareStatement("SELECT LAST_INSERT_ID()");
-				ResultSet rs=pstm.executeQuery();
-				while(rs.next()){
-					no=rs.getInt(1);
-				}
 				db.close(conn);
 			}catch(SQLException ex){
 			ex.printStackTrace();
-			}
-		return no;		
+			}		
 	}
 	
 	//答卷详情表
@@ -80,7 +73,7 @@ public class mysql_insert {
 	
 	//答卷题目表
 	public int dajuantm_insert(int pid,String type,int atimes,int rtimes) {
-		int tno=0; 
+		
 		try {
 			 mysql_DB db=new mysql_DB();
 				conn=db.connectDB();
@@ -92,16 +85,10 @@ public class mysql_insert {
 				
 				pstm.executeUpdate();
 				
-				pstm=conn.prepareStatement("SELECT LAST_INSERT_ID()");
-				ResultSet rs=pstm.executeQuery();
-				while(rs.next()){
-					tno=rs.getInt(1);
-				}
 				db.close(conn);
 			}catch(SQLException ex){
 			ex.printStackTrace();
 			}
-		return tno;
 	}
 	//所有错题表
 	public void cuoti_insert(String xuehao,String type,int tno,Timestamp start) {

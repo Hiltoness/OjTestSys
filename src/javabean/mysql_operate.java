@@ -60,9 +60,9 @@ public class mysql_operate {
 		   try {
 				 mysql_DB db=new mysql_DB();
 					conn=db.connectDB();
-					pstm=conn.prepareStatement("select * from TestInf where pid =? where tno=? and goal is null");	
+					pstm=conn.prepareStatement("select * from TestInf where pid =? and tno=? and goal is null");	
 					pstm.setInt(1, pid);
-					pstm.setInt(1, tid);
+					pstm.setInt(2, tid);
 					rs=pstm.executeQuery();
 					while(rs.next()) {
 						TestInf bean=new TestInf();
