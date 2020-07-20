@@ -72,7 +72,7 @@ public class mysql_insert {
 		}
 	
 	//答卷题目表
-	public int dajuantm_insert(int pid,String type,int atimes,int rtimes) {
+	public void dajuantm_insert(int pid,String type,int atimes,int rtimes) {
 		
 		try {
 			 mysql_DB db=new mysql_DB();
