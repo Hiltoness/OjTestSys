@@ -67,7 +67,8 @@ public class LLgoto extends HttpServlet {
 			session.setAttribute("teachernamecon", teachernamecon);
 			session.setAttribute("teachernamenew", teachernamenew);
 		}		
-		request.getRequestDispatcher("LookLimitless.jsp").forward(request, response);
+		
+		response.sendRedirect("LookLimitless.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

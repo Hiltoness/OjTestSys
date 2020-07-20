@@ -26,7 +26,8 @@ public class WrongServlet extends HttpServlet {
 		session.setAttribute("timeorall", timeorall);
 		session.setAttribute("pagestart", pagestart);
 		session.setAttribute("xuehao", xuehao);
-		request.getRequestDispatcher("Wrong.jsp").forward(request, response);	
+
+		response.sendRedirect("Wrong.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

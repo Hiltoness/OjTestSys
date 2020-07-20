@@ -21,8 +21,8 @@ public class ChooseServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");		
 		String xuehao=request.getParameter("xuehao");		
 		HttpSession session=request.getSession(true);
-		session.setAttribute("xuehao", xuehao);
-		request.getRequestDispatcher("Choose.jsp").forward(request, response);	
+		session.setAttribute("xuehao", xuehao);	
+		response.sendRedirect("Choose.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

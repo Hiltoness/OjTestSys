@@ -21,10 +21,14 @@ public class MytestServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");	
 		int pid=Integer.parseInt(request.getParameter("pid"));		
 		String xuehao=request.getParameter("xuehao");
+		String kcbianhao=request.getParameter("kcbianhao");
+		String gonghao=request.getParameter("gonghao");
 		HttpSession session=request.getSession(true);
 		session.setAttribute("xuehao", xuehao);
 		session.setAttribute("pid", pid);
-		request.getRequestDispatcher("").forward(request, response);
+		session.setAttribute("kcbianhao", kcbianhao);
+		session.setAttribute("gonghao", gonghao);
+		response.sendRedirect("MyTest.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

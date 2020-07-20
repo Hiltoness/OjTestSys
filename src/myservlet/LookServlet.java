@@ -32,10 +32,11 @@ public class LookServlet extends HttpServlet {
 		String kcbianhao=request.getParameter("kcbianhao");
 		String LLLpattern=request.getParameter("LLLpattern");	//限制或不限制	
 		String flag;      //暂存标记
-		int times=Integer.parseInt(request.getParameter("times"));   //第几次()?????????
+		int times=Integer.parseInt(request.getParameter("times"));   //第几次,在创建新的学生答卷的话要记得加1
 		session.setAttribute("xuehao", xuehao);	
 		session.setAttribute("gonghao", gonghao);	
 		session.setAttribute("kcbianhao", kcbianhao);	
+		session.setAttribute("LLLpattern", LLLpattern);              //限时和不限时 limit limitless
 			if(conornew.equals("con")) {                              //继续答卷
 				//老师答卷表
 				int pid=Integer.parseInt(request.getParameter("pid"));
@@ -50,12 +51,7 @@ public class LookServlet extends HttpServlet {
 				session.setAttribute("pages",pages);
 				session.setAttribute("tno",tno);
 				session.setAttribute("flag",flag);
-				session.setAttribute("start", start);
-				if(LLLpattern.equals("limit")) {                                        //限时模式
-					request.getRequestDispatcher("").forward(request, response);
-			}else {
-				request.getRequestDispatcher("").forward(request, response);               //不限时模式
-			}	
+				session.setAttribute("start", start);				
 			}else {                                                                       //开始新的答卷
 				int pages=0;
 				int tno=0;
@@ -65,13 +61,9 @@ public class LookServlet extends HttpServlet {
 				session.setAttribute("tpid", tpid);	
 				session.setAttribute("pages", pages);
 				session.setAttribute("tno", tno);
-				session.setAttribute("flag",flag);
-				if(LLLpattern.equals("limit")) {                                        //限时模式
-					request.getRequestDispatcher("").forward(request, response);
-			}else {
-				request.getRequestDispatcher("").forward(request, response);               //不限时模式
-			}			
+				session.setAttribute("flag",flag);							
 		}
+			response.sendRedirect("BeginTest.jsp");
 		
 		
 	}
