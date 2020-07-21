@@ -48,22 +48,29 @@ public class CreatePage extends HttpServlet {
 		response.setContentType("application/json; charset=utf-8");
 		mysql_insert insert=new mysql_insert();
 		mysql_search_canshu getCon=new mysql_search_canshu();
-		response.setContentType("application/json; charset=utf-8");
 		String xuehao=request.getParameter("xuehao");
 		int pid=Integer.parseInt(request.getParameter("pid"));
+		
+		Map<String,Integer> typeS=new HashMap<String,Integer>(){
+			{put("single",4);
+			put("multi",2);
+			put("judgement",3);
+			put("blank",1);}
+		};
 		
 		ArrayList<TestInf> testlist=new ArrayList<TestInf> ();
 		ArrayList<Topic_Answer> anslist=new ArrayList<Topic_Answer> ();
 		
 		testlist=getCon.test_getData(pid);
+		System.out.print(testlist);
 		for(TestInf i:testlist){
 			Topic_Answer each=new Topic_Answer();
 			String type=i.getType();
 			String answer=i.getAnswer();
 			int tid=i.getTno();
 			each.setValue(answer);//作答结果
-			switch(type){
-			case "blank":
+			switch(typeS.get(type)){
+			case 1:
 		 		  List<kaoshi_blank> blank=getCon.blank_getData("blankid", tid);
 		 		  each.setId(tid);
 		 		  each.setType("blank");
@@ -74,7 +81,7 @@ public class CreatePage extends HttpServlet {
 				  each.setSelect_D("");
 				  each.setAnswer(blank.get(0).getBanswer());
 		 		  break;
-		 	  case "single":
+		 	  case 4:
 		 		 List<kaoshi_single> sin=getCon.single_getData("singleid", tid);
 			 		each.setId(tid);
 					each.setTitle(sin.get(0).getSsubject());
@@ -85,7 +92,7 @@ public class CreatePage extends HttpServlet {
 					each.setSelect_D(sin.get(0).getSoptionD());
 					each.setAnswer(sin.get(0).getSanswer());
 		 		  break;
-		 	  case "multi":
+		 	  case 2:
 		 		 List<kaoshi_multi> mul=getCon.multi_getData("multiid", tid);
 			 		each.setId(tid);
 			 		each.setTitle(mul.get(0).getMsubject());
@@ -96,7 +103,7 @@ public class CreatePage extends HttpServlet {
 					each.setSelect_D(mul.get(0).getMoptionD());
 					each.setAnswer(mul.get(0).getManswer());
 		 		  break;
-		 	  case "judgement":
+		 	  case 3:
 		 		 List<kaoshi_judgement> jud=getCon.judgement_getData("judgementid", tid);
 			 		each.setId(tid);
 					each.setTitle(jud.get(0).getJtitle());
@@ -125,6 +132,7 @@ public class CreatePage extends HttpServlet {
 					put("answer",j.getAnswer());	
 					}
 				};
+				js.put(ans);
 			}
 		
 		PrintWriter out=response.getWriter();

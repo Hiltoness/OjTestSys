@@ -95,7 +95,7 @@ public class PageSubmit extends HttpServlet {
 		Timestamp start=new Timestamp(start1);//当前时间
 		//用map来接收request发送过来的多维数组
         String list=request.getParameter("anslist");
-        //System.out.print(list);
+        System.out.print("ser接收到的："+list);
         ArrayList<Tlist> tlist=new ArrayList<Tlist> ();
         JSONArray jsonA;
 		try {
@@ -124,6 +124,7 @@ public class PageSubmit extends HttpServlet {
 				String solution=search.getAnswer(typeDB,type+"id", ansDB, tid);
 				//获取该题分数
 				int mark=search.getMark(typeDB,type+"id", marDB, tid);
+				System.out.print("结果" +value+" 答案"+solution);
 				if(solution.equals(value)){//正确
 					righttime++;
 					disappear=true;
@@ -140,11 +141,13 @@ public class PageSubmit extends HttpServlet {
 					}
 						
 				}
+				System.out.print("得分" +mark+" 答案"+solution);
 				if(s.size()>0){
 					update.testsub_update(apptime, righttime, pid, type, tid);
 					update.testinf_update(value, mark, pid, tno);
 				}else{
-					insert.dajuantm_insert(pid, type, apptime, righttime);
+					System.out.println(pid+" "+type+" "+tid+" "+apptime+" "+righttime+" "+value+" "+mark);
+					insert.dajuantm_insert(pid, type, tid,apptime, righttime);
 					insert.dajuanxq_insert(pid, type, tid, value, mark);
 				}
 				
@@ -160,7 +163,7 @@ public class PageSubmit extends HttpServlet {
 		}
 		session.setAttribute("tlist", tlist);
 		System.out.print(s_flag.equals("1"));
-		if(s_flag==("1")){//提交
+		if(s_flag.equals("1")){//提交
 			System.out.print(" 开始提交");
 			//计算总分
 			sum.goal_update(pid);
@@ -171,6 +174,7 @@ public class PageSubmit extends HttpServlet {
 			System.out.print("提交成，返回");
 			response.sendRedirect("LookLimit.jsp");//返回完成页面
 		}else{
+			System.out.print(" 没有提交");
 			//跳转出题servlet
 			//返回数据到ajax中
 			 

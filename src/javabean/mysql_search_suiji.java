@@ -62,7 +62,7 @@ public class mysql_search_suiji {
 						  for(int ax=0;ax<a_blank.size()-1;ax++){
 							  sql1+=a_blank.get(ax)+",";
 						  }
-						  sql1+=a_blank.get(a_blank.size()-1)+") limit 1";
+						  sql1+=a_blank.get(a_blank.size()-1)+") ORDER BY rand() limit 1";
 					  }
 					  pstm=conn.prepareStatement(sql1);		
 					  rs=pstm.executeQuery();
@@ -90,7 +90,7 @@ public class mysql_search_suiji {
 						  for(int ax=0;ax<a_judge.size()-1;ax++){
 							  sql2+=a_judge.get(ax)+",";
 						  }
-						  sql2+=a_judge.get(a_judge.size()-1)+") limit 1";
+						  sql2+=a_judge.get(a_judge.size()-1)+") ORDER BY rand() limit 1";
 					  }
 					  pstm=conn.prepareStatement(sql2);	
 					  rs=pstm.executeQuery();
@@ -116,7 +116,7 @@ public class mysql_search_suiji {
 						  for(int ax=0;ax<a_multi.size()-1;ax++){
 							  sql3+=a_multi.get(ax)+",";
 						  }
-						  sql3+=a_multi.get(a_multi.size()-1)+") limit 1";
+						  sql3+=a_multi.get(a_multi.size()-1)+") ORDER BY rand() limit 1";
 					  }
 					  pstm=conn.prepareStatement(sql3);		
 					  rs=pstm.executeQuery();
@@ -143,7 +143,7 @@ public class mysql_search_suiji {
 						  for(int ax=0;ax<a_single.size()-1;ax++){
 							  sql4+=a_single.get(ax)+",";
 						  }
-						  sql4+=a_single.get(a_single.size()-1)+") limit 1";
+						  sql4+=a_single.get(a_single.size()-1)+") ORDER BY rand() limit 1";
 					  }
 					  pstm=conn.prepareStatement(sql4);		
 					  rs=pstm.executeQuery();

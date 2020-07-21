@@ -2,6 +2,8 @@ package myservlet;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javabean.mysql_insert;
@@ -56,8 +58,30 @@ public class BeginTest extends HttpServlet {
 		if(flag.equals("true")){//暂存
 			int pid=Integer.parseInt(session.getAttribute("pid").toString());//学生答卷号
 			start=session.getAttribute("start").toString();//开始时间
-			System.out.print(start);
-			session.setAttribute("start", start);
+			
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date;
+			try {
+				date = sdf.parse(start);
+				long ts=date.getTime();
+				session.setAttribute("start",ts);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+//			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//			Timestamp sss=Timestamp.valueOf(start);
+//			try {
+//				Timestamp aaa=new Timestamp(sdf.parse(start).getTime()/1000);
+//				System.out.print(aaa);
+//				session.setAttribute("start", aaa);
+//			} catch (ParseException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			
+			
 			String p=Integer.toString(pid);
 			session.setAttribute("pid", p);
 			session.setAttribute("tno", tno);

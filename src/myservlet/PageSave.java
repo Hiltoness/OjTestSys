@@ -64,7 +64,7 @@ public class PageSave extends HttpServlet {
 		response.setContentType("application/json; charset=utf-8");
 		String xuehao=request.getParameter("xuehao");//学号
 		int pid=Integer.parseInt(request.getParameter("pid"));//试卷id
-		int pages=Integer.parseInt(request.getParameter("pages"));
+//		int pages=Integer.parseInt(request.getParameter("pages"));
 		//用map来接收request发送过来的多维数组
         String list=request.getParameter("list");
         System.out.print(list);
@@ -84,7 +84,7 @@ public class PageSave extends HttpServlet {
 					update.testsub_update(0, 0, pid, type, tid);
 					update.testinf_update1(value, pid, tno);
 				}else{//insert
-					insert.dajuantm_insert(pid, type, 0, 0);
+					insert.dajuantm_insert(pid, type,tid, 0, 0);
 					insert.dajuanxq_insert1(pid, type, tid, value);
 				}
 			}
@@ -92,6 +92,6 @@ public class PageSave extends HttpServlet {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 	}
-		session.setAttribute("pages", pages);
+//		session.setAttribute("pages", pages);
 	}
 }
