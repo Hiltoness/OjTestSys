@@ -78,7 +78,7 @@ for(int i=0;i<year.size();i++){
 <div class="dropdown">
   <button class="dropbtn"><%=all %></button>
   <div class="dropdown-content">
-    <a href="LLgoto?xuehao=<%=xuehao%>&timeorall=<%="all"%>&pattern=<%=pattern %>">全部学年</a>
+    <a href="Lgoto?xuehao=<%=xuehao%>&timeorall=<%="all"%>&pattern=<%=pattern %>">全部学年</a>
     <%    for(int i=0;i<year.size();i++){ 
     String year1=Integer.toString(year.get(i));  
     String year2=Integer.toString(year.get(i)+1);  
@@ -186,7 +186,7 @@ for(int i=0;i<teatestlistnew.size();i++){
 <td><%=beant2.getEnd() %></td>
 <td><%=beanr2 %></td>
 <td><%=beant2.getTimes() %></td>
-<td><a  href="LookServlet?xuehao=<%=xuehao %>&times=<%=beant2.getTimes()-beanr2 %>&LLLpattern=<%="limit" %>
+<td><a  href="LookServlet?xuehao=<%=xuehao %>&times=<%=beant2.getTimes()-beanr2 %>&LLLpattern=<%="limitless" %>
 &conornew=<%="new" %>&tpid=<%=beant2.getTpid() %>&kcbianhao=<%=beant2.getKcbianhao() %>&gonghao=<%=beant2.getGonghao() %>" class="aleft">开始答卷</a></td>
 </tr>
 <%} }%>
