@@ -334,7 +334,7 @@
 			}
 			
 
-		    var saveAjax=setInterval(save_veri,60000);
+		    var saveAjax=setInterval(save_veri("<%=xuehao%>",<%=pid%>),60000);
 		    
 		}
 
