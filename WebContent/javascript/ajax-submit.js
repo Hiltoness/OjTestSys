@@ -15,16 +15,16 @@ function submit_veri(){
             var type=$("input[name="+name+"]").attr("type");
             switch(type){
                 case "radio":
-                    var values=$("input[name="+name+"]:checked").val()
+                    values=$("input[name="+name+"]:checked").val()
                     break;
                 case "checkbox":
-                    var values=$("input[type=checkbox][name="+name+"]:checked").map(function(){
+                    values=$("input[type=checkbox][name="+name+"]:checked").map(function(){
                         return $(this).val();
                     }).toArray().join("");
                     console.log(values);
                     break;
                 case "text":
-                    var values=$("input[name="+name+"]").val()
+                    values=$("input[name="+name+"]").val()
                     break;
                 default:
                     console.log("1")    
@@ -40,7 +40,6 @@ function submit_veri(){
             anslist.value=values;
             anslist_1.push(anslist);
         })(tDiv[i])
-        
     }
     return anslist_1
 
@@ -54,7 +53,8 @@ function submit_self(){
 	let kc=arguments[3];
 	let gh=arguments[4];
     let list1=submit_veri();//作答结果
-    console.log(JSON.stringify(list1))
+    console.log(JSON.stringify(list1));
+    console.log(flag);
     console.log(time_begin);
     if(flag==true){
     	let a=(s_flag=='1'?confirm_veri():confirm_next())
@@ -68,55 +68,18 @@ function submit_self(){
             	 "xuehao":nums,//学号
             	 "pid":pid},//答卷号
              success:function(adata){
-            	 if(s_flag==0){
-            		 console.log("下一页")
-            		 get_topic(adata,nums,kc,gh);
-                     //alert("提交成功")
-            	 }else{
-            		 console.log("succcccc");
-            		 location.href="LookLimit.jsp?xuehao="+nums //答卷页面
-            	 }
-                     
+            	 get_topic(adata,nums,pid,kc,gh,s_flag);
+ 
              },
              error:function(xhr){
-            	 	 console.log("提交失败")
-                     alert(xhr.status);
+            	 		alert("提交失败");
+                     
              },
              traditional: true
          })
-//        clearInterval(saveAjax)
-        
-        
         }
     }else{
-    	$.ajax({
-            url:"PageSubmit",
-            type:"post",
-            data:{"anslist":JSON.stringify(list1),
-           	 "s_flag":s_flag,//提交or下一页标记
-           	 "xuehao":nums,//学号
-           	 "pid":pid},//答卷号
-            success:function(adata){
-           	 if(s_flag==0){
-           		 console.log("下一页");
-           		 get_topic(adata,nums,kc,gh);
-                    //alert("提交成功")
-           	 }else{
-        		 console.log("succcccc");
-        		 location.href="LookLimit.jsp?xuehao="+nums //答卷页面
-        	 }
-                 
-                    
-            },
-            error:function(xhr){
-           	 	 console.log("提交失败")
-                    alert(xhr.status);
-            },
-            traditional: true
-        })
-//       clearInterval(saveAjax)
-       
-       location.href="LookLimit.jsp?xuehao="+nums //答卷页面
+//       location.href="LookLimit.jsp?xuehao="+nums //答卷页面
        }
     
 
@@ -126,7 +89,7 @@ function submit_self(){
 function submit_auto(){
 	let nums=arguments[0];//学号
 	let pid=arguments[1];//答卷号
-	let pa=arguments[2];//第几页
+	let s_flag=arguments[2];
     let list2=submit_veri()
     console.log(JSON.stringify(list2));
 
@@ -135,19 +98,18 @@ function submit_auto(){
          type:"post",
          data:{"anslist":JSON.stringify(list2),
         	 "xuehao":nums,//学号
-        	 "pages":pa,//页数
-        	 "pid":pid},//答卷号,
+        	 "pid":pid,
+        	 "s_flag":s_flag},//答卷号,
          success:function(msg){
-                 alert(msg);
+                 alert("已为你自动提交");
          },
          error:function(xhr){
-                 alert(xhr.status);
+                 //alert(xhr.status);
          },
          traditional: true
      })
     
     //clearInterval(saveAjax)
-    alert("已为你自动提交")
     location.href="LookLimit.jsp?xuehao="+nums //答卷页面
 }
 
@@ -166,18 +128,19 @@ function save_veri(){
             let id_1=$(current).find(".idset").attr("data-tid");
             let type_1=$(current).find(".idset").attr("data-type");
             let type=$("input[name="+name+"]").attr("type");
+            let values;
             switch(type){
                 case "radio":
-                    var values=$("input[name="+name+"]:checked").val()
+                    values=$("input[name="+name+"]:checked").val()
                     break;
                 case "checkbox":
-                    var values=$("input[type=checkbox][name="+name+"]:checked").map(function(){
+                    values=$("input[type=checkbox][name="+name+"]:checked").map(function(){
                         return $(this).val();
                     }).toArray().join("");
                     console.log(values);
                     break;
                 case "text":
-                    var values=$("input[name="+name+"]").val()
+                    values=$("input[name="+name+"]").val()
                     break;
                 default:
                     console.log("1")    
@@ -198,14 +161,12 @@ function save_veri(){
          type:"post",
          data:{"anslist":JSON.stringify(anslist_1),
         	 "xuehao":nums,//学号
-        	 "pages":pa,//页数
         	 "pid":pid,},//答卷号
          success:function(msg){
-                 alert(msg);
                  alert("作答结果保存成功")
          },
          error:function(xhr){
-                 alert(xhr.status);
+                 //alert(xhr.status);
          },
          traditional: true
      })
@@ -219,22 +180,29 @@ function get_topic(){
 	let pid=arguments[2];//答卷号
 	let kc=arguments[3];
 	let gh=arguments[4];
-	$.ajax({
-		url:"GetTopic",
-		type:"post",
-		data:{"xuehao":nums,
-			"pid":pid,
-			"kcbianhao":kc,
-			"gonghao":gh,
-			"tlist":alist},
-			  
-		success:function(data){
-			showT(data)
-		},
-		error:function(){
-			
-		}
-	})
+	let s_flag=arguments[5];
+	if(s_flag==0){
+		$.ajax({
+			url:"GetTopic",
+			type:"post",
+			data:{"xuehao":nums,
+				"pid":pid,
+				"kcbianhao":kc,
+				"gonghao":gh,
+				"tlist":alist},
+				  
+			success:function(data){
+				showT(data)
+			},
+			error:function(){
+				
+			}
+		})
+	}else{
+		alert("提交成功");
+  		 location.href="LookLimit.jsp?xuehao="+nums //答卷页面
+	}
+	
 }
 
 function confirm_veri(){

@@ -21,7 +21,7 @@
         $("#timer").text(timerDisplay);
         if(minutesLeft==0 && secondsLeft==0){
             clearInterval(mytime);
-            submit_auto();
+            submit_auto(xuehao,pid,'1');
             $("#submit_button").attr("disabled",true);
         }
     }
