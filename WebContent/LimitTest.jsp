@@ -134,16 +134,14 @@ var time_begin=new Date(start1*1000)
 console.log(time_begin)
 var status="origin"
 var tno_l="<%=tno%>";//上一题号
+var xuehao= "<%=xuehao%>";//全局-学号
+var kcbianhao="<%=kcbianhao%>";//课程编号
+var gonghao="<%=gonghao%>";//教师工号
+var tpid=<%=tpid%>;//试卷号
+var c_flag="<%=c_flag%>";//暂存标记
+var pid=<%=pid%>
 window.onload=function(){
-	//测试数据
-	
-	var xuehao= "<%=xuehao%>";//全局-学号
-	var kcbianhao="<%=kcbianhao%>";//课程编号
-	var gonghao="<%=gonghao%>";//教师工号
-	var tpid=<%=tpid%>;//试卷号
-	
-	var c_flag="<%=c_flag%>";//暂存标记
-	
+
 	console.log(tpid)
 	console.log(tno_l)
 	
@@ -153,7 +151,7 @@ window.onload=function(){
 		showT(tlist)
 	}
 	function getLast(){
-		var pid=<%=pid%>
+		
 		$.ajax({
 			url:"ContinueTopic",
 			type:"post",

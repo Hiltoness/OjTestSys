@@ -14,7 +14,7 @@
 <script src="javascript/limitless.js"></script>
 <style>
         .title{
-            display: block;
+            display: inline;
         }
         .submitStyle{
         	background-color:#008080;
@@ -64,7 +64,7 @@
 	
 	//获取试卷名
 	mysql_operate op=new mysql_operate();
-	String testname=op.selectName(pid);
+	String testname=op.selectName(tpid);
 	
 	
 %>
@@ -101,14 +101,20 @@
 				
 			</div>
 			<div class="left">
+			<%
+				for(int i=0;i<10;i++){
+			%>
 					<div class="topic" style="display: none;">
-						<label class="title"></label> 
+						<span class="tnum"></span>&nbsp;&nbsp;<label class="title"></label> 
 						<input style="display: none;" class="idset" name="" data-tid="" data-type="" data-tno=""/> 
 						<input class="input1" type="" value="a" form="test" name="" /><label class="option1"></label> 
 						<input class="input2" type="" value="b" form="test" name="" /><label class="option2"></label> 
 						<input class="input3" type="" value="c" form="test" name="" /><label class="option3"></label> 
 						<input class="input4" type="" value="d" form="test" name="" /><label class="option4"></label>
 					</div>
+					<%
+				}
+		%>
 					<form id="test" action="" method="">
 				        <button type="submit" class="submitlv" onclick="submit_self(0)" id="next_button">下一页</button>
 				    </form>
@@ -131,15 +137,16 @@
 		console.log(time_begin)
 		var status="origin"
 		var tno_l="<%=tno%>";//上一题号
+		var xuehao= "<%=xuehao%>";//全局-学号
+		var kcbianhao="<%=kcbianhao%>";//课程编号
+		var gonghao="<%=gonghao%>";//教师工号
+		var tpid=<%=tpid%>;//试卷号
+		
+		var c_flag="<%=c_flag%>";//暂存标记
 		window.onload=function(){
 			//测试数据
 			
-			var xuehao= "<%=xuehao%>";//全局-学号
-			var kcbianhao="<%=kcbianhao%>";//课程编号
-			var gonghao="<%=gonghao%>";//教师工号
-			var tpid=<%=tpid%>;//试卷号
 			
-			var c_flag="<%=c_flag%>";//暂存标记
 			
 			console.log(tpid)
 			console.log(tno_l)
