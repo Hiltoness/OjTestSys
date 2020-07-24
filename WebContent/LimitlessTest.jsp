@@ -298,8 +298,12 @@
 			                }
 			                $(current).find("label").append("<br/>");
 			                current.style.display="block";
-			                $(current).find("input[type=checkbox]").click(function(){
-			                    $("#"+record).toggleClass("tdunused");
+			                $(current).find("input[type=checkbox]").change(function(){
+			                	if($("input[type=checkbox][name="+input_name+"]:checked").length>0){
+			                		$("#"+record).removeClass("tdunused");
+			                	}else{
+			                		$("#"+record).addClass("tdunused");
+			                	}
 			                })
 			                break;
 			            case "blank":
