@@ -75,25 +75,25 @@
 			<h2><%=testname %></h2>
 			<div class="float">
 			<div style="display:flex">
-				<table border="1" cellspacing="0" cellpadding="10"
+				<table class="recordFrame" border="1" cellspacing="0" cellpadding="10"
 					bordercolor="#ffffff" style="margin: 30px;position:absolute;left:0%">
 					<tr>
-						<td id="r1" class="tdunused"><a href="#t0">1</a></td>
-						<td id="r2" class="tdunused"><a href="#t1">2</a></td>
-						<td id="r3" class="tdunused"><a href="#t2">3</a></td>
-						<td id="r4" class="tdunused"><a href="#t3">4</a></td>
-						<td id="r5" class="tdunused"><a href="#t4">5</a></td>
+						<td name="recordFrame" id="r1" class="tdunused"><a href="#t0">1</a></td>
+						<td name="recordFrame" id="r2" class="tdunused"><a href="#t1">2</a></td>
+						<td name="recordFrame" id="r3" class="tdunused"><a href="#t2">3</a></td>
+						<td name="recordFrame" id="r4" class="tdunused"><a href="#t3">4</a></td>
+						<td name="recordFrame" id="r5" class="tdunused"><a href="#t4">5</a></td>
 					</tr>
 					<tr>
-						<td id="r6" class="tdunused"><a href="#t5">6</a></td>
-						<td id="r7" class="tdunused"><a href="#t6">7</a></td>
-						<td id="r8" class="tdunused"><a href="#t7">8</a></td>
-						<td id="r9" class="tdunused"><a href="#t8">9</a></td>
-						<td id="r10" class="tdunused"><a href="#t9">10</a></td>
+						<td name="recordFrame" id="r6" class="tdunused"><a href="#t5">6</a></td>
+						<td name="recordFrame" id="r7" class="tdunused"><a href="#t6">7</a></td>
+						<td name="recordFrame" id="r8" class="tdunused"><a href="#t7">8</a></td>
+						<td name="recordFrame" id="r9" class="tdunused"><a href="#t8">9</a></td>
+						<td name="recordFrame" id="r10" class="tdunused"><a href="#t9">10</a></td>
 					</tr>
 					
 				</table>
-				<button type="submit" form="test" class="submitStyle" onclick="submit_self('1','<%=xuehao %>',<%=pid%>,'<%=kcbianhao %>','<%=gonghao %>');" id="submit_button">提交</button>
+				<button type="button" form="test" class="submitStyle" onclick="submit_self('1','<%=xuehao %>',<%=pid%>,'<%=kcbianhao %>','<%=gonghao %>');" id="submit_button">提交</button>
 				<div class="floatBottom">
 					<span>已用时间：</span><div style="display:contents;height: 30px;width:30px;"><span style="width:50px" id="timer"></span></div>
 				</div>
@@ -105,18 +105,19 @@
 				for(int i=0;i<10;i++){
 			%>
 					<div class="topic" style="display: none;">
-						<span class="tnum"></span>&nbsp;&nbsp;<label class="title"></label> 
-						<input style="display: none;" class="idset" name="" data-tid="" data-type="" data-tno=""/> 
+						<span class="tnum"></span><a  >&nbsp;&nbsp;</a><label class="title"></label> 
+						<span style="display: none;" class="idset" name="" data-tid="" data-type="" data-tno=""></span> 
 						<input class="input1" type="" value="a" form="test" name="" /><label class="option1"></label> 
 						<input class="input2" type="" value="b" form="test" name="" /><label class="option2"></label> 
 						<input class="input3" type="" value="c" form="test" name="" /><label class="option3"></label> 
 						<input class="input4" type="" value="d" form="test" name="" /><label class="option4"></label>
 					</div>
-					<%
+		<%
 				}
 		%>
 					<form id="test" action="" method="">
-				        <button type="submit" class="submitlv" onclick="submit_self(0)" id="next_button">下一页</button>
+						<button type="button" class="submitlv" onclick="submit_self('0','<%=xuehao %>',<%=pid%>,'<%=kcbianhao %>','<%=gonghao %>');" id="next_button">下一页</button>
+				        
 				    </form>
 					 <%--<form  method="post" action="LimitlessTest.jsp" id ="tnoForm"> 
 				     	<input id ="tno" type ="hidden" name="tno"> 
@@ -128,6 +129,13 @@
 	</div>
 	<jsp:include page="mainfoot.jsp"></jsp:include>
 <script>
+window.addEventListener("onbeforeunload",function(){
+	if(window.confirm("是否要离开答题页面")){
+        return true;
+    }else{
+        return false;
+    }
+});
 	var start2="<%=start2%>"//开始时间
 		var date1=start2.replace(/-/g,'/');
 		var time_str=new Date(date1);
@@ -143,10 +151,7 @@
 		var tpid=<%=tpid%>;//试卷号
 		
 		var c_flag="<%=c_flag%>";//暂存标记
-		window.onload=function(){
-			//测试数据
-			
-			
+
 			
 			console.log(tpid)
 			console.log(tno_l)
@@ -209,18 +214,20 @@
 				}
 			//显示题目
 		    var tDiv=$(".topic");
-			function showT(){
+		    function showT(){
 				var ttlist=arguments[0]
 				if(ttlist.length==0){
 					alert("你已抽空题库")
 				}else{
 				console.log(ttlist)
 				//t1list=(JSON.parse(ttlist))
-				
+				$(".recordFrame").find("td").attr("class","tdunused");
 					
 				
 				for(var i=0;i<tDiv.length;i++){
 					(function(current){
+						$(current).find("*").css("display","none");
+						var v="";
 			            var type=ttlist[i].type;
 			            var id=ttlist[i].id;
 			            var title=ttlist[i].title;
@@ -228,7 +235,7 @@
 			            var b=ttlist[i].b;
 			            var c=ttlist[i].c;
 			            var d=ttlist[i].d;
-			            var v=ttlist[i].value;
+			            v=ttlist[i].value;
 			            var name="t"+i;
 			            var input_name="i"+i;
 			            var record="r"+(i+1);
@@ -239,17 +246,31 @@
 			            $(current).find(".idset").attr("data-type",type);
 			            $(current).find(".idset").attr("data-tno",tno_l);
 			            $(current).find(".idset").attr("name",name);
+			            $(current).find("a").attr("name",name);
+			            $(current).find("a").css("display","inline");
 			            $(current).find(".tnum").text(tno_l);
+			            $(current).find(".tnum").css("display","inline");
+			            $(current).find("input").val("");
+			            for(var k=0;k<$(current).find("input ").length;k++){
+		            		$(current).find("input")[k].checked=false;
+		            		
+		            	}
 			            switch(type) {
 			            case "single"://单选
 			                $(current).find(".title").text(title);
 			                $(current).find("input").attr("type","radio");
 			                $(current).find("input[type=radio]").attr("name",input_name);
-			                $(current).find(".option1").text(a);
-			                $(current).find(".option2").text(b);
-			                $(current).find(".option3").text(c);
-			                $(current).find(".option4").text(d);
+			                $(current).find(".input1").val("a");
+			                $(current).find(".input2").val("b");
+			                $(current).find(".input3").val("c");
+			                $(current).find(".input4").val("d");
+			                $(current).find(".option1").text("A."+a);
+			                $(current).find(".option2").text("B."+b);
+			                $(current).find(".option3").text("C."+c);
+			                $(current).find(".option4").text("D."+d);
 			                $(current).find("label").append("<br/>");
+			                $(current).find("input[type=radio]").css("display","inline-block");
+			                $(current).find("label").css("display","inline");
 			                if(v!=""){
 			                	$(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
 			                }
@@ -261,17 +282,18 @@
 			                break;
 			            
 			            case "judgement"://判断
-			                $(current).find(".option3").css("display","none");
-			                $(current).find(".option4").css("display","none");
-			                $(current).find(".input3").css("display","none");
-			                $(current).find(".input4").css("display","none");
 			                $(current).find(".title").text(title);
+			                $(current).find(".title").css("display","inline");
 			                $(current).find("input").attr("type","radio");
 			                $(current).find("input[type=radio]").attr("name",input_name);
 			                $(current).find(".option1").text("对");
 			                $(current).find(".option2").text("错");
+			                $(current).find(".option1").css("display","inline");
+			                $(current).find(".option2").css("display","inline");
 			                $(current).find(".input1").val("true");
 			                $(current).find(".input2").val("false");
+			                $(current).find(".input1").css("display","inline-block");
+			                $(current).find(".input2").css("display","inline-block");
 			                if(v!=""){
 			                $(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
 			                }
@@ -285,10 +307,16 @@
 			                $(current).find(".title").text(title);
 			                $(current).find("input").attr("type","checkbox");
 			                $(current).find("input[type=checkbox]").attr("name",input_name);
-			                $(current).find(".option1").text(a);
-			                $(current).find(".option2").text(b);
-			                $(current).find(".option3").text(c);
-			                $(current).find(".option4").text(d);
+			                $(current).find(".input1").val("a");
+			                $(current).find(".input2").val("b");
+			                $(current).find(".input3").val("c");
+			                $(current).find(".input4").val("d");
+			                $(current).find(".option1").text("A."+a);
+			                $(current).find(".option2").text("B."+b);
+			                $(current).find(".option3").text("C."+c);
+			                $(current).find(".option4").text("D."+d);
+			                $(current).find("input[type=checkbox").css("display","inline-block");
+			                $(current).find("label").css("display","inline");
 			                if(v!=""){
 			                let v2=v.split('')
 		                    console.log(v2)
@@ -307,27 +335,20 @@
 			                })
 			                break;
 			            case "blank":
-			                $(current).find(".option3").css("display","none");
-			                $(current).find(".option4").css("display","none");
-			                $(current).find(".input1").css("display","none");
-			                $(current).find(".input3").css("display","none");
-			                $(current).find(".input4").css("display","none");
-			                $(current).find(".title").css("display","none");
 			                if(a !=null){
 			                    $(current).find(".option1").text(a);
-			                }else if(a==null){
-			                    $(current).find(".option1").css("display","none");
+			                    $(current).find(".option1").css("display","inline");
 			                }
 			                if(b!=null){
 			                    $(current).find(".option2").text(b);
-			                }else if(b==null){
-			                    $(current).find(".option2").css("display","none");
+			                    $(current).find(".option2").css("display","inline");
 			                }
 			                $(current).find(".input2").attr("type","text");
-			                $(current).find(".input2").attr("value","");
+			                $(current).find(".input2").val("");
+			                $(current).find(".input2").css("display","inline");
 			                $(current).find("input[type=text]").attr("name",input_name);
 			                if(v!=""){
-			                $(current).find("input[type=text]").val(v)
+			                	$(current).find("input[type=text]").val(v)
 			                }
 			                current.style.display="flex";
 			                $(current).find("input[type=text]").on("input",function(){
@@ -347,7 +368,7 @@
 
 		    var saveAjax=setInterval(save_veri("<%=xuehao%>",<%=pid%>),60000);
 		    
-		}
+
 
 </script>
 
