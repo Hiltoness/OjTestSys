@@ -66,7 +66,7 @@ public class PageSave extends HttpServlet {
 		int pid=Integer.parseInt(request.getParameter("pid"));//试卷id
 //		int pages=Integer.parseInt(request.getParameter("pages"));
 		//用map来接收request发送过来的多维数组
-        String list=request.getParameter("list");
+        String list=request.getParameter("anslist");
         System.out.print(list);
         JSONArray jsonA;
 		try {
