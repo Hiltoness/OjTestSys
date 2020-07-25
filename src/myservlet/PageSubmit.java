@@ -96,16 +96,17 @@ public class PageSubmit extends HttpServlet {
 		//用map来接收request发送过来的多维数组
         String list=request.getParameter("anslist");
         System.out.print("ser接收到的："+list);
-        ArrayList<Tlist> tlist=new ArrayList<Tlist> ();
+//        ArrayList<Tlist> tlist=new ArrayList<Tlist> ();
+        JSONArray js=new JSONArray();
         JSONArray jsonA;
 		try {
 			jsonA = new JSONArray(list);
 			for(int i=0;i<jsonA.length();i++){
-				Tlist eachT=new Tlist();
+//				Tlist eachT=new Tlist();
 				JSONObject jsonO=jsonA.getJSONObject(i);
 				int tno=Integer.parseInt(jsonO.get("tno").toString());//题号
-				int tid=Integer.parseInt(jsonO.get("id").toString());//题目id
-				String type=jsonO.get("type").toString();//题目类型
+				final int tid=Integer.parseInt(jsonO.get("id").toString());//题目id
+				final String type=jsonO.get("type").toString();//题目类型
 			    String typeDB=typeS.get(type);//对应表名
 			    String ansDB=ansS.get(type);
 			    String marDB=marS.get(type);
@@ -152,16 +153,20 @@ public class PageSubmit extends HttpServlet {
 				}
 				
 				if(disappear){
-					eachT.setId(tid);
-					eachT.setType(type);
-					tlist.add(eachT);
+					Map<String,String> tpl=new HashMap<String,String>(){
+						{put("id",Integer.toString(tid));
+						put("type",type);}};
+					js.put(tpl);
+//					eachT.setId(tid);
+//					eachT.setType(type);
+//					tlist.add(eachT);
 				}
 			}
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		session.setAttribute("tlist", tlist);
+		session.setAttribute("tlist", js);
 		System.out.print(s_flag.equals("1"));
 		if(s_flag.equals("1")){//提交
 			System.out.print(" 开始提交");
@@ -172,15 +177,16 @@ public class PageSubmit extends HttpServlet {
 			Timestamp end1=new Timestamp(end);
 			update.endtime_update(end1, pid);//更新结束时间
 			System.out.print("提交成，返回");
-			response.sendRedirect("LookLimit.jsp");//返回完成页面
+			response.sendRedirect("LookLimit.jsp?xuehao="+xuehao);//返回完成页面
 		}else{
 			System.out.print(" 没有提交");
 			//跳转出题servlet
 			//返回数据到ajax中
-			 
 			PrintWriter out=response.getWriter();
-			out.println(tlist);  
+			out.print(js);  
+			
 		}
+		
 		  
 	}
 
