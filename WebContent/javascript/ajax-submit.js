@@ -141,24 +141,24 @@ function save_veri(){
 	let nums=arguments[0];//学号
 	let pid=arguments[1];//答卷号
 	let pa=arguments[2];//第几页
-    var anslist_1=[];
-    var tDiv=$(".topic");
+    var anslist_11=[];
+    var ttDiv=$(".topic");
     console.log("保存吗");
     for(var i=0;i<tDiv.length;i++){
-        var name="i"+i;
-        var anslist={};
         (function(current){
+        	var name11="i"+i;
+            var anslist11={};
         	var tno_11=$(current).find(".idset").attr("data-tno");
             var id_11=$(current).find(".idset").attr("data-tid");
             var type_11=$(current).find(".idset").attr("data-type");
-            var type11=$("input[name="+name+"]").attr("type");
-            var values1;
+            var type11=$("input[name="+name11+"]").attr("type");
+            var values1="";
             switch(type11){
                 case "radio":
-                    values1=$("input[name="+name+"]:checked").val()
+                    values1=$("input[name="+name11+"]:checked").val()
                     break;
                 case "checkbox":
-                    values1=$("input[type=checkbox][name="+name+"]:checked").map(function(){
+                    values1=$("input[type=checkbox][name="+name11+"]:checked").map(function(){
                         return $(this).val();
                     }).toArray().join("");
                     console.log(values1);
@@ -172,21 +172,21 @@ function save_veri(){
             if(values1==null){
             	values1="";
             }
-            anslist.tno=tno_11;
-            anslist.id=id_11;
-            anslist.type=type_11;
-            anslist.value=values1;
-            anslist_1.push(anslist);
-        })(tDiv[i])
+            anslist11.tno=tno_11;
+            anslist11.id=id_11;
+            anslist11.type=type_11;
+            anslist11.value=values1;
+            anslist_11.push(anslist11);
+        })(ttDiv[i])
         
     }
-    console.log(JSON.stringify(anslist_1));
+    console.log(JSON.stringify(anslist_11));
     
     //使用ajax提交时把下面注释去掉
      $.ajax({
          url:"PageSave",//PageSave
          type:"post",
-         data:{"anslist":JSON.stringify(anslist_1),
+         data:{"anslist":JSON.stringify(anslist_11),
         	 "xuehao":nums,//学号
         	 "pid":pid,},//答卷号
          success:function(msg){

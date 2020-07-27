@@ -66,19 +66,24 @@ public class PageSave extends HttpServlet {
 		int pid=Integer.parseInt(request.getParameter("pid"));//试卷id
 //		int pages=Integer.parseInt(request.getParameter("pages"));
 		//用map来接收request发送过来的多维数组
+		System.out.print("暂存开始");
         String list=request.getParameter("anslist");
-        System.out.print(list);
+        System.out.print("暂存"+list);
         JSONArray jsonA;
 		try {
 			jsonA = new JSONArray(list);
 			for(int i=0;i<jsonA.length();i++){
 				JSONObject jsonO=jsonA.getJSONObject(i);
-				int tno=(int) jsonO.get("tno");//题号
-				int tid=(int)jsonO.get("id");//题目id
-				String type=(String) jsonO.get("type");//题目类型
+				System.out.print("isisisis: "+(String)jsonO.get("tno")+" ;;;"+jsonO.get("tno").toString()=="");
+				if(jsonO.get("tno").toString()=="")
+					continue;
+				int tno=Integer.parseInt( jsonO.get("tno").toString());//题号
+				int tid=Integer.parseInt( jsonO.get("id").toString());//题目id
+				String type=jsonO.get("type").toString();//题目类型
 			    String typeDB=typeS.get(type);//对应表名
 				String value=(String) jsonO.get("value");//题目作答结果
 				List<TestInf> s=update.verify_get(pid, tid);//验证该题是否有暂存testInf
+				
 				
 				if(s.size()>0){//暂存，update
 					update.testsub_update(0, 0, pid, type, tid);
