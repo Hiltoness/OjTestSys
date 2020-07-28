@@ -74,8 +74,8 @@ public class PageSave extends HttpServlet {
 			jsonA = new JSONArray(list);
 			for(int i=0;i<jsonA.length();i++){
 				JSONObject jsonO=jsonA.getJSONObject(i);
-				System.out.print("isisisis: "+(String)jsonO.get("tno")+" ;;;"+jsonO.get("tno").toString()=="");
-				if(jsonO.get("tno").toString()=="")
+				System.out.print("isisisis: "+(String)jsonO.get("tno")+" ;;;"+jsonO.get("tno").toString().length());
+				if(jsonO.get("tno").toString().length()==0)
 					continue;
 				int tno=Integer.parseInt( jsonO.get("tno").toString());//题号
 				int tid=Integer.parseInt( jsonO.get("id").toString());//题目id

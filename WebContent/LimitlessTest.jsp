@@ -366,7 +366,7 @@ window.addEventListener("onbeforeunload",function(){
 			}
 			
 
-		    var saveAjax=setInterval(save_veri("<%=xuehao%>",<%=pid%>),60000);
+		    setInterval("save_veri('<%=xuehao%>',<%=pid%>)",60000);
 		    
 
 

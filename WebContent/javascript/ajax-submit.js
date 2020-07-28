@@ -164,7 +164,7 @@ function save_veri(){
                     console.log(values1);
                     break;
                 case "text":
-                    values1=$("input[name="+name+"]").val()
+                    values1=$("input[name="+name11+"]").val()
                     break;
                 default:
                     console.log("1")   ; 
