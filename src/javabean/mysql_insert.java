@@ -38,11 +38,12 @@ public class mysql_insert {
 		try {
 			 mysql_DB db=new mysql_DB();
 				conn=db.connectDB();
-				pstm=conn.prepareStatement("insert into TestInf values(?,0,?,?,?)");
+				pstm=conn.prepareStatement("insert into TestInf values(?,0,?,?,?,?)");
 				pstm.setInt(1, pid);
 				pstm.setString(2, type);
-				pstm.setString(3,answer);
-				pstm.setInt(4,goal);
+				pstm.setInt(3, tno);
+				pstm.setString(4,answer);
+				pstm.setInt(5,goal);
 				
 				pstm.executeUpdate();
 				
@@ -57,7 +58,7 @@ public class mysql_insert {
 			try {
 				 mysql_DB db=new mysql_DB();
 					conn=db.connectDB();
-					pstm=conn.prepareStatement("insert into TestInf values(?,0,?,?,?)");
+					pstm=conn.prepareStatement("insert into TestInf values(?,0,?,?,?,null)");
 					pstm.setInt(1, pid);
 					pstm.setString(2, type);
 					pstm.setInt(3,tno);
@@ -72,16 +73,19 @@ public class mysql_insert {
 		}
 	
 	//答卷题目表
-	public void dajuantm_insert(int pid,String type,int atimes,int rtimes) {
+	public void dajuantm_insert(int pid,String type,int tid,int atimes,int rtimes) {
 		
 		try {
 			 mysql_DB db=new mysql_DB();
 				conn=db.connectDB();
-				pstm=conn.prepareStatement("insert into TestSub values(?,?,0,?,?)");
-				pstm.setInt(1, pid);		
-				pstm.setString(2,type);
-				pstm.setInt(3, atimes);
-				pstm.setInt(4, rtimes);
+				String sql="insert into TestSub values("+pid+",'"+type+"',"+tid+","+atimes+","+rtimes+");";
+				System.out.print(sql);
+				pstm=conn.prepareStatement(sql);
+//				pstm.setInt(1, pid);		
+//				pstm.setString(2,type);
+//				pstm.setInt(3, tid);
+//				pstm.setInt(4, atimes);
+//				pstm.setInt(5, rtimes);
 				
 				pstm.executeUpdate();
 				
