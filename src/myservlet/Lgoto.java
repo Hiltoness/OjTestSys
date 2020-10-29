@@ -54,10 +54,10 @@ public class Lgoto extends HttpServlet {
 			session.setAttribute("correctlist", correctlist);
 			
 		}else {			
-			teatestlistcon=l.getteatestcon(teatestlist,xuehao);
-			teatestlistnew=l.getteatestnew(teatestlist, teatestlistcon, xuehao);			
-			remaintimescon=l.gettimeandpid(teatestlistcon, xuehao);
-			remaintimesnew=l.getremaintime(teatestlistnew, xuehao);			
+			teatestlistcon=l.getteatestcon(teatestlist,xuehao);// 继续作答的试卷  的老师答卷信息（teatest）
+			teatestlistnew=l.getteatestnew(teatestlist, teatestlistcon, xuehao);//新答卷的试卷 的老师答卷信息（teatest）			
+			remaintimescon=l.gettimeandpid(teatestlistcon, xuehao);// twoint实例，获取teatestlistcon的答卷是第几次作答了，之前作答的答卷信息（stutest表）
+			remaintimesnew=l.getremaintime(teatestlistnew, xuehao);// 剩余次数			
 			teachernamecon=l.getteachername(teatestlistcon);
 			teachernamenew=l.getteachername(teatestlistnew);
 			session.setAttribute("teatestlistcon", teatestlistcon);

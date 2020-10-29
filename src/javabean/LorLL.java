@@ -113,7 +113,7 @@ public ArrayList<TeaTest> getteatestcon(ArrayList<TeaTest> teatestlist,String xu
 public ArrayList<TeaTest> getteatestnew(ArrayList<TeaTest> teatestlist,ArrayList<TeaTest> teatestlistcon,String xuehao){		
 	//删掉可继续上次答卷的
 	//删掉过期的	
-	ArrayList<TeaTest> teatestlist0=new ArrayList<TeaTest>();
+	ArrayList<TeaTest> teatestlist0=new ArrayList<TeaTest>();//不含继续答卷的
 	for(int i=0;i<teatestlist.size();i++) {
 		int flag=0;
 		TeaTest bean1=new TeaTest();
@@ -121,16 +121,18 @@ public ArrayList<TeaTest> getteatestnew(ArrayList<TeaTest> teatestlist,ArrayList
 		for(int j=0;j<teatestlistcon.size();j++) {
 			TeaTest bean2=new TeaTest();
 			bean2=teatestlistcon.get(j);
-			if(bean1.getTpid()==bean2.getTpid()) {
-				flag=1;			
+			if(bean1.getTpid()==bean2.getTpid()) {// 判断是否是继续答卷的
+				flag=1;
+				break;
 			}
 		}
 		if(flag==0) {
 		teatestlist0.add(bean1);
 		}
 	}
-	ArrayList<TeaTest> teatestlist1=new ArrayList<TeaTest>();
-	for(int i=0;i<teatestlist0.size();i++) {
+	// 判断过期的试卷
+	ArrayList<TeaTest> teatestlist1=new ArrayList<TeaTest>();//存放在截止时间之前的试卷
+	for(int i=0;i<teatestlist0.size();i++) { // 从新答卷中清除过期的
 		int flag=0;
 		TeaTest bean3=new TeaTest();
 		bean3=teatestlist0.get(i);
@@ -146,15 +148,15 @@ public ArrayList<TeaTest> getteatestnew(ArrayList<TeaTest> teatestlist,ArrayList
 	}
 	//删掉次数已用完的
 	ArrayList<TeaTest> teatestlist2=new ArrayList<TeaTest>();
-	for(int i=0;i<teatestlist1.size();i++){ 
-	TeaTest beans=new TeaTest();
-	beans=teatestlist1.get(i);
-	int tpid=beans.getTpid();
-	int flag=0;
+	for(int i=0;i<teatestlist1.size();i++){ // 从期限内的答卷中清除次数用完的
+		TeaTest beans=new TeaTest();
+		beans=teatestlist1.get(i);
+		int tpid=beans.getTpid();
+		int flag=0;
 	 try {
 		    mysql_DB db=new mysql_DB();
 			conn=db.connectDB();
-			pstm=conn.prepareStatement("select times from stutest where tpid=? and xuehao=? ");			
+			pstm=conn.prepareStatement("select * from stutest where tpid=? and xuehao=? ");			
 			pstm.setInt(1,tpid);
 			pstm.setString(2,xuehao);
 			rs=pstm.executeQuery();
@@ -418,8 +420,7 @@ public ArrayList<twoint> gettimeandpid(ArrayList<TeaTest> teatestlist,String xue
 		TeaTest beans=new TeaTest();
 		beans=teatestlist.get(i);
 		int tpid=beans.getTpid();
-		 try {			 
-			 Timestamp timesp;
+		 try {
 			    mysql_DB db=new mysql_DB();
 				conn=db.connectDB();
 				pstm=conn.prepareStatement("select * from stutest where tpid=? and xuehao=? ");			
@@ -427,20 +428,15 @@ public ArrayList<twoint> gettimeandpid(ArrayList<TeaTest> teatestlist,String xue
 				pstm.setString(2,xuehao);
 				rs=pstm.executeQuery();
 				twoint tit=new twoint();
-				int get0=0;
+				tit.setTimes(1);
 				while(rs.next()) {
-					int get=rs.getInt(7);
-					timesp=rs.getTimestamp(5);
-					int pid=rs.getInt(1);
-					if(get0<get) {
+					int get=rs.getInt(7);//第几次作答
+					if(tit.getTimes()<get) {//非第1次作答
 						tit.setTimes(get);
-						tit.setPid(pid);
-						tit.setStart(timesp);
-						get0=get;
+						tit.setPid(rs.getInt(1));//学生答卷的id
+						tit.setStart(rs.getTimestamp(5));//开始答卷时间
 					}
-					
-				}	
-		
+				}			        			
 				twointlist.add(tit);
 				db.close(conn);
 			}catch(SQLException ex){

@@ -102,6 +102,7 @@ public class mysql_search_suiji {
 								a_blank.add(tid);
 							}else{
 							   typeArray.remove("blank"); 
+							   i--;
 							}
 							System.out.print("yichublank"+a_blank);
 						  break;
@@ -132,6 +133,7 @@ public class mysql_search_suiji {
 								a_judge.add(tid);
 								}else{
 									typeArray.remove("judgement"); 
+									i--;
 								}
 						  System.out.print("yichujudge"+a_judge);
 						 break;
@@ -163,6 +165,7 @@ public class mysql_search_suiji {
 								a_multi.add(tid);
 						  }else{
 							  typeArray.remove("multi"); 
+							  i--;
 						  }
 					      break;
 					  case 4://单选题
@@ -192,7 +195,8 @@ public class mysql_search_suiji {
 								sublist.add(a);
 								a_single.add(tid);
 						  }else{
-							  typeArray.remove("single"); 
+							  typeArray.remove("single");
+							  i--;
 						  }
 				          break;
 				          

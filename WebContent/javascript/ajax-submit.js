@@ -14,9 +14,12 @@ function submit_veri(){
             var id_1=$(current).find(".idset").attr("data-tid");
             var type_1=$(current).find(".idset").attr("data-type");
             var type=$("input[name="+name+"]").attr("type");
+            var values="";
+            console.log("type "+type);
             switch(type){
                 case "radio":
-                    values=$("input[name="+name+"]:checked").val()
+                    values=$("input[type=radio][name="+name+"]:checked").val();
+                    console.log(values);
                     break;
                 case "checkbox":
                     values=$("input[type=checkbox][name="+name+"]:checked").map(function(){
@@ -25,12 +28,13 @@ function submit_veri(){
                     console.log(values);
                     break;
                 case "text":
-                    values=$("input[name="+name+"]").val()
+                    values=$("input[name="+name+"]").val();
+                    console.log("text "+values);
                     break;
                 default:
-                    console.log("1")    
+                    console.log("1");    
             }
-            if(values==null){
+            if(values==undefined || values.length===0){
             	values="";
                 flag=true
             }
@@ -83,7 +87,6 @@ function submit_self(){
         }
     }else{
 //       location.href="LookLimit.jsp?xuehao="+nums //答卷页面
-    	console.log("来这里啊");
     	 $.ajax({
              url:"PageSubmit",
              type:"post",

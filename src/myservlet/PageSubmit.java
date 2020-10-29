@@ -111,6 +111,7 @@ public class PageSubmit extends HttpServlet {
 			    String ansDB=ansS.get(type);
 			    String marDB=marS.get(type);
 				String value=jsonO.get("value").toString();//题目作答结果
+				System.out.println("value: "+value);
 				List<TestInf> s=update.verify_get(pid, tid);//验证该题是否有暂存testInf
 				int a=appear.checksave(pid, tid, tno);//验证该题是否为之前出现过
 				if(a>0){//之前出现过
