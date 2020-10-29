@@ -222,6 +222,8 @@ var pid=<%=pid%>
 		for(var i=0;i<tDiv.length;i++){
 			(function(current){
 				$(current).find("*").css("display","none");
+				$(current).find("*").off();
+				$(current).find("*").val("");
 				var v="";
 	            var type=ttlist[i].type;
 	            var id=ttlist[i].id;
@@ -266,11 +268,14 @@ var pid=<%=pid%>
 	                $(current).find("label").append("<br/>");
 	                $(current).find("input[type=radio]").css("display","inline-block");
 	                $(current).find("label").css("display","inline");
-	                if(v!=""){
-	                	$(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
-	                }
+	                
 	                current.style.display="block";
 	                $(current).find("input[type=radio]").on("input",function(){
+	                	if(v!=""){
+		                	$(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
+		                	values=$("input[type=radio][name="+input_name+"]:checked").val();
+		                    console.log(values);
+		                }
 	                    $("#"+record).removeClass("tdunused");
 	                })
 	                
@@ -289,12 +294,13 @@ var pid=<%=pid%>
 	                $(current).find(".input2").val("false");
 	                $(current).find(".input1").css("display","inline-block");
 	                $(current).find(".input2").css("display","inline-block");
-	                if(v!=""){
-	                $(current).find("input[type=radio][value="+v+"]").attr("checked","checked");
-	                }
+	                
 	                $(current).find("label").append("<br/>");
 	                current.style.display="block";
 	                $(current).find("input[type=radio]").on("input",function(){
+	                	if(v !=""){
+	    	                $(current).find("input[type=radio][value="+v +"]").attr("checked","checked");
+	    	                }
 	                    $("#"+record).removeClass("tdunused");
 	                })
 	                break;
@@ -312,13 +318,16 @@ var pid=<%=pid%>
 	                $(current).find(".option4").text("D."+d);
 	                $(current).find("input[type=checkbox").css("display","inline-block");
 	                $(current).find("label").css("display","inline");
-	                if(v!=""){
-	                let v2=v.split('')
-                    console.log(v2)
-                    for(var j in v2){
-                        $(current).find("input[type=checkbox][value="+v2[j]+"]").attr("checked","checked")
-                    }
-	                }
+	                $(current).find("input[type=checkbox]").on('input',function(){
+	                	if(v!=""){
+	    	                let v2=v.split('')
+	                        console.log(v2)
+	                        for(var j in v2){
+	                            $(current).find("input[type=checkbox][value="+v2[j]+"]").attr("checked","checked")
+	                        }
+	    	                }
+	                })
+	                
 	                $(current).find("label").append("<br/>");
 	                current.style.display="block";
 	                $(current).find("input[type=checkbox]").change(function(){
@@ -330,6 +339,7 @@ var pid=<%=pid%>
 	                })
 	                break;
 	            case "blank":
+	            	$(current).find("input").attr("type","text");
 	                if(a !=null){
 	                    $(current).find(".option1").text(a);
 	                    $(current).find(".option1").css("display","inline");
@@ -338,16 +348,21 @@ var pid=<%=pid%>
 	                    $(current).find(".option2").text(b);
 	                    $(current).find(".option2").css("display","inline");
 	                }
-	                $(current).find(".input2").attr("type","text");
 	                $(current).find(".input2").val("");
 	                $(current).find(".input2").css("display","inline");
 	                $(current).find("input[type=text]").attr("name",input_name);
-	                if(v!=""){
-	                	$(current).find("input[type=text]").val(v)
-	                }
+	                
 	                current.style.display="flex";
-	                $(current).find("input[type=text]").on("input",function(){
-	                    $("#"+record).toggleClass("tdunused");
+	                $(current).find(".input2").on("input",function(){
+	                	if($(current).find(".input2").val()!=""){
+	                		var v1=$(current).find(".input2").val();
+	                		$("input[name="+input_name+"]").val(v1);
+	                		console.log($("input[name="+input_name+"]").val());
+		                	$("#"+record).removeClass("tdunused");
+		                }else{
+		                	$("#"+record).addClass("tdunused");
+		                }
+	                	//$("#"+record).toggleClass("tdunused");
 	                })
 	                break;
 	            default:
@@ -356,8 +371,8 @@ var pid=<%=pid%>
 	        })(tDiv[i])
 		};
 		}
-			$("#tno").val(tno_l);
-			$("#tnoForm").submit();
+			//$("#tno").val(tno_l);
+			//$("#tnoForm").submit();
 	}
 	
 

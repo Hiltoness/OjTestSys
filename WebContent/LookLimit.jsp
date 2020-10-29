@@ -150,12 +150,13 @@ for(int i=0;i<year.size();i++){
 <%
 for(int i=0;i<teatestlistcon.size();i++){
 	TeaTest beant1=new TeaTest();
-	beant1=teatestlistcon.get(i);
-	twoint beanr1=remaintimescon.get(i);
+	beant1=teatestlistcon.get(i);//beant1--teatest实例，试卷名、截止时间、次数
+	twoint beanr1=remaintimescon.get(i);//beanr1--
 	String beantn1=teachernamecon.get(i);
 	Timestamp tmp=beant1.getStart();
 	int year0=tmp.getYear()+1900;
 	if(timeorallyear==-1||year0==timeorallyear){
+		System.out.print("jsp"+beanr1.getStart());
 %>
 <tr>
 <td><%=beant1.getName() %></td>
@@ -172,8 +173,8 @@ for(int i=0;i<teatestlistcon.size();i++){
 for(int i=0;i<teatestlistnew.size();i++){
 	TeaTest beant2=new TeaTest();
 	beant2=teatestlistnew.get(i);
-	int beanr2=remaintimesnew.get(i);
-	String beantn2=teachernamenew.get(i);
+	int beanr2=remaintimesnew.get(i);//可答次数
+	String beantn2=teachernamenew.get(i);//老师名字
 	Timestamp tmp=beant2.getStart();
 	int year0=tmp.getYear()+1900;
 	if(timeorallyear==-1||year0==timeorallyear){
